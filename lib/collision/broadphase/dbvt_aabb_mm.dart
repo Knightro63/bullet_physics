@@ -204,8 +204,7 @@ class DbvtAabbMm {
 		return p.dot(v);
 	}
 	 
-	static bool intersect(DbvtAabbMm? a, DbvtAabbMm? b) {
-    if(a == null || b == null) return true;
+	static bool intersect(DbvtAabbMm a, DbvtAabbMm b) {
 		return ((a._mi.x <= b._mx.x) &&
 		        (a._mx.x >= b._mi.x) &&
 		        (a._mi.y <= b._mx.y) &&
@@ -243,8 +242,7 @@ class DbvtAabbMm {
 		return true;
 	}
 
-	static bool intersectWithVector(DbvtAabbMm? a, Vector3? b) {
-    if(a == null || b == null) return false;
+	static bool intersectWithVector(DbvtAabbMm a, Vector3 b) {
 		return ((b.x >= a._mi.x) &&
 		        (b.y >= a._mi.y) &&
 		        (b.z >= a._mi.z) &&

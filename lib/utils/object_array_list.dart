@@ -33,8 +33,12 @@ final class ObjectArrayList<T>{
 
   bool get isNotEmpty => _size > 0;
   bool get isEmpty => _size == 0;
+  set size(int v ) => _size = v;
 
   T? operator [](i) => array[i];
+  void operator []=(int i,T? v)=>(){
+    array[i] = v;
+  };
 	
 	bool add(T? value) {
 		if (_size == array.length) {
@@ -47,6 +51,10 @@ final class ObjectArrayList<T>{
 
   bool contains(T? element){
     return array.contains(element);
+  }
+
+  void reverse(){
+    array = array.reversed.toList();
   }
 
 	void addAt(int index, T value) {
@@ -72,7 +80,9 @@ final class ObjectArrayList<T>{
 		_size--;
 		return array.remove(object)?object:null;
   }
-
+  void resize(int newSize){
+    array.length = newSize;
+  }
 	void _expand() {
 		List<T?> newArray = List.filled(array.length << 1, null, growable: true);//(T[])new Object[array.length << 1];
 		//System.arraycopy(array, 0, newArray, 0, array.length);
@@ -116,7 +126,17 @@ final class ObjectArrayList<T>{
 		_size = 0;
 	}
 
-	int indexOf(T o) {
-    return array.indexOf(o);
+	int indexOf(Object? o) {
+		int _size = size;
+		List<T?> _array = array;
+		for (int i=0; i<_size; i++) {
+			if (o == null? _array[i] == null : o == _array[i]) {
+				return i;
+			}
+		}
+		return -1;
 	}
+	// int indexOf(T o) {
+  //   return array.indexOf(o);
+	// }
 }

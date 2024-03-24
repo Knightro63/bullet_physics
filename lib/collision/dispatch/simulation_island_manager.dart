@@ -327,7 +327,7 @@ class SimulationIslandManager {
 	}
 
   static Comparator<PersistentManifold?> _persistentManifoldComparator = (PersistentManifold? lhs, PersistentManifold? rhs){
-    if(lhs == null || rhs == null) return 0;
+    if(lhs == null || rhs == null) return -1;
     return _getIslandId(lhs) < _getIslandId(rhs)? -1 : 1;
   };
 }

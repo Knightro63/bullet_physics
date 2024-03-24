@@ -36,7 +36,7 @@ import "package:bullet_physics/utils/object_array_list.dart";
 class HashedOverlappingPairCache extends OverlappingPairCache {
 	static const int _nullPair = 0xffffffff;
 	
-	final ObjectArrayList<BroadphasePair?> _overlappingPairArray = ObjectArrayList();
+  final ObjectArrayList<BroadphasePair?> _overlappingPairArray = ObjectArrayList(2);
 	OverlapFilterCallback? _overlapFilterCallback;
 	final IntArrayList _hashTable = IntArrayList();
 	final IntArrayList _next = IntArrayList();
@@ -88,17 +88,17 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 		assert (pairIndex < _overlappingPairArray.size);
 
 		// Remove the pair from the hash table.
-		int index = _hashTable.get(hash);
+		int index = _hashTable[hash];
 		assert (index != _nullPair);
 
 		int previous = _nullPair;
 		while (index != pairIndex) {
 			previous = index;
-			index = _next.get(index);
+			index = _next[index];
 		}
 
 		if (previous != _nullPair) {
-			assert (_next.get(previous) == pairIndex);
+			assert (_next[previous] == pairIndex);
 			_next.set(previous, _next.get(pairIndex));
 		}
 		else {
@@ -115,7 +115,7 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 
 		// If the removed pair is the last pair, we are done.
 		if (lastPairIndex == pairIndex) {
-			_overlappingPairArray.removeQuick(_overlappingPairArray.size - 1);
+			_overlappingPairArray.removeAt(_overlappingPairArray.size - 1);
 			return userData;
 		}
 
@@ -124,11 +124,12 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 		/* missing swap here too, Nat. */
 		int lastHash = _getHash(last.pProxy0!.getUid(), last.pProxy1!.getUid()) & (_overlappingPairArray.capacity - 1);
 
-		index = _hashTable.get(lastHash);
+		index = _hashTable[lastHash];
 		assert (index != _nullPair);
 
 		previous = _nullPair;
-		while (index != lastPairIndex) {// && index != _nullPair
+
+		while (index != lastPairIndex) {
 			previous = index;
 			index = _next.get(index);
 		}
@@ -148,7 +149,7 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 		_next.set(pairIndex, _hashTable.get(lastHash));
 		_hashTable.set(lastHash, pairIndex);
 
-		_overlappingPairArray.removeQuick(_overlappingPairArray.size - 1);
+		_overlappingPairArray.removeAt(_overlappingPairArray.size - 1);
 
 		return userData;
 	}
@@ -198,7 +199,7 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 	void cleanOverlappingPair(BroadphasePair? pair, Dispatcher? dispatcher) {
 		if (pair?.algorithm != null) {
 			dispatcher?.freeCollisionAlgorithm(pair!.algorithm);
-			pair!.algorithm = null;
+			pair?.algorithm = null;
 		}
 	}
 
@@ -229,7 +230,7 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 
 		assert(index < _overlappingPairArray.size);
 
-		return _overlappingPairArray.getQuick(index);
+		return _overlappingPairArray[index];
 	}
 
 	int getCount() {
@@ -282,7 +283,7 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 		int newCapacity = _overlappingPairArray.capacity;
 		if (oldCapacity < newCapacity) {
 			_growTables();
-			// hash with capacity
+			// hash with length
 			hash = _getHash(proxyId1, proxyId2) & (_overlappingPairArray.capacity - 1);
 		}
     pair = BroadphasePair(proxy0, proxy1);
@@ -298,10 +299,10 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 	}
 
 	void _growTables() {
-		int newCapacity = _overlappingPairArray.capacity;
+		final int newCapacity = _overlappingPairArray.capacity;
 		if (_hashTable.size() < newCapacity) {
 			// grow hashtable and next table
-			int curHashtableSize = _hashTable.size();
+			final int curHashtableSize = _hashTable.size();
 
 			MiscUtil.resizeArray(_hashTable, newCapacity, 0);
 			MiscUtil.resizeArray(_next, newCapacity, 0);
@@ -312,19 +313,17 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 			}
 
 			for (int i=0; i<curHashtableSize; i++) {
-
-				BroadphasePair? pair = _overlappingPairArray.getQuick(i);
-				int? proxyId1 = pair?.pProxy0?.getUid();
-				int? proxyId2 = pair?.pProxy1?.getUid();
+				BroadphasePair pair = _overlappingPairArray[i]!;
+				int proxyId1 = pair.pProxy0!.getUid();
+				int proxyId2 = pair.pProxy1!.getUid();
 				int hashValue = _getHash(proxyId1, proxyId2) & (_overlappingPairArray.capacity - 1); // hash value with mask
-				_next.set(i, _hashTable.get(hashValue));
+				_next.set(i, _hashTable[hashValue]);
 				_hashTable.set(hashValue, i);
 			}
 		}
 	}
 
-	bool _equalsPair(BroadphasePair? pair, int proxyId1, int proxyId2) {
-    if(pair == null) return false;
+	bool _equalsPair(BroadphasePair pair, int proxyId1, int proxyId2) {
 		return pair.pProxy0!.getUid() == proxyId1 && pair.pProxy1!.getUid() == proxyId2;
 	}
 
@@ -338,22 +337,23 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 		key ^= (key >>> 6);
 		key += ~(key << 11);
 		key ^= (key >>> 16);
-		return key.toSigned(32);
+		return key;
 	}
 
 	BroadphasePair? _internalFindPair(BroadphaseProxy? proxy0, BroadphaseProxy? proxy1, int hash) {
 		int proxyId1 = proxy0!.getUid();
 		int proxyId2 = proxy1!.getUid();
-
+    
 		int index = _hashTable.get(hash);
-		while(index != _nullPair && !_equalsPair(_overlappingPairArray.getQuick(index), proxyId1, proxyId2)) {
+
+		while(index != _nullPair && _equalsPair(_overlappingPairArray.getQuick(index)!, proxyId1, proxyId2) == false) {
       index = _next.get(index);
 		}
 
 		if (index == _nullPair) {
 			return null;
 		}
-
+    assert(index < _overlappingPairArray.size);
 		return _overlappingPairArray.getQuick(index);
 	}
   @override

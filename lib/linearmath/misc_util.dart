@@ -73,6 +73,8 @@ extension L<T> on List<T>{
   T get(int index){
     return this[index];
   }
+  int get capacity => length;
+  int get size => length;
 	// T remove2(int index) {
 	// 	if (index < 0 || index >= length) throw 'IndexOutOfBoundsException()';
 	// 	T prev = this[index];
@@ -239,7 +241,7 @@ class MiscUtil {
 	/**
 	 * Sorts list using quick sort.<p>
 	 */
-	static void quickSort<T>(List<T> list, Comparator<T?> comparator) {
+	static void quickSort<T>(List<T?> list, Comparator<T?> comparator) {
 		// don't sort 0 or 1 elements
 		if (list.length > 1) {
 			_quickSortInternal(list, comparator, 0, list.length - 1);

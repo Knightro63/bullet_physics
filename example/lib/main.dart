@@ -241,30 +241,30 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
     clearMesh();
     bodys=[];
     // add ground
-    // world.addRigidBody(
-    //   bullet.RigidBody.constructor(
-    //     bullet.RigidBodyConstructionInfo(
-    //       0,
-    //       bullet.DefaultMotionState(
-    //         bullet.Transform()
-    //         ..origin.setValues(-180.0,20.0,0.0)
-    //       ),
-    //       bullet.BoxShape(math.Vector3(40.0/2, 40.0/2, 390.0/2)),
-    //     )
-    //   )
-    // );
-    // world.addRigidBody(
-    //   bullet.RigidBody.constructor(
-    //     bullet.RigidBodyConstructionInfo(
-    //       0,
-    //       bullet.DefaultMotionState(
-    //         bullet.Transform()
-    //         ..origin.setValues(180.0,20.0,0.0)
-    //       ),
-    //       bullet.BoxShape(math.Vector3(40.0/2, 40.0/2, 390.0/2)),
-    //     )
-    //   )
-    // );
+    world.addRigidBody(
+      bullet.RigidBody.constructor(
+        bullet.RigidBodyConstructionInfo(
+          0,
+          bullet.DefaultMotionState(
+            bullet.Transform()
+            ..origin.setValues(-180.0,20.0,0.0)
+          ),
+          bullet.BoxShape(math.Vector3(40.0/2, 40.0/2, 390.0/2)),
+        )
+      )
+    );
+    world.addRigidBody(
+      bullet.RigidBody.constructor(
+        bullet.RigidBodyConstructionInfo(
+          0,
+          bullet.DefaultMotionState(
+            bullet.Transform()
+            ..origin.setValues(180.0,20.0,0.0)
+          ),
+          bullet.BoxShape(math.Vector3(40.0/2, 40.0/2, 390.0/2)),
+        )
+      )
+    );
     world.addRigidBody(
       bullet.RigidBody.constructor(
         bullet.RigidBodyConstructionInfo(
@@ -278,8 +278,8 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
       )
     );
 
-    // addStaticBox([40, 40, 390], [-180,20,0], [0,0,0]);
-    // addStaticBox([40, 40, 390], [180,20,0], [0,0,0]);
+    addStaticBox([40, 40, 390], [-180,20,0], [0,0,0]);
+    addStaticBox([40, 40, 390], [180,20,0], [0,0,0]);
     addStaticBox([400, 80, 400], [0,-40,0], [0,0,0]);
 
     //add object

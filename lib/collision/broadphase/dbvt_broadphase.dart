@@ -98,7 +98,6 @@ class DbvtBroadphase extends BroadphaseInterface {
         DbvtProxy? pa = p?.pProxy0 as DbvtProxy?;
         DbvtProxy? pb = p?.pProxy1 as DbvtProxy?;
         if (!DbvtAabbMm.intersect(pa!.aabb, pb!.aabb)) {
-          
           if (pa.hashCode > pb.hashCode) {
             DbvtProxy? tmp = pa;
             pa = pb;
@@ -174,22 +173,22 @@ class DbvtBroadphase extends BroadphaseInterface {
 			proxy.leaf = sets[0].insert(aabb, proxy);
 		}
 		else {
-			if (DbvtAabbMm.intersect(proxy?.leaf?.volume, aabb)) {
+			if (DbvtAabbMm.intersect(proxy!.leaf!.volume, aabb)) {
 				Vector3 delta = Vector3.zero();
 				delta.add2(aabbMin, aabbMax);
 				delta.scale(0.5);
-				delta.sub(proxy!.aabb.center(Vector3.zero()));
+				delta.sub(proxy.aabb.center(Vector3.zero()));
 				delta.scale(predictedframes);
 				sets[0].updateWithVelocityAndMargin(proxy.leaf!, aabb, delta, DbvtBroadphase.dbvtBPmargin);
 			}
 			else {
-				sets[0].updateWithVolume(proxy?.leaf, aabb);
+				sets[0].updateWithVolume(proxy.leaf, aabb);
 			}
 		}
 		
-		stageRoots[proxy?.stage ?? 0] = _listremove(proxy, stageRoots[proxy?.stage ?? 0]);
-		proxy?.aabb.set(aabb);
-		proxy?.stage = stageCurrent;
+		stageRoots[proxy.stage] = _listremove(proxy, stageRoots[proxy.stage]);
+		proxy.aabb.set(aabb);
+		proxy.stage = stageCurrent;
 		stageRoots[stageCurrent] = _listappend(proxy, stageRoots[stageCurrent]);
 	}
 

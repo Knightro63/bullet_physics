@@ -21,6 +21,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+import "package:bullet_physics/bullet_physics.dart";
 import "package:bullet_physics/collision/dispatch/collision_object.dart";
 import "package:bullet_physics/collision/dispatch/collision_world.dart";
 import "package:bullet_physics/collision/dispatch/pair_caching_ghost_object.dart";

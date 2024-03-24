@@ -359,7 +359,7 @@ class DiscreteDynamicsWorld extends DynamicsWorld {
 
 			// perform collision detection
 			performDiscreteCollisionDetection();
-
+      
 			calculateSimulationIslands();
 
 			getSolverInfo().timeStep = timeStep;
@@ -837,7 +837,7 @@ class DiscreteDynamicsWorld extends DynamicsWorld {
   }
 
 	static final Comparator<TypedConstraint?> _sortConstraintOnIslandPredicate = (TypedConstraint? lhs, TypedConstraint? rhs) {
-    if(lhs == null || rhs == null) return 0;
+    if(lhs == null || rhs == null) return -1;
 			int rIslandId0, lIslandId0;
 			rIslandId0 = _getConstraintIslandId(rhs);
 			lIslandId0 = _getConstraintIslandId(lhs);
