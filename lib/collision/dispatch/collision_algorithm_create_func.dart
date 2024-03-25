@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -25,14 +25,8 @@ import "package:bullet_physics/collision/broadphase/collision_algorithm.dart";
 import "package:bullet_physics/collision/broadphase/collision_algorithm_construction_info.dart";
 import "package:bullet_physics/collision/dispatch/collision_object.dart";
 
-/**
- * Used by the CollisionDispatcher to register and create instances for CollisionAlgorithm.
- * 
- * @author jezek2
- */
 abstract class CollisionAlgorithmCreateFunc {
 	bool swapped = false;
 	CollisionAlgorithm createCollisionAlgorithm(CollisionAlgorithmConstructionInfo ci, CollisionObject? body0, CollisionObject? body1);
-	// JAVA NOTE: added
 	void releaseCollisionAlgorithm(CollisionAlgorithm algo);
 }

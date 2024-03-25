@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -35,5 +35,6 @@ class DispatcherInfo {
 	bool enableSPU = true;
 	bool useEpa = true;
 	double allowedCcdPenetration = 0.04;
-	//btStackAlloc*	m_stackAllocator;
+
+  DispatcherInfo();
 }

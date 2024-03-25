@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -126,17 +126,17 @@ final class ObjectArrayList<T>{
 		_size = 0;
 	}
 
-	int indexOf(Object? o) {
-		int _size = size;
-		List<T?> _array = array;
-		for (int i=0; i<_size; i++) {
-			if (o == null? _array[i] == null : o == _array[i]) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	// int indexOf(T o) {
-  //   return array.indexOf(o);
+	// int indexOf(Object? o) {
+	// 	int _size = size;
+	// 	List<T?> _array = array;
+	// 	for (int i=0; i<_size; i++) {
+	// 		if (o == null? _array[i] == null : o == _array[i]) {
+	// 			return i;
+	// 		}
+	// 	}
+	// 	return -1;
 	// }
+	int indexOf(T o) {
+    return array.indexOf(o);
+	}
 }

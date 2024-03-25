@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -29,11 +29,6 @@ import "package:bullet_physics/collision/dispatch/collision_object.dart";
 import "package:bullet_physics/collision/dispatch/manifold_result.dart";
 import "package:bullet_physics/collision/dispatch/near_callback.dart";
 
-/**
- * Default implementation of {@link NearCallback}.
- * 
- * @author jezek2
- */
 class DefaultNearCallback extends NearCallback {
 	final ManifoldResult _contactPointResult = ManifoldResult();
 
@@ -43,19 +38,15 @@ class DefaultNearCallback extends NearCallback {
 		CollisionObject? colObj1 = collisionPair.pProxy1?.clientObject as CollisionObject?;
 
 		if (dispatcher.needsCollision(colObj0, colObj1)) {
-			// dispatcher will keep algorithms persistent in the collision pair
 			collisionPair.algorithm ??= dispatcher.findAlgorithm(colObj0, colObj1);
 
 			if (collisionPair.algorithm != null) {
-				//ManifoldResult contactPointResult = ManifoldResult(colObj0, colObj1);
 				_contactPointResult.init(colObj0, colObj1);
 
 				if (dispatchInfo.dispatchFunc == DispatchFunc.discrete) {
-					// discrete collision detection query
 					collisionPair.algorithm?.processCollision(colObj0, colObj1, dispatchInfo, _contactPointResult);
 				}
 				else {
-					// continuous collision detection query, time of impact (toi)
 					double toi = collisionPair.algorithm?.calculateTimeOfImpact(colObj0, colObj1, dispatchInfo, _contactPointResult) ?? 0;
 					if (dispatchInfo.timeOfImpact > toi) {
 						dispatchInfo.timeOfImpact = toi;

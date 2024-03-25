@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  * 
  * AxisSweep3
  * Copyright (c) 2006 Simon Hobbs
@@ -28,19 +28,9 @@ import 'package:bullet_physics/collision/broadphase/axis_sweep3_internal.dart';
 import 'package:bullet_physics/collision/broadphase/overlapping_pair_cache.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- * AxisSweep3 is an efficient implementation of the 3D axis sweep and prune broadphase.<p>
- * 
- * It uses arrays rather then lists for storage of the 3 axis. Also it operates using 16 bit
- * integer coordinates instead of doubles. For large worlds and many objects, use {@link AxisSweep3_32}
- * instead. AxisSweep3_32 has higher precision and allows more than 16384 objects at the cost
- * of more memory and bit of performance.
- *
- * @author jezek2
- */
 class AxisSweep3 extends AxisSweep3Internal {
 	
-	AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, [int maxHandles = 16384, OverlappingPairCache? pairCache/* = 0*/]):super(worldAabbMin, worldAabbMax, 0xfffe, 0xffff, maxHandles, pairCache){
+	AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, [int maxHandles = 16384, OverlappingPairCache? pairCache]):super(worldAabbMin, worldAabbMax, 0xfffe, 0xffff, maxHandles, pairCache){
 		// 1 handle is reserved as sentinel
 		assert (maxHandles > 1 && maxHandles < 32767);
 	}
@@ -123,7 +113,7 @@ class _HandleImpl extends Handle {
       case 0: return _minEdges0 & 0xFFFF;
       case 1: return _minEdges1 & 0xFFFF;
       case 2: return _minEdges2 & 0xFFFF;
-      default: return 0;
+      default: return _minEdges0 & 0xFFFF;
     }
   }
   
@@ -142,7 +132,7 @@ class _HandleImpl extends Handle {
       case 0: return _maxEdges0 & 0xFFFF;
       case 1: return _maxEdges1 & 0xFFFF;
       case 2: return _maxEdges2 & 0xFFFF;
-      default: return 0;
+      default: return _maxEdges0 & 0xFFFF0;
     }
   }
   

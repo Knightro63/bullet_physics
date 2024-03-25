@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Stan Melax Convex Hull Computation
  * Copyright (c) 2024 Stan Melax http://www.melax.com/

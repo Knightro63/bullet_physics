@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -73,8 +73,8 @@ extension L<T> on List<T>{
   T get(int index){
     return this[index];
   }
-  int get capacity => length;
-  int get size => length;
+  // int get capacity => length;
+  // int get size => length;
 	// T remove2(int index) {
 	// 	if (index < 0 || index >= length) throw 'IndexOutOfBoundsException()';
 	// 	T prev = this[index];
@@ -134,7 +134,7 @@ class MiscUtil {
 	static void resizeObjectArray<T>(ObjectArrayList<T> list, int size, T? valueCls) {
 		try {
 			while (list.size < size) {
-				list.add(valueCls != null? valueCls as T : null);
+				list.add(null);//valueCls != null? valueCls as T : null
 			}
 			while (list.size > size) {
 				list.removeQuick(list.size - 1);

@@ -1,7 +1,7 @@
 /*
  * Port of btHeightfieldTerrainShape by Dominic Browne <dominic.browne@hotmail.co.uk>
  *
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/

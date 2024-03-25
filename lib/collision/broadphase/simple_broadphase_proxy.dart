@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -25,10 +25,6 @@ import 'package:bullet_physics/collision/broadphase/broadphase_native_type.dart'
 import 'package:bullet_physics/collision/broadphase/broadphase_proxy.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 class SimpleBroadphaseProxy extends BroadphaseProxy {
 	final Vector3 min = Vector3.zero();
 	final Vector3 max = Vector3.zero();
@@ -38,7 +34,7 @@ class SimpleBroadphaseProxy extends BroadphaseProxy {
     Vector3? maxpt, 
     BroadphaseNativeType? shapeType, 
     Object? userPtr, 
-    int collisionFilterGroup = -1, 
+    int collisionFilterGroup = 0, 
     int collisionFilterMask = 0, 
     Object? multiSapProxy
   ]):super(userPtr, collisionFilterGroup, collisionFilterMask, multiSapProxy){

@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -29,8 +29,6 @@
 enum CollisionObjectType {
 	collisionObject, // =1
 	rigidBody,
-	// CO_GHOST_OBJECT keeps track of all objects overlapping its AABB and that pass its collision filter
-	// It is useful for collision sensors, explosion objects, character controller etc.
-	ghostBody,
+	ghostObject,
 	softBody
 }

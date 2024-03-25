@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -33,11 +33,10 @@ class BroadphasePair {
 	BroadphasePair([this.pProxy0, this.pProxy1]);
 	
 	void set(BroadphasePair? p) {
-    if(p == null) return;
-		pProxy0 = p.pProxy0;
-		pProxy1 = p.pProxy1;
-		algorithm = p.algorithm;
-		userInfo = p.userInfo;
+		pProxy0 = p?.pProxy0;
+		pProxy1 = p?.pProxy1;
+		algorithm = p?.algorithm;
+		userInfo = p?.userInfo;
 	}
 	
 	bool equals(BroadphasePair p) {
@@ -48,10 +47,10 @@ class BroadphasePair {
     if(a?.pProxy0 == null || b?.pProxy0 == null){
       return -1;
     }
-    // JAVA TODO:
+
     bool result = a!.pProxy0!.getUid() > b!.pProxy0!.getUid() ||
         (a.pProxy0!.getUid() == b.pProxy0!.getUid() && a.pProxy1!.getUid() > b.pProxy1!.getUid()) ||
-        (a.pProxy0!.getUid() == b.pProxy0!.getUid() && a.pProxy1!.getUid() == b.pProxy1!.getUid() /*&& a.algorithm > b.m_algorithm*/);
+        (a.pProxy0!.getUid() == b.pProxy0!.getUid() && a.pProxy1!.getUid() == b.pProxy1!.getUid());
     return result? -1 : 1;
   };
 }

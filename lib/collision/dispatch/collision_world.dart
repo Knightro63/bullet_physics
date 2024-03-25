@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -53,19 +53,11 @@ import 'package:vector_math/vector_math.dart';
 import "package:bullet_physics/collision/shapes/sphere_shape.dart";
 import "package:bullet_physics/linearmath/aabb_util2.dart";
 
-/**
- * CollisionWorld is interface and container for the collision detection.
- * 
- * @author jezek2
- */
 class CollisionWorld {
-
 	//final BulletStack stack = BulletStack.get();
-	
 	ObjectArrayList<CollisionObject> collisionObjects = ObjectArrayList();
 	Dispatcher? dispatcher1;
 	DispatcherInfo dispatchInfo = DispatcherInfo();
-	//btStackAlloc*	m_stackAlloc;
 	BroadphaseInterface broadphasePairCache;
 	IDebugDraw? debugDrawer;
 	
@@ -81,9 +73,6 @@ class CollisionWorld {
 
 			BroadphaseProxy? bp = collisionObject?.getBroadphaseHandle();
 			if (bp != null) {
-				//
-				// only clear the cached algorithms
-				//
 				getBroadphase().getOverlappingPairCache()?.cleanProxyFromPairs(bp, dispatcher1);
 				getBroadphase().destroyProxy(bp, dispatcher1);
 			}
@@ -97,7 +86,6 @@ class CollisionWorld {
 		collisionObjects.add(collisionObject);
 
 		// calculate AABB
-		// TODO: check if it's overwritten or not
 		Transform trans = collisionObject.getWorldTransform(Transform());
 
 		Vector3 minAabb = Vector3.zero();
@@ -122,7 +110,6 @@ class CollisionWorld {
 	void performDiscreteCollisionDetection() {
 		BulletStats.pushProfile("performDiscreteCollisionDetection");
 		try {
-			//DispatcherInfo dispatchInfo = getDispatchInfo();
 			updateAabbs();
 			BulletStats.pushProfile("calculateOverlappingPairs");
 			try {
@@ -131,18 +118,16 @@ class CollisionWorld {
 			finally {
 				BulletStats.popProfile();
 			}
+      
 			Dispatcher? dispatcher = getDispatcher();
-			{
-				BulletStats.pushProfile("dispatchAllCollisionPairs");
-				try {
-					if (dispatcher != null) {
-						dispatcher.dispatchAllCollisionPairs(broadphasePairCache.getOverlappingPairCache(), dispatchInfo, dispatcher1);
-					}
-				}
-				finally {
-					BulletStats.popProfile();
-				}
-			}
+      BulletStats.pushProfile("dispatchAllCollisionPairs");
+      try {
+        dispatcher?.dispatchAllCollisionPairs(broadphasePairCache.getOverlappingPairCache(), dispatchInfo, dispatcher1);
+      }
+      finally {
+        BulletStats.popProfile();
+      }
+			
 		}
 		finally {
 			BulletStats.popProfile();
@@ -150,20 +135,12 @@ class CollisionWorld {
 	}
 	
 	void removeCollisionObject(CollisionObject collisionObject) {
-		//bool removeFromBroadphase = false;
-
-		{
-			BroadphaseProxy? bp = collisionObject.getBroadphaseHandle();
-			if (bp != null) {
-				//
-				// only clear the cached algorithms
-				//
-				getBroadphase().getOverlappingPairCache()?.cleanProxyFromPairs(bp, dispatcher1);
-				getBroadphase().destroyProxy(bp, dispatcher1);
-				collisionObject.setBroadphaseHandle(null);
-			}
-		}
-
+    BroadphaseProxy? bp = collisionObject.getBroadphaseHandle();
+    if (bp != null) {
+      getBroadphase().getOverlappingPairCache()?.cleanProxyFromPairs(bp, dispatcher1);
+      getBroadphase().destroyProxy(bp, dispatcher1);
+      collisionObject.setBroadphaseHandle(null);
+    }
 		//swapremove
 		collisionObjects.remove(collisionObject);
 	}
@@ -273,25 +250,15 @@ class CollisionWorld {
 
 			ConvexShape convexShape = collisionShape as ConvexShape;
 			VoronoiSimplexSolver simplexSolver = VoronoiSimplexSolver();
-
-			//#define USE_SUBSIMPLEX_CONVEX_CAST 1
-			//#ifdef USE_SUBSIMPLEX_CONVEX_CAST
 			SubSimplexConvexCast convexCaster = SubSimplexConvexCast(castShape, convexShape, simplexSolver);
-			//#else
-			//btGjkConvexCast	convexCaster(castShape,convexShape,&simplexSolver);
-			//btContinuousConvexCollision convexCaster(castShape,convexShape,&simplexSolver,0);
-			//#endif //#USE_SUBSIMPLEX_CONVEX_CAST
 
 			if (convexCaster.calcTimeOfImpact(rayFromTrans, rayToTrans, colObjWorldTransform!, colObjWorldTransform, castResult)) {
 				//add hit
 				if (castResult.normal.length2 > 0.0001) {
 					if (castResult.fraction < resultCallback.closestHitFraction) {
-						//#ifdef USE_SUBSIMPLEX_CONVEX_CAST
-						//rotate normal into worldspace
 						rayFromTrans.basis.transform(castResult.normal);
-						//#endif //USE_SUBSIMPLEX_CONVEX_CAST
-
 						castResult.normal.normalize();
+
 						LocalRayResult localRayResult = LocalRayResult(
 								collisionObject,
 								null,
@@ -385,17 +352,11 @@ class CollisionWorld {
 		if (collisionShape?.isConvex() ?? false) {
 			CastResult castResult = CastResult();
 			castResult.allowedPenetration = allowedPenetration;
-			castResult.fraction = 1; // ??
+			castResult.fraction = 1;
 
 			ConvexShape convexShape = collisionShape as ConvexShape;
 			VoronoiSimplexSolver simplexSolver = VoronoiSimplexSolver();
-			//GjkEpaPenetrationDepthSolver gjkEpaPenetrationSolver = GjkEpaPenetrationDepthSolver();
-
-			// JAVA TODO: should be convexCaster1
-			//ContinuousConvexCollision convexCaster1(castShape,convexShape,&simplexSolver,&gjkEpaPenetrationSolver);
 			GjkConvexCast convexCaster2 = GjkConvexCast(castShape, convexShape, simplexSolver);
-			//btSubsimplexConvexCast convexCaster3(castShape,convexShape,&simplexSolver);
-
 			ConvexCast castPtr = convexCaster2 as ConvexCast;
 
 			if (castPtr.calcTimeOfImpact(
@@ -527,7 +488,7 @@ class CollisionWorld {
 
 		// go over all objects, and if the ray intersects their aabb, do a ray-shape query using convexCaster (CCD)
 		Vector3 collisionObjectAabbMin = Vector3.zero(), collisionObjectAabbMax = Vector3.zero();
-		List<double> hitLambda = [0];
+		double hitLambda = 0;
 
 		Transform tmpTrans = Transform();
 		
@@ -540,10 +501,9 @@ class CollisionWorld {
 			CollisionObject? collisionObject = collisionObjects.getQuick(i);
 			// only perform raycast if filterMask matches
 			if (resultCallback.needsCollision(collisionObject?.getBroadphaseHandle())) {
-				//RigidcollisionObject* collisionObject = ctrl->GetRigidcollisionObject();
 				collisionObject?.getCollisionShape()?.getAabb(collisionObject.getWorldTransform(tmpTrans), collisionObjectAabbMin, collisionObjectAabbMax);
 
-				hitLambda[0] = resultCallback.closestHitFraction;
+				hitLambda = resultCallback.closestHitFraction;
 				Vector3 hitNormal = Vector3.zero();
 				if (AabbUtil2.rayAabb(rayFromWorld, rayToWorld, collisionObjectAabbMin, collisionObjectAabbMax, hitLambda, hitNormal)) {
 					rayTestSingle(
@@ -575,20 +535,18 @@ class CollisionWorld {
 		Vector3 castShapeAabbMax = Vector3.zero();
 
 		// Compute AABB that encompasses angular movement
-		{
-			Vector3 linVel = Vector3.zero();
-			Vector3 angVel = Vector3.zero();
-			TransformUtil.calculateVelocity(convexFromTrans, convexToTrans, 1, linVel, angVel);
-			Transform R = Transform();
-			R.setIdentity();
-			R.setRotation(convexFromTrans.getRotation(Quaternion(0,0,0,0)));
-			castShape.calculateTemporalAabb(R, linVel, angVel, 1, castShapeAabbMin, castShapeAabbMax);
-		}
-
+    Vector3 linVel = Vector3.zero();
+    Vector3 angVel = Vector3.zero();
+    TransformUtil.calculateVelocity(convexFromTrans, convexToTrans, 1, linVel, angVel);
+    Transform R = Transform();
+    R.setIdentity();
+    R.setRotation(convexFromTrans.getRotation(Quaternion(0,0,0,0)));
+    castShape.calculateTemporalAabb(R, linVel, angVel, 1, castShapeAabbMin, castShapeAabbMax);
+		
 		Transform tmpTrans = Transform();
 		Vector3 collisionObjectAabbMin = Vector3.zero();
 		Vector3 collisionObjectAabbMax = Vector3.zero();
-		List<double> hitLambda = [0];//double[1];
+		double hitLambda = 0;
 
 		// go over all objects, and if the ray intersects their aabb + cast shape aabb,
 		// do a ray-shape query using convexCaster (CCD)
@@ -601,7 +559,7 @@ class CollisionWorld {
 				collisionObject?.getWorldTransform(tmpTrans);
 				collisionObject?.getCollisionShape()?.getAabb(tmpTrans, collisionObjectAabbMin, collisionObjectAabbMax);
 				AabbUtil2.aabbExpand(collisionObjectAabbMin, collisionObjectAabbMax, castShapeAabbMin, castShapeAabbMax);
-				hitLambda[0] = 1; // could use resultCallback.closestHitFraction, but needs testing
+				hitLambda = 1; // could use resultCallback.closestHitFraction, but needs testing
 				Vector3 hitNormal = Vector3.zero();
 				if (AabbUtil2.rayAabb(convexFromWorld.origin, convexToWorld.origin, collisionObjectAabbMin, collisionObjectAabbMax, hitLambda, hitNormal)) {
 					objectQuerySingle(
@@ -633,8 +591,6 @@ class CollisionWorld {
 class LocalShapeInfo {
   int shapePart = 0;
   int triangleIndex = 0;
-  //const btCollisionShape*	m_shapeTemp;
-  //const btTransform*	m_shapeLocalTransform;
 }
 
 class LocalRayResult {
@@ -662,8 +618,8 @@ abstract class RayResultCallback {
   }
 
   bool needsCollision(BroadphaseProxy? proxy0) {
-    if(proxy0 == null) return false;
-    bool collides = ((proxy0.collisionFilterGroup & collisionFilterMask) & 0xFFFF) != 0;
+    //if(proxy0 == null) return false;
+    bool collides = ((proxy0!.collisionFilterGroup & collisionFilterMask) & 0xFFFF) != 0;
     collides = collides && ((collisionFilterGroup & proxy0.collisionFilterMask) & 0xFFFF) != 0;
     return collides;
   }

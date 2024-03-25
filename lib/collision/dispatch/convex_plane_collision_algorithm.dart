@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -34,11 +34,7 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 import 'package:vector_math/vector_math.dart';
-/**
- * ConvexPlaneCollisionAlgorithm provides convex/plane collision detection.
- * 
- * @author jezek2
- */
+
 class ConvexPlaneCollisionAlgorithm extends CollisionAlgorithm {
   static CPCAFunc CreateFunction() => CPCAFunc();
 	bool _ownManifold = false;
@@ -161,7 +157,5 @@ class CPCAFunc extends CollisionAlgorithmCreateFunc {
   }
 
   @override
-  void releaseCollisionAlgorithm(CollisionAlgorithm algo) {
-
-  }
+  void releaseCollisionAlgorithm(CollisionAlgorithm algo) {}
 }

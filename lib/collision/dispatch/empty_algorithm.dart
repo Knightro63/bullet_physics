@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -30,12 +30,7 @@ import "package:bullet_physics/collision/dispatch/manifold_result.dart";
 import "package:bullet_physics/collision/narrowphase/persistent_manifold.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 
-/**
- * Empty algorithm, used as fallback when no collision algorithm is found for given
- * shape type pair.
- * 
- * @author jezek2
- */
+
 class EmptyAlgorithm extends CollisionAlgorithm {
 	static EAFunc CreateFunction() => EAFunc();
 

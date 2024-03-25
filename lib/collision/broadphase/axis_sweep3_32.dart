@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  * 
  * AxisSweep3
  * Copyright (c) 2006 Simon Hobbs
@@ -29,7 +29,14 @@ import 'package:bullet_physics/collision/broadphase/overlapping_pair_cache.dart'
 import 'package:vector_math/vector_math.dart';
 
 class AxisSweep3_32 extends AxisSweep3Internal {
-	AxisSweep3_32(Vector3 worldAabbMin, Vector3 worldAabbMax,[int maxHandles = 0, OverlappingPairCache? pairCache]):super(worldAabbMin, worldAabbMax, 0xfffffffe, 0x7fffffff, maxHandles, pairCache) {
+	AxisSweep3_32(
+    Vector3 worldAabbMin, 
+    Vector3 worldAabbMax,
+    [
+      int maxHandles = 0, 
+      OverlappingPairCache? pairCache
+    ]
+  ):super(worldAabbMin, worldAabbMax, 0xfffffffe, 0x7fffffff, maxHandles, pairCache) {
 		// 1 handle is reserved as sentinel
 		assert (maxHandles > 1 && maxHandles < 2147483647);
 	}
@@ -112,7 +119,7 @@ class _HandleImpl extends Handle {
       case 0: return _minEdges0;
       case 1: return _minEdges1;
       case 2: return _minEdges2;
-      default: return 0;
+      default: return _minEdges0;
     }
   }
   
@@ -131,7 +138,7 @@ class _HandleImpl extends Handle {
       case 0: return _maxEdges0;
       case 1: return _maxEdges1;
       case 2: return _maxEdges2;
-      default: return 0;
+      default: return _maxEdges0;
     }
   }
   

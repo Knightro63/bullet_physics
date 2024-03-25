@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -100,10 +100,8 @@ class DiscreteDynamicsWorld extends DynamicsWorld {
 			CollisionObject? colObj = collisionObjects.getQuick(i);
 			RigidBody? body = RigidBody.upcast(colObj);
 			if (body != null) {
-				//Transform predictedTrans = Transform();
 				if (body.getActivationState() != CollisionObject.islandSleeping) {
 					if (body.isKinematicObject()) {
-						// to calculate velocities next frame
 						body.saveKinematicState(timeStep);
 					}
 				}
@@ -119,8 +117,6 @@ class DiscreteDynamicsWorld extends DynamicsWorld {
 			color.setValues(0, 0, 0);
 			for (int i = 0; i < numManifolds; i++) {
 				PersistentManifold? contactManifold = getDispatcher()?.getManifoldByIndexInternal(i);
-				//btCollisionObject* obA = static_cast<btCollisionObject*>(contactManifold->getBody0());
-				//btCollisionObject* obB = static_cast<btCollisionObject*>(contactManifold->getBody1());
 
 				int numContacts = contactManifold?.getNumContacts() ?? 0;
 				for (int j = 0; j < numContacts; j++) {
@@ -254,25 +250,18 @@ class DiscreteDynamicsWorld extends DynamicsWorld {
 
 			RigidBody? body = RigidBody.upcast(colObj);
 			if (body != null && body.getMotionState() != null && !body.isStaticOrKinematicObject()) {
-				// we need to call the update at least once, even for sleeping objects
-				// otherwise the 'graphics' transform never updates properly
-				// so todo: add 'dirty' flag
-				//if (body->getActivationState() != ISLAND_SLEEPING)
-				{
-					TransformUtil.integrateTransform(
-							body.getInterpolationWorldTransform(tmpTrans),
-							body.getInterpolationLinearVelocity(tmpLinVel),
-							body.getInterpolationAngularVelocity(tmpAngVel),
-							localTime * body.getHitFraction(), interpolatedTransform);
-					body.getMotionState()?.setWorldTransform(interpolatedTransform);
-				}
+        TransformUtil.integrateTransform(
+            body.getInterpolationWorldTransform(tmpTrans),
+            body.getInterpolationLinearVelocity(tmpLinVel),
+            body.getInterpolationAngularVelocity(tmpAngVel),
+            localTime * body.getHitFraction(), interpolatedTransform);
+        body.getMotionState()?.setWorldTransform(interpolatedTransform);
 			}
 		}
 
 		if (getDebugDrawer() != null && ((getDebugDrawer()?.getDebugMode() ?? 0) & DebugDrawModes.drawWireframe) != 0) {
 			for (int i = 0; i < vehicles.size; i++) {
 				for (int v = 0; v < (vehicles.getQuick(i)?.getNumWheels() ?? 0); v++) {
-					// synchronize the wheels with the (interpolated) chassis worldtransform
 					vehicles.getQuick(i)?.updateWheelTransform(v, true);
 				}
 			}
@@ -329,9 +318,7 @@ class DiscreteDynamicsWorld extends DynamicsWorld {
 			synchronizeMotionStates();
 			clearForces();
 
-			//#ifndef BT_NO_PROFILE
 			CProfileManager.incrementFrameCounter();
-			//#endif //BT_NO_PROFILE
 
 			return numSimulationSubSteps;
 		}
@@ -359,25 +346,15 @@ class DiscreteDynamicsWorld extends DynamicsWorld {
 
 			// perform collision detection
 			performDiscreteCollisionDetection();
-      
 			calculateSimulationIslands();
-
 			getSolverInfo().timeStep = timeStep;
-
-			// solve contact and other joint constraints
 			solveConstraints(getSolverInfo());
-
 			//CallbackTriggers();
 
 			// integrate transforms
 			integrateTransforms(timeStep);
-
-			// update vehicle simulation
 			updateActions(timeStep);
-
-			// update vehicle simulation
 			updateVehicles(timeStep);
-
 			updateActivationState(timeStep);
 
       if (internalTickCallback != null) {
@@ -553,14 +530,14 @@ class DiscreteDynamicsWorld extends DynamicsWorld {
 
 			ObjectArrayList<TypedConstraint>? constraintsPtr = getNumConstraints() != 0 ? _sortedConstraints : null;
 
-			_solverCallback.init(solverInfo, constraintSolver, constraintsPtr, _sortedConstraints.size, debugDrawer/*,m_stackAlloc*/, dispatcher1);
+			_solverCallback.init(solverInfo, constraintSolver, constraintsPtr, _sortedConstraints.size, debugDrawer, dispatcher1);
 
-			constraintSolver.prepareSolve(getCollisionWorld().getNumCollisionObjects(), getCollisionWorld().getDispatcher()?.getNumManifolds() ?? 0);
+			constraintSolver.prepareSolve(getCollisionWorld().getNumCollisionObjects(), getCollisionWorld().getDispatcher()!.getNumManifolds());
 
 			// solve all the constraints for this island
 			islandManager.buildAndProcessIslands(getCollisionWorld().getDispatcher(), getCollisionWorld().getCollisionObjectArray(), _solverCallback);
 
-			constraintSolver.allSolved(solverInfo, debugDrawer/*, m_stackAlloc*/);
+			constraintSolver.allSolved(solverInfo, debugDrawer);
 		}
 		finally {
 			BulletStats.popProfile();
@@ -572,24 +549,21 @@ class DiscreteDynamicsWorld extends DynamicsWorld {
 		try {
 			getSimulationIslandManager().updateActivationState(getCollisionWorld(), getCollisionWorld().getDispatcher());
 
-			{
-				int i;
-				int numConstraints = constraints.size;
-				for (i = 0; i < numConstraints; i++) {
-					TypedConstraint? constraint = constraints.getQuick(i);
+      int i;
+      int numConstraints = constraints.size;
+      for (i = 0; i < numConstraints; i++) {
+        TypedConstraint? constraint = constraints.getQuick(i);
 
-					RigidBody? colObj0 = constraint?.getRigidBodyA();
-					RigidBody? colObj1 = constraint?.getRigidBodyB();
+        RigidBody? colObj0 = constraint?.getRigidBodyA();
+        RigidBody? colObj1 = constraint?.getRigidBodyB();
 
-					if (((colObj0 != null) && (!colObj0.isStaticOrKinematicObject())) &&
-						((colObj1 != null) && (!colObj1.isStaticOrKinematicObject()))){
-						if (colObj0.isActive() || colObj1.isActive()) {
-							getSimulationIslandManager().getUnionFind().unite((colObj0).getIslandTag(), (colObj1).getIslandTag());
-						}
-					}
-				}
-			}
-
+        if (((colObj0 != null) && (!colObj0.isStaticOrKinematicObject())) && ((colObj1 != null) && (!colObj1.isStaticOrKinematicObject()))){
+          if (colObj0.isActive() || colObj1.isActive()) {
+            getSimulationIslandManager().getUnionFind().unite((colObj0).getIslandTag(), (colObj1).getIslandTag());
+          }
+        }
+      }
+			
 			// Store the island id in each body
 			getSimulationIslandManager().storeIslandActivationState(getCollisionWorld());
 		}
@@ -688,9 +662,7 @@ class DiscreteDynamicsWorld extends DynamicsWorld {
 	}
 	
 	void startProfiling(double timeStep) {
-		//#ifndef BT_NO_PROFILE
-        CProfileManager.reset();
-		//#endif //BT_NO_PROFILE
+    CProfileManager.reset();
 	}
 
 	void debugDrawSphere(double radius, Transform transform, Vector3 color) {
@@ -784,7 +756,6 @@ class DiscreteDynamicsWorld extends DynamicsWorld {
 	@override
 	void setConstraintSolver(ConstraintSolver solver) {
 		if (ownsConstraintSolver) {
-			//btAlignedFree( m_constraintSolver);
 		}
 		ownsConstraintSolver = false;
 		constraintSolver = solver;
@@ -814,7 +785,7 @@ class DiscreteDynamicsWorld extends DynamicsWorld {
 	// JAVA NOTE: not part of the original api
 	@override
 	ActionInterface? getAction(int index) {
-		return actions.getQuick(index);
+		return actions[index];
 	}
 
 	SimulationIslandManager getSimulationIslandManager() {
@@ -866,12 +837,9 @@ class _InplaceSolverIslandCallback extends IslandCallback {
   @override
   void processIsland(ObjectArrayList<CollisionObject> bodies, int numBodies, ObjectArrayList<PersistentManifold> manifolds, int manifoldsOffset, int numManifolds, int islandId) {
     if (islandId < 0) {
-      // we don't split islands, so all constraints/contact manifolds/bodies are passed into the solver regardless the island id
-      solver?.solveGroup(bodies, numBodies, manifolds, manifoldsOffset, numManifolds, sortedConstraints, 0, numConstraints, solverInfo, debugDrawer/*,m_stackAlloc*/, dispatcher);
+      solver!.solveGroup(bodies, numBodies, manifolds, manifoldsOffset, numManifolds, sortedConstraints, 0, numConstraints, solverInfo, debugDrawer, dispatcher);
     }
     else {
-      // also add all non-contact constraints/joints for this island
-      //List<TypedConstraint> startConstraint = null;
       int startConstraintIdx = -1;
       int numCurConstraints = 0;
       int i;
@@ -879,8 +847,6 @@ class _InplaceSolverIslandCallback extends IslandCallback {
       // find the first constraint for this island
       for (i = 0; i < numConstraints; i++) {
         if (DiscreteDynamicsWorld._getConstraintIslandId(sortedConstraints![i]!) == islandId) {
-          //startConstraint = &m_sortedConstraints[i];
-          //startConstraint = sortedConstraints.subList(i, sortedConstraints.length);
           startConstraintIdx = i;
           break;
         }
@@ -894,7 +860,7 @@ class _InplaceSolverIslandCallback extends IslandCallback {
 
       // only call solveGroup if there is some work: avoid virtual function call, its overhead can be excessive
       if ((numManifolds + numCurConstraints) > 0) {
-        solver?.solveGroup(bodies, numBodies, manifolds, manifoldsOffset, numManifolds, sortedConstraints, startConstraintIdx, numCurConstraints, solverInfo, debugDrawer/*,m_stackAlloc*/, dispatcher);
+        solver?.solveGroup(bodies, numBodies, manifolds, manifoldsOffset, numManifolds, sortedConstraints, startConstraintIdx, numCurConstraints, solverInfo, debugDrawer, dispatcher);
       }
     }
   }
@@ -947,7 +913,7 @@ class _ClosestNotMeConvexResultCallback extends ClosestConvexResultCallback {
     CollisionObject? otherObj = proxy0?.clientObject as CollisionObject;
 
     // call needsResponse, see http://code.google.com/p/bullet/issues/detail?id=179
-    if (_dispatcher?.needsResponse(_me, otherObj) ?? false) {
+    if (_dispatcher!.needsResponse(_me, otherObj)) {
       // don't do CCD when there are already contact points (touching contact/penetration)
       ObjectArrayList<PersistentManifold> manifoldArray = ObjectArrayList();//List<PersistentManifold>();
       BroadphasePair? collisionPair = _pairCache?.findPair(_me.getBroadphaseHandle(), proxy0);
@@ -957,7 +923,7 @@ class _ClosestNotMeConvexResultCallback extends ClosestConvexResultCallback {
           collisionPair.algorithm?.getAllContactManifolds(manifoldArray);
           for (int j=0; j<manifoldArray.size; j++) {
             PersistentManifold? manifold = manifoldArray.getQuick(j);
-            if ((manifold?.getNumContacts() ?? 0) > 0) {
+            if(manifold!.getNumContacts() > 0) {
               return false;
             }
           }

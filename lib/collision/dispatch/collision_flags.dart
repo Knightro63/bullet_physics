@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -27,20 +27,9 @@
  * @author jezek2
  */
 class CollisionFlags {
-
-	/** Sets this collision object as static. */
 	static final int staticObject            = 1;
-	
-	/** Sets this collision object as kinematic. */
 	static final int kinematicObject         = 2;
-	
-	/** Disables contact response. */
-	static final int noContactResponse      = 4;
-	
-	/**
-	 * Enables calling {@link ContactAddedCallback} for collision objects. This
-	 * allows per-triangle material (friction/restitution).
-	 */
+	static final int noContactResponse       = 4;
 	static final int customMaterialCallback = 8;
 	static final int charcterObject         = 16;
 }

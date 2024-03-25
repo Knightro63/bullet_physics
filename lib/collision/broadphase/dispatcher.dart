@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -28,14 +28,6 @@ import "package:bullet_physics/collision/dispatch/collision_object.dart";
 import "package:bullet_physics/collision/narrowphase/persistent_manifold.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 
-/**
- * Dispatcher abstract class can be used in combination with broadphase to dispatch
- * calculations for overlapping pairs. For example for pairwise collision detection,
- * calculating contact points stored in {@link PersistentManifold} or user callbacks
- * (game logic).
- * 
- * @author jezek2
- */
 abstract class Dispatcher {
 	CollisionAlgorithm? findAlgorithm([CollisionObject? body0, CollisionObject? body1, PersistentManifold? sharedManifold]);
 	PersistentManifold getNewManifold(Object? body0, Object? body1);
@@ -47,6 +39,5 @@ abstract class Dispatcher {
 	int getNumManifolds();
 	PersistentManifold? getManifoldByIndexInternal(int index);
 	ObjectArrayList<PersistentManifold> getInternalManifoldPointer();
-	//abstract Object allocateCollisionAlgorithm(int size);
 	void freeCollisionAlgorithm(CollisionAlgorithm? algo);
 }

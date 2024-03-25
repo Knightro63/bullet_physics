@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -28,12 +28,7 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 class DbvtAabbMm {
-
 	final Vector3 _mi = Vector3.zero();
 	final Vector3 _mx = Vector3.zero();
 
@@ -105,9 +100,6 @@ class DbvtAabbMm {
 		box._mx.setFrom(mx);
 		return box;
 	}
-	
-	//static  DbvtAabbMm	FromPoints( btVector3* pts,int n);
-	//static  DbvtAabbMm	FromPoints( btVector3** ppts,int n);
 	
 	void expand(Vector3 e) {
 		_mi.sub(e);

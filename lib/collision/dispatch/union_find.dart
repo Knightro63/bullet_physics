@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -23,16 +23,8 @@
 
 import "package:bullet_physics/linearmath/misc_util.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
-/**
- * UnionFind calculates connected subsets. Implements weighted Quick Union with
- * path compression.
- * 
- * @author jezek2
- */
-class UnionFind {
-	
-	// Optimization: could use int ints instead of ints (halving memory, would limit the number of rigid bodies to 64k, sounds reasonable).
 
+class UnionFind {
 	final ObjectArrayList<Element> _elements = ObjectArrayList();//List<Element>();
 	
 	/**
@@ -42,18 +34,10 @@ class UnionFind {
 	void sortIslands() {
 		// first store the original body index, and islandId
 		int numElements = _elements.size;
-
 		for (int i = 0; i < numElements; i++) {
 			_elements.getQuick(i)?.id = find(i);
 			_elements.getQuick(i)?.sz = i;
 		}
-
-		// Sort the vector using predicate and std::sort
-		//std::sort(m_elements.begin(), m_elements.end(), btUnionFindElementSortPredicate);
-		//perhaps use radix sort?
-		//elements.heapSort(btUnionFindElementSortPredicate());
-		
-		//Collections.sort(elements);
 		MiscUtil.quickSortObjectArray(_elements, _elementComparator);
 	}
 

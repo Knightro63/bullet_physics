@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -41,23 +41,23 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 import 'package:vector_math/vector_math.dart';
-/**
- * ConvexConvexAlgorithm collision algorithm implements time of impact, convex
- * closest points and penetration depth calculations.
- * 
- * @author jezek2
- */
+
 class ConvexConvexAlgorithm extends CollisionAlgorithm {
-
 	GjkPairDetector _gjkPairDetector = GjkPairDetector();
-
 	bool ownManifold = false;
 	PersistentManifold? manifoldPtr;
 	bool lowLevelOfDetail = false;
 	
   static CCAFunc CreateFunction(simplexSolver, pdSolver) => CCAFunc(simplexSolver, pdSolver);
 
-	void init(PersistentManifold? mf, CollisionAlgorithmConstructionInfo ci, CollisionObject? body0, CollisionObject? body1, SimplexSolverInterface simplexSolver, ConvexPenetrationDepthSolver pdSolver) {
+	void init(
+    PersistentManifold? mf, 
+    CollisionAlgorithmConstructionInfo ci, 
+    CollisionObject? body0, 
+    CollisionObject? body1, 
+    SimplexSolverInterface simplexSolver, 
+    ConvexPenetrationDepthSolver pdSolver
+  ) {
 		initCA(ci);
 		_gjkPairDetector.init(null, null, simplexSolver, pdSolver);
 		manifoldPtr = mf;
@@ -89,34 +89,15 @@ class ConvexConvexAlgorithm extends CollisionAlgorithm {
 		}
 		resultOut?.setPersistentManifold(manifoldPtr!);
 
-//	#ifdef USE_BT_GJKEPA
-//		btConvexShape*				shape0(static_cast<btConvexShape*>(body0->getCollisionShape()));
-//		btConvexShape*				shape1(static_cast<btConvexShape*>(body1->getCollisionShape()));
-//		const btScalar				radialmargin(0/*shape0->getMargin()+shape1->getMargin()*/);
-//		btGjkEpaSolver::sResults	results;
-//		if(btGjkEpaSolver::Collide(	shape0,body0->getWorldTransform(),
-//									shape1,body1->getWorldTransform(),
-//									radialmargin,results))
-//			{
-//			dispatchInfo.m_debugDraw->drawLine(results.witnesses[1],results.witnesses[1]+results.normal,btVector3(255,0,0));
-//			resultOut->addContactPoint(results.normal,results.witnesses[1],-results.depth);
-//			}
-//	#else
-
 		ConvexShape? min0 = body0?.getCollisionShape() as ConvexShape?;
 		ConvexShape? min1 = body1?.getCollisionShape() as ConvexShape?;
-
 		ClosestPointInput input = ClosestPointInput();
-		input.init();
 
-		// JAVA NOTE: original: TODO: if (dispatchInfo.m_useContinuous)
+		input.init();
 		_gjkPairDetector.setMinkowskiA(min0);
 		_gjkPairDetector.setMinkowskiB(min1);
 		input.maximumDistanceSquared = (min0?.getMargin() ?? 0) + (min1?.getMargin() ?? 0) + (manifoldPtr?.getContactBreakingThreshold() ?? 0);
 		input.maximumDistanceSquared *= input.maximumDistanceSquared;
-		//input.m_stackAlloc = dispatchInfo.m_stackAllocator;
-
-		//	input.m_maximumDistanceSquared = btScalar(1e30);
 
 		body0?.getWorldTransform(input.transformA);
 		body1?.getWorldTransform(input.transformB);
@@ -140,7 +121,6 @@ class ConvexConvexAlgorithm extends CollisionAlgorithm {
 		// Rather then checking ALL pairs, only calculate TOI when motion exceeds threshold
 
 		// Linear motion for one of objects needs to exceed m_ccdSquareMotionThreshold
-		// col0->m_worldTransform,
 		double resultFraction = 1;
 
 		tmp.sub2(col0?.getInterpolationWorldTransform(tmpTrans1).origin, col0?.getWorldTransform(tmpTrans2).origin);
@@ -269,7 +249,5 @@ class CCAFunc extends CollisionAlgorithmCreateFunc {
   }
 
   @override
-  void releaseCollisionAlgorithm(CollisionAlgorithm algo) {
-
-  }
+  void releaseCollisionAlgorithm(CollisionAlgorithm algo) {}
 }

@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -24,18 +24,6 @@
 import "package:bullet_physics/collision/broadphase/broadphase_native_type.dart";
 import "package:bullet_physics/collision/dispatch/collision_algorithm_create_func.dart";
 
-/**
- * CollisionConfiguration allows to configure Bullet default collision algorithms.
- * 
- * @author jezek2
- */
 abstract class CollisionConfiguration {
-	/*
-	///memory pools
-	virtual btPoolAllocator* getPersistentManifoldPool() = 0;
-	virtual btPoolAllocator* getCollisionAlgorithmPool() = 0;
-	virtual btStackAlloc*	getStackAllocator() = 0;
-	 */
-	
 	CollisionAlgorithmCreateFunc getCollisionAlgorithmCreateFunc(BroadphaseNativeType proxyType0, BroadphaseNativeType proxyType1);
 }

@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -37,9 +37,9 @@ class DbvtProxy extends BroadphaseProxy {
 	final List<DbvtProxy?> links = [null,null];
 	int stage = 0;
 
-	DbvtProxy([
+	DbvtProxy(
     super.userPtr, 
-    super.collisionFilterGroup = -1, 
-    super.collisionFilterMask = 0
-  ]);
+    super.collisionFilterGroup, 
+    super.collisionFilterMask
+  );
 }

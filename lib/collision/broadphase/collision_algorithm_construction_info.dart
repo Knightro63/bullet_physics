@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -24,13 +24,7 @@
 import "package:bullet_physics/collision/broadphase/dispatcher.dart";
 import "package:bullet_physics/collision/narrowphase/persistent_manifold.dart";
 
-/**
- * Construction information for collision algorithms.
- * 
- * @author jezek2
- */
 class CollisionAlgorithmConstructionInfo {
 	Dispatcher? dispatcher1;
 	PersistentManifold? manifold;
-	//int getDispatcherId();
 }

@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -34,11 +34,10 @@ import 'package:vector_math/vector_math.dart';
 import "package:bullet_physics/linearmath/aabb_util2.dart";
 
 class GhostObject extends CollisionObject {
-
 	ObjectArrayList<CollisionObject> overlappingObjects = ObjectArrayList();//List<CollisionObject>();
 
 	GhostObject() {
-		internalType = CollisionObjectType.ghostBody;
+		internalType = CollisionObjectType.ghostObject;
 	}
 
 	/**
@@ -105,7 +104,7 @@ class GhostObject extends CollisionObject {
 				Vector3 collisionObjectAabbMax = Vector3.zero();
 				collisionObject?.getCollisionShape()?.getAabb(collisionObject.getWorldTransform(tmpTrans), collisionObjectAabbMin, collisionObjectAabbMax);
 				AabbUtil2.aabbExpand(collisionObjectAabbMin, collisionObjectAabbMax, castShapeAabbMin, castShapeAabbMax);
-				List<double> hitLambda = [1]; // could use resultCallback.closestHitFraction, but needs testing
+				double hitLambda = 1; // could use resultCallback.closestHitFraction, but needs testing
 				Vector3 hitNormal = Vector3.zero();
 				if (AabbUtil2.rayAabb(convexFromWorld.origin, convexToWorld.origin, collisionObjectAabbMin, collisionObjectAabbMax, hitLambda, hitNormal)) {
 					CollisionWorld.objectQuerySingle(
@@ -167,7 +166,7 @@ class GhostObject extends CollisionObject {
 	//
 
 	static GhostObject? upcast(CollisionObject? colObj) {
-		if (colObj?.getInternalType() == CollisionObjectType.ghostBody) {
+		if (colObj?.getInternalType() == CollisionObjectType.ghostObject) {
 			return colObj as GhostObject;
 		}
 		

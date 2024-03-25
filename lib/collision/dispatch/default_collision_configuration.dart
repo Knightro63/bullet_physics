@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -111,5 +111,4 @@ class DefaultCollisionConfiguration extends CollisionConfiguration {
 		// failed to find an algorithm
 		return emptyCreateFunc;
 	}
-
 }

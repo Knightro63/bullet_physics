@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -28,12 +28,6 @@ import "package:bullet_physics/collision/broadphase/overlapping_pair_callback.da
 import "package:bullet_physics/collision/dispatch/collision_object.dart";
 import "package:bullet_physics/collision/dispatch/ghost_object.dart";
 
-/**
- * GhostPairCallback interfaces and forwards adding and removal of overlapping
- * pairs from the {@link BroadphaseInterface} to {@link GhostObject}.
- *
- * @author tomrbryn
- */
 class GhostPairCallback extends OverlappingPairCallback {
   @override
 	BroadphasePair? addOverlappingPair(BroadphaseProxy? proxy0, BroadphaseProxy? proxy1) {
@@ -68,9 +62,6 @@ class GhostPairCallback extends OverlappingPairCallback {
   @override
 	void removeOverlappingPairsContainingProxy(BroadphaseProxy proxy0, Dispatcher? dispatcher) {
 		assert (false);
-
-		// need to keep track of all ghost objects and call them here
-		// hashPairCache.removeOverlappingPairsContainingProxy(proxy0, dispatcher);
 	}
 	
 }

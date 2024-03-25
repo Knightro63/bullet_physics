@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -48,7 +48,7 @@ class AabbUtil2 {
 				(p.z > halfExtent.z ? 0x20 : 0x0);
 	}
 	
-	static bool rayAabb(Vector3 rayFrom, Vector3 rayTo, Vector3 aabbMin, Vector3 aabbMax, List<double> param, Vector3 normal) {
+	static bool rayAabb(Vector3 rayFrom, Vector3 rayTo, Vector3 aabbMin, Vector3 aabbMax, double param, Vector3 normal) {
 		Vector3 aabbHalfExtent = Vector3.zero();
 		Vector3 aabbCenter = Vector3.zero();
 		Vector3 source = Vector3.zero();
@@ -69,7 +69,7 @@ class AabbUtil2 {
 		int targetOutcode = outcode(target, aabbHalfExtent);
 		if ((sourceOutcode & targetOutcode) == 0x0) {
 			double lambdaEnter = 0;
-			double lambdaExit = param[0];
+			double lambdaExit = param;
 			r.sub2(target,source);
 
 			double normSign = 1;
@@ -96,7 +96,7 @@ class AabbUtil2 {
 				normSign = -1;
 			}
 			if (lambdaEnter <= lambdaExit) {
-				param[0] = lambdaEnter;
+				param = lambdaEnter;
 				normal.setFrom(hitNormal);
 				return true;
 			}

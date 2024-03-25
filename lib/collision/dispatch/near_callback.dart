@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -25,14 +25,6 @@ import "package:bullet_physics/collision/broadphase/broadphase_pair.dart";
 import "package:bullet_physics/collision/broadphase/dispatcher_info.dart";
 import "package:bullet_physics/collision/dispatch/collision_dispatcher.dart";
 
-/**
- * Callback for overriding collision filtering and more fine-grained control over
- * collision detection.
- * 
- * @see CollisionDispatcher#setNearCallback
- * @see CollisionDispatcher#getNearCallback
- * @author jezek2
- */
 abstract class NearCallback {
 	void handleCollision(BroadphasePair collisionPair, CollisionDispatcher dispatcher, DispatcherInfo dispatchInfo);
 }

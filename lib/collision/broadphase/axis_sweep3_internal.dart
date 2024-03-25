@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  * 
  * AxisSweep3
  * Copyright (c) 2006 Simon Hobbs
@@ -76,7 +76,7 @@ abstract class AxisSweep3Internal extends BroadphaseInterface {
 	// JAVA NOTE: added
 	int mask = 0;
 	
-	AxisSweep3Internal(Vector3 worldAabbMin, Vector3 worldAabbMax, this.bpHandleMask, this.handleSentinel, int userMaxHandles/* = 16384*/, OverlappingPairCache? pairCache/*=0*/) {
+	AxisSweep3Internal(Vector3 worldAabbMin, Vector3 worldAabbMax, this.bpHandleMask, this.handleSentinel, int userMaxHandles, OverlappingPairCache? pairCache) {
     this.pairCache = pairCache ?? HashedOverlappingPairCache();
 
 		int maxHandles = userMaxHandles + 1; // need to add one sentinel handle
@@ -157,8 +157,7 @@ abstract class AxisSweep3Internal extends BroadphaseInterface {
 
 		for (int axis=0; axis<3; axis++) {
 			if (axis != ignoreAxis) {
-				if (pHandleA.getMaxEdges(axis) < pHandleB.getMinEdges(axis) ||
-						pHandleB.getMaxEdges(axis) < pHandleA.getMinEdges(axis)) {
+				if (pHandleA.getMaxEdges(axis) < pHandleB.getMinEdges(axis) || pHandleB.getMaxEdges(axis) < pHandleA.getMinEdges(axis)) {
 					return false;
 				}
 			}
@@ -234,9 +233,7 @@ abstract class AxisSweep3Internal extends BroadphaseInterface {
 					Handle handle1 = getHandle(edgeArray.getHandle(pNextIdx));
 
 					pairCache.removeOverlappingPair(handle0, handle1, dispatcher);
-					if (userPairCallback != null) {
-						userPairCallback?.removeOverlappingPair(handle0, handle1, dispatcher);
-					}
+					userPairCallback?.removeOverlappingPair(handle0, handle1, dispatcher);
 				}
 
 				// update edge reference in other handle
@@ -370,7 +367,7 @@ abstract class AxisSweep3Internal extends BroadphaseInterface {
 					bool hasOverlap = testAabbOverlap(pair?.pProxy0, pair?.pProxy1);
 
 					if (hasOverlap) {
-						needsRemoval = false;//callback->processOverlap(pair);
+						needsRemoval = false;
 					}
 					else {
 						needsRemoval = true;
@@ -411,7 +408,6 @@ abstract class AxisSweep3Internal extends BroadphaseInterface {
 		Handle pHandle = getHandle(handle);
 
 		pHandle.uniqueId = handle;
-		//pHandle->m_pOverlaps = 0;
 		pHandle.clientObject = pOwner;
 		pHandle.collisionFilterGroup = collisionFilterGroup;
 		pHandle.collisionFilterMask = collisionFilterMask;
@@ -459,7 +455,6 @@ abstract class AxisSweep3Internal extends BroadphaseInterface {
 
 		// compute current limit of edge arrays
 		int limit = numHandles * 2;
-
 		int axis;
 
 		for (axis = 0; axis < 3; axis++) {
@@ -481,10 +476,6 @@ abstract class AxisSweep3Internal extends BroadphaseInterface {
 
 			pEdges.setHandle(limit - 1, 0);
 			pEdges.setPos(limit - 1, handleSentinel);
-
-			//#ifdef DEBUG_BROADPHASE
-			//debugPrintAxis(axis,false);
-			//#endif //DEBUG_BROADPHASE
 		}
 
 		// free the handle

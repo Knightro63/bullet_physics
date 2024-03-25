@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -79,7 +79,6 @@ class IntArrayList {
 
   @override
   String toString() {
-    // TODO: implement toString
     return _array.toString();
   }
 }

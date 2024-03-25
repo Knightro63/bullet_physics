@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -260,7 +260,7 @@ class Dbvt {
 							stack.add(sStkNN(p.a, p.b?.childs[1]));
 						}
 						else {
-							policy.process(p.a!, p.b);
+							//policy.process(p.a!, p.b);
 						}
 					}
 				}

@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -29,12 +29,7 @@ import "package:bullet_physics/collision/broadphase/overlap_filter_callback.dart
 import "package:bullet_physics/collision/broadphase/overlapping_pair_callback.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 
-/**
- * OverlappingPairCache provides an interface for overlapping pair management (add,
- * remove, storage), used by the {@link BroadphaseInterface} broadphases.
- *
- * @author jezek2
- */
+
 abstract class OverlappingPairCache extends OverlappingPairCallback {
 	ObjectArrayList<BroadphasePair?> getOverlappingPairArray();
 	void cleanOverlappingPair(BroadphasePair? pair, Dispatcher? dispatcher);

@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -34,16 +34,8 @@ import "package:bullet_physics/collision/shapes/triangle_shape.dart";
 import "package:bullet_physics/linearmath/transform.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * For each triangle in the concave mesh that overlaps with the AABB of a convex
- * (see {@link #convexBody} field), processTriangle is called.
- * 
- * @author jezek2
- */
 class ConvexTriangleCallback extends TriangleCallback {
-
 	//final BulletStack stack = BulletStack.get();
-	
 	CollisionObject? _convexBody;
 	CollisionObject? _triBody;
 
@@ -88,7 +80,6 @@ class ConvexTriangleCallback extends TriangleCallback {
 		convexInTriangleSpace.mul(_convexBody?.getWorldTransform(Transform()));
 
 		CollisionShape? convexShape = _convexBody?.getCollisionShape();
-		//CollisionShape* triangleShape = static_cast<btCollisionShape*>(triBody->m_collisionShape);
 		convexShape?.getAabb(convexInTriangleSpace, _aabbMin, _aabbMax);
 		double extraMargin = collisionMarginTriangle;
 		Vector3 extra = Vector3.zero();
@@ -103,13 +94,7 @@ class ConvexTriangleCallback extends TriangleCallback {
 	
   @override
 	void processTriangle(List<Vector3> triangle, int partId, int triangleIndex) {
-		// just for debugging purposes
-		//printf("triangle %d",m_triangleCount++);
-
-		// aabb filter is already applied!	
-
 		_ci.dispatcher1 = _dispatcher;
-
 		CollisionObject? ob = _triBody;
 
 		// debug drawing of the overlapping triangles
@@ -138,15 +123,8 @@ class ConvexTriangleCallback extends TriangleCallback {
 			tmp2.setFrom(triangle[0]); 
       tr?.transform(tmp2);
 			_dispatchInfoPtr!.debugDraw!.drawLine(tmp1, tmp2, color);
-
-			//btVector3 center = triangle[0] + triangle[1]+triangle[2];
-			//center *= btScalar(0.333333);
-			//m_dispatchInfoPtr->m_debugDraw->drawLine(tr(triangle[0]),tr(center),color);
-			//m_dispatchInfoPtr->m_debugDraw->drawLine(tr(triangle[1]),tr(center),color);
-			//m_dispatchInfoPtr->m_debugDraw->drawLine(tr(triangle[2]),tr(center),color);
 		}
 
-		//btCollisionObject* colObj = static_cast<btCollisionObject*>(m_convexProxy->m_clientObject);
 
 		if (_convexBody?.getCollisionShape() != null && _convexBody!.getCollisionShape()!.isConvex()) {
 			_tm.init(triangle[0], triangle[1], triangle[2]);
@@ -157,13 +135,9 @@ class ConvexTriangleCallback extends TriangleCallback {
 
 			CollisionAlgorithm? colAlgo = _ci.dispatcher1?.findAlgorithm(_convexBody, _triBody, manifoldPtr);
 			// this should use the btDispatcher, so the actual registered algorithm is used
-			//		btConvexConvexAlgorithm cvxcvxalgo(m_manifoldPtr,ci,m_convexBody,m_triBody);
 
 			_resultOut?.setShapeIdentifiers(-1, -1, partId, triangleIndex);
-			//cvxcvxalgo.setShapeIdentifiers(-1,-1,partId,triangleIndex);
-			//cvxcvxalgo.processCollision(m_convexBody,m_triBody,*m_dispatchInfoPtr,m_resultOut);
 			colAlgo?.processCollision(_convexBody, _triBody, _dispatchInfoPtr, _resultOut);
-			//colAlgo.destroy();
 			_ci.dispatcher1?.freeCollisionAlgorithm(colAlgo);
 			ob?.internalSetTemporaryCollisionShape(tmpShape);
 		}

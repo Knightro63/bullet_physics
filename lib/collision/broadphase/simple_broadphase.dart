@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -99,8 +99,6 @@ class SimpleBroadphase extends BroadphaseInterface {
 					}
 				}
 				else {
-					// JAVA NOTE: pairCache.hasDeferredRemoval() = true is not implemented
-					
 					if (!_pairCache.hasDeferredRemoval()) {
 						if (_pairCache.findPair(proxy0, proxy1) != null) {
 							_pairCache.removeOverlappingPair(proxy0, proxy1, dispatcher);

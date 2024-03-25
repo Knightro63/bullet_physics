@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -27,15 +27,13 @@ import 'package:bullet_physics/collision/broadphase/dbvt_proxy.dart';
 import 'package:bullet_physics/collision/broadphase/node.dart';
 
 class DbvtLeafCollider extends ICollide {
-
 	DbvtBroadphase pbp;
 	DbvtProxy ppx;
-
 	DbvtLeafCollider(this.pbp, this.ppx);
 
 	@override
 	void process(Node na,[Node? nb, double f = 0]) {
-		nb ??= ppx.leaf;
+		nb = ppx.leaf;
 		if (nb != na) {
 			DbvtProxy pa = na.data as DbvtProxy;
 			DbvtProxy pb = nb!.data as DbvtProxy;

@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -22,12 +22,6 @@
  */
 import 'package:bullet_physics/collision/broadphase/broadphase_pair.dart';
 
-/**
- * OverlapCallback is used when processing all overlapping pairs in broadphase.
- * 
- * @see OverlappingPairCache#processAllOverlappingPairs
- * @author jezek2
- */
 abstract class OverlapCallback {
 	//return true for deletion of the pair
 	bool processOverlap(BroadphasePair pair);

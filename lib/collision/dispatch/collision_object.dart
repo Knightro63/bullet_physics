@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -67,14 +67,16 @@ class CollisionObject {
 	CollisionObjectType internalType = CollisionObjectType.collisionObject;
 
 	///time of impact calculation
-	double hitFraction = 0;
+	double hitFraction = 1;
 	///Swept sphere radius (0.0 by default), see btConvexConvexAlgorithm::
 	double ccdSweptSphereRadius = 0;
 
 	/// Don't do continuous collision detection if the motion (in one step) is less then ccdMotionThreshold
 	double ccdMotionThreshold = 0;
 	/// If some object should have elaborate collision filtering by sub-classes
-	bool allowCheckCollideWith = false;
+	bool allowCheckCollideWith = true;
+
+  CollisionObject();
 
 	bool checkCollideWithOverride(CollisionObject co) {
 		return true;
@@ -227,7 +229,7 @@ class CollisionObject {
 	}
 
 	void setIslandTag(int islandTag) {
-		islandTag1 = islandTag;
+		this.islandTag1 = islandTag;
 	}
 
 	int getCompanionId() {

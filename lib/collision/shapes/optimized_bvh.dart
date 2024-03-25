@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -753,54 +753,23 @@ class OptimizedBvh{// implements Serializable
 		Vector3 bounds_0 = Vector3.zero();
 		Vector3 bounds_1 = Vector3.zero();
 		Vector3 normal = Vector3.zero();
-		List<double> param = [0];//double[1];
+		double param = 0;
 
 		while (curIndex < endNodeIndex) {
-			
-			//#define VISUALLY_ANALYZE_BVH 1
-			//#ifdef VISUALLY_ANALYZE_BVH
-			//		//some code snippet to debugDraw aabb, to visually analyze bvh structure
-			//		static int drawPatch = 0;
-			//		//need some global access to a debugDrawer
-			//		extern btIDebugDraw* debugDrawerPtr;
-			//		if (curIndex==drawPatch)
-			//		{
-			//			btVector3 aabbMin,aabbMax;
-			//			aabbMin = unQuantize(rootNode->m_quantizedAabbMin);
-			//			aabbMax = unQuantize(rootNode->m_quantizedAabbMax);
-			//			btVector3	color(1,0,0);
-			//			debugDrawerPtr->drawAabb(aabbMin,aabbMax,color);
-			//		}
-			//#endif//VISUALLY_ANALYZE_BVH
-
-			// catch bugs in tree data
 			assert (walkIterations < subTreeSize);
 
 			walkIterations++;
 			// only interested if this is closer than any previous hit
-			param[0] = 1;
+			param = 1;
 			rayBoxOverlap = false;
 			boxBoxOverlap = testQuantizedAabbAgainstQuantizedAabb(quantizedQueryAabbMin, quantizedQueryAabbMax, rootNode.getQuantizedAabbMin(rootNode_idx), rootNode.getQuantizedAabbMax(rootNode_idx));
 			isLeafNode = rootNode.isLeafNode(rootNode_idx);
 			if (boxBoxOverlap) {
 				unQuantize(bounds_0, rootNode.getQuantizedAabbMin(rootNode_idx));
 				unQuantize(bounds_1, rootNode.getQuantizedAabbMax(rootNode_idx));
-				/* Add box cast extents */
 				bounds_0.add(aabbMin);
 				bounds_1.add(aabbMax);
-				//#if 0
-				//			bool ra2 = btRayAabb2 (raySource, rayDirection, sign, bounds, param, 0.0, lambda_max);
-				//			bool ra = btRayAabb (raySource, rayTarget, bounds[0], bounds[1], param, normal);
-				//			if (ra2 != ra)
-				//			{
-				//				printf("functions don't match\n");
-				//			}
-				//#endif
-				//#ifdef RAYAABB2
-				//			rayBoxOverlap = AabbUtil2.rayAabb2 (raySource, rayDirection, sign, bounds, param, 0.0, lambda_max);
-				//#else
 				rayBoxOverlap = AabbUtil2.rayAabb(raySource, rayTarget, bounds_0, bounds_1, param, normal);
-				//#endif
 			}
 
 			if (isLeafNode && rayBoxOverlap) {

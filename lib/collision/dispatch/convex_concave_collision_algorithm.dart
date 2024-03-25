@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -41,12 +41,6 @@ import "package:bullet_physics/linearmath/vector_util.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * ConvexConcaveCollisionAlgorithm supports collision between convex shapes
- * and (concave) trianges meshes.
- * 
- * @author jezek2
- */
 class ConvexConcaveCollisionAlgorithm extends CollisionAlgorithm {
   static SwappedCCCAFunc SwappedCreateFunction() => SwappedCCCAFunc();
   static CCCAFunc CreateFunction() => CCCAFunc();
@@ -74,17 +68,13 @@ class ConvexConcaveCollisionAlgorithm extends CollisionAlgorithm {
 			ConcaveShape? concaveShape = triOb?.getCollisionShape() as ConcaveShape?;
 
 			if (convexBody?.getCollisionShape()?.isConvex() ?? false) {
-				double collisionMarginTriangle = concaveShape?.getMargin() ?? 0;
+				double collisionMarginTriangle = concaveShape!.getMargin();
 
 				resultOut?.setPersistentManifold(_btConvexTriangleCallback?.manifoldPtr);
 				_btConvexTriangleCallback?.setTimeStepAndCounters(collisionMarginTriangle, dispatchInfo, resultOut);
-
-				// Disable persistency. previously, some older algorithm calculated all contacts in one go, so you can clear it here.
-				//m_dispatcher->clearManifold(m_btConvexTriangleCallback.m_manifoldPtr);
-
 				_btConvexTriangleCallback?.manifoldPtr?.setBodies(convexBody, triBody);
 
-				concaveShape?.processAllTriangles(
+				concaveShape.processAllTriangles(
 						_btConvexTriangleCallback,
 						_btConvexTriangleCallback?.getAabbMin(Vector3.zero()) ?? Vector3.zero(),
 						_btConvexTriangleCallback?.getAabbMax(Vector3.zero()) ?? Vector3.zero()
@@ -143,7 +133,7 @@ class ConvexConcaveCollisionAlgorithm extends CollisionAlgorithm {
 			double curHitFraction = 1; // is this available?
 			_LocalTriangleSphereCastCallback raycastCallback = _LocalTriangleSphereCastCallback(convexFromLocal, convexToLocal, (convexbody?.getCcdSweptSphereRadius() ?? 0), curHitFraction);
 
-			raycastCallback.hitFraction = (convexbody?.getHitFraction() ?? 0);
+			raycastCallback.hitFraction = convexbody?.getHitFraction() ?? 0;
 
 			CollisionObject? concavebody = triBody;
 
@@ -186,31 +176,19 @@ class _LocalTriangleSphereCastCallback extends TriangleCallback {
   
   final Transform _ident = Transform();
   
-  _LocalTriangleSphereCastCallback(Transform from, Transform to, double ccdSphereRadius, double hitFraction) {
+  _LocalTriangleSphereCastCallback(Transform from, Transform to, this.ccdSphereRadius, this.hitFraction) {
     ccdSphereFromTrans.copy(from);
     ccdSphereToTrans.copy(to);
-    ccdSphereRadius = ccdSphereRadius;
-    hitFraction = hitFraction;
-
-    // JAVA NOTE: moved here from processTriangle
     _ident.setIdentity();
   }
   @override
   void processTriangle(List<Vector3> triangle, int partId, int triangleIndex) {
-    // do a swept sphere for now
-    
-    //btTransform ident;
-    //ident.setIdentity();
-    
     CastResult castResult = CastResult();
     castResult.fraction = hitFraction;
     SphereShape pointShape = SphereShape(ccdSphereRadius);
     TriangleShape triShape = TriangleShape(triangle[0], triangle[1], triangle[2]);
     VoronoiSimplexSolver simplexSolver = VoronoiSimplexSolver();
     SubSimplexConvexCast convexCaster = SubSimplexConvexCast(pointShape, triShape, simplexSolver);
-    //GjkConvexCast	convexCaster(&pointShape,convexShape,&simplexSolver);
-    //ContinuousConvexCollision convexCaster(&pointShape,convexShape,&simplexSolver,0);
-    //local space?
 
     if (convexCaster.calcTimeOfImpact(ccdSphereFromTrans, ccdSphereToTrans, _ident, _ident, castResult)) {
       if (hitFraction > castResult.fraction) {
@@ -221,7 +199,6 @@ class _LocalTriangleSphereCastCallback extends TriangleCallback {
 }
 
 ////////////////////////////////////////////////////////////////////////////
-
 class CCCAFunc extends CollisionAlgorithmCreateFunc {
   @override
   CollisionAlgorithm createCollisionAlgorithm(CollisionAlgorithmConstructionInfo ci, CollisionObject? body0, CollisionObject? body1) {
@@ -231,8 +208,7 @@ class CCCAFunc extends CollisionAlgorithmCreateFunc {
   }
 
   @override
-  void releaseCollisionAlgorithm(CollisionAlgorithm algo) {
-  }
+  void releaseCollisionAlgorithm(CollisionAlgorithm algo) {}
 }
 
 class SwappedCCCAFunc extends CollisionAlgorithmCreateFunc {

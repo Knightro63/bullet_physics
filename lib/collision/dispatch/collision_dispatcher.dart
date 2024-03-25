@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -21,8 +21,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-
-
 import "package:bullet_physics/collision/broadphase/broadphase_pair.dart";
 import "package:bullet_physics/collision/broadphase/dispatcher.dart";
 import "package:bullet_physics/collision/broadphase/overlap_callback.dart";
@@ -40,12 +38,6 @@ import "package:bullet_physics/collision/narrowphase/persistent_manifold.dart";
 import "package:bullet_physics/utils/collections.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 
-/**
- * CollisionDispatcher supports algorithms that handle ConvexConvex and ConvexConcave collision pairs.
- * Time of Impact, Closest Points and Penetration Depth.
- * 
- * @author jezek2
- */
 class CollisionDispatcher extends Dispatcher {
 
 	static final int _maxBroadphaseCollisionTypes = BroadphaseNativeType.maxBroadphaseCollisionTypes.index;
@@ -55,11 +47,9 @@ class CollisionDispatcher extends Dispatcher {
 	bool _staticWarningReported = false;
 	//ManifoldResult? _defaultManifoldResult;
 	NearCallback? _nearCallback;
-	//private PoolAllocator*	m_collisionAlgorithmPoolAllocator;
-	//private PoolAllocator*	m_persistentManifoldPoolAllocator;
 	final List<List<CollisionAlgorithmCreateFunc?>> _doubleDispatch = List.filled(_maxBroadphaseCollisionTypes, List.filled(_maxBroadphaseCollisionTypes, null));//CollisionAlgorithmCreateFunc[_maxBroadphaseCollisionTypes][_maxBroadphaseCollisionTypes];
 	late CollisionConfiguration _collisionConfiguration;
-	//private static int gNumManifold = 0;
+	//static int _gNumManifold = 0;
 	
 	CollisionAlgorithmConstructionInfo _tmpCI = CollisionAlgorithmConstructionInfo();
 
@@ -67,9 +57,6 @@ class CollisionDispatcher extends Dispatcher {
 		_collisionConfiguration = collisionConfiguration;
 
 		setNearCallback(DefaultNearCallback());
-
-		//m_collisionAlgorithmPoolAllocator = collisionConfiguration->getCollisionAlgorithmPool();
-		//m_persistentManifoldPoolAllocator = collisionConfiguration->getPersistentManifoldPool();
 
 		for (int i = 0; i < _maxBroadphaseCollisionTypes; i++) {
 			for (int j = 0; j < _maxBroadphaseCollisionTypes; j++) {
@@ -125,29 +112,8 @@ class CollisionDispatcher extends Dispatcher {
 
 	@override
 	PersistentManifold getNewManifold(Object? b0, Object? b1) {
-		//gNumManifold++;
-
-		//btAssert(gNumManifold < 65535);
-
 		CollisionObject body0 = b0 as CollisionObject;
 		CollisionObject body1 = b1 as CollisionObject;
-
-		/*
-		void* mem = 0;
-
-		if (m_persistentManifoldPoolAllocator->getFreeCount())
-		{
-			mem = m_persistentManifoldPoolAllocator->allocate(sizeof(btPersistentManifold));
-		} else
-		{
-			mem = btAlignedAlloc(sizeof(btPersistentManifold),16);
-
-		}
-		btPersistentManifold* manifold = new(mem) btPersistentManifold (body0,body1,0);
-		manifold->m_index1a = m_manifoldsPtr.length;
-		m_manifoldsPtr.push_back(manifold);
-		*/
-		
 		PersistentManifold manifold = PersistentManifold();
 		manifold.init(body0,body1,0);
 		
@@ -160,17 +126,12 @@ class CollisionDispatcher extends Dispatcher {
 	@override
 	void releaseManifold(PersistentManifold? manifold) {
 		//gNumManifold--;
-
-		//printf("releaseManifold: gNumManifold %d\n",gNumManifold);
 		clearManifold(manifold);
-
-		// TODO: optimize
 		int findIndex = manifold?.index1a ?? 0;
 		assert (findIndex < _manifoldsPtr.size);
 		Collections.swapObjectArray(_manifoldsPtr, findIndex, _manifoldsPtr.size-1);
 		_manifoldsPtr.getQuick(findIndex)?.index1a = findIndex;
 		_manifoldsPtr.removeAt(_manifoldsPtr.size-1);
-
 	}
 
 	@override
@@ -185,16 +146,13 @@ class CollisionDispatcher extends Dispatcher {
 
 		bool needsCollision = true;
 
-		//#ifdef BT_DEBUG
 		if (!_staticWarningReported) {
-			// broadphase filtering already deals with this
 			if ((body0!.isStaticObject() || body0.isKinematicObject()) &&
 					(body1!.isStaticObject() || body1.isKinematicObject())) {
 				_staticWarningReported = true;
 				print("warning CollisionDispatcher.needsCollision: static-static collision!");
 			}
 		}
-		//#endif //BT_DEBUG
 
 		if ((!body0!.isActive()) && (!body1!.isActive())) {
 			needsCollision = false;
@@ -208,9 +166,8 @@ class CollisionDispatcher extends Dispatcher {
 
 	@override
 	bool needsResponse(CollisionObject body0, CollisionObject body1) {
-		//here you can do filtering
+    print('here');
 		bool hasResponse = (body0.hasContactResponse() && body1.hasContactResponse());
-		//no response between two static/kinematic bodies:
 		hasResponse = hasResponse && ((!body0.isStaticOrKinematicObject()) || (!body1.isStaticOrKinematicObject()));
 		return hasResponse;
 	}
@@ -219,10 +176,8 @@ class CollisionDispatcher extends Dispatcher {
 	
 	@override
 	void dispatchAllCollisionPairs(OverlappingPairCache? pairCache, DispatcherInfo dispatchInfo, Dispatcher? dispatcher) {
-		//m_blockedForChanges = true;
 		_collisionPairCallback.init(dispatchInfo, this);
 		pairCache?.processAllOverlappingPairs(_collisionPairCallback, dispatcher);
-		//m_blockedForChanges = false;
 	}
 
 	@override

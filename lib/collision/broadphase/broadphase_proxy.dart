@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -21,26 +21,18 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-/**
- * BroadphaseProxy is the main class that can be used with the Bullet broadphases.
- * It stores collision shape type information, collision filter information and
- * a client object, typically a {@link CollisionObject} or {@link RigidBody}.
- * 
- * @author jezek2
- */
 class BroadphaseProxy {
 	// Usually the client CollisionObject or Rigidbody class
 	Object? clientObject;
 	
-	// TODO: mask
-	int collisionFilterGroup = -1;
+	int collisionFilterGroup = 0;
 	int collisionFilterMask = 0;
 	
 	Object? multiSapParentProxy;
 	
 	int uniqueId = 0; // uniqueId is introduced for paircache. could get rid of this, by calculating the address offset etc.
 	
-	BroadphaseProxy([this.clientObject, this.collisionFilterGroup = -1, this.collisionFilterMask = -1, this.multiSapParentProxy]);
+	BroadphaseProxy([this.clientObject, this.collisionFilterGroup = 0, this.collisionFilterMask = 0, this.multiSapParentProxy]);
 
 	int getUid() {
 		return uniqueId;

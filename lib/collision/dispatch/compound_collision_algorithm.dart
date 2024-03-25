@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -53,14 +53,12 @@ class CompoundCollisionAlgorithm extends CollisionAlgorithm {
 
 		CollisionObject? colObj = _isSwapped ? body1 : body0;
 		CollisionObject? otherObj = _isSwapped ? body0 : body1;
-		assert (colObj?.getCollisionShape()?.isCompound() ?? false);
+		assert (colObj!.getCollisionShape()!.isCompound());
 
 		CompoundShape? compoundShape = colObj?.getCollisionShape() as CompoundShape?;
 		int numChildren = compoundShape?.getNumChildShapes() ?? 0;
-		int i = 0;
 
-		//childCollisionAlgorithms.resize(numChildren);
-		for (i = 0; i < numChildren; i++) {
+		for (int i = 0; i < numChildren; i++) {
 			CollisionShape? tmpShape = colObj?.getCollisionShape();
 			CollisionShape? childShape = compoundShape?.getChildShape(i);
 			colObj?.internalSetTemporaryCollisionShape(childShape);
@@ -73,7 +71,6 @@ class CompoundCollisionAlgorithm extends CollisionAlgorithm {
 	void destroy() {
 		int numChildren = _childCollisionAlgorithms.size;
 		for (int i=0; i<numChildren; i++) {
-			//childCollisionAlgorithms.get(i).destroy();
 			dispatcher?.freeCollisionAlgorithm(_childCollisionAlgorithms.getQuick(i));
 		}
 		_childCollisionAlgorithms.clear();
@@ -84,7 +81,7 @@ class CompoundCollisionAlgorithm extends CollisionAlgorithm {
 		CollisionObject? colObj = _isSwapped ? body1 : body0;
 		CollisionObject? otherObj = _isSwapped ? body0 : body1;
 
-		assert (colObj?.getCollisionShape()?.isCompound() ?? false);
+		assert (colObj!.getCollisionShape()!.isCompound());
 		CompoundShape? compoundShape = colObj?.getCollisionShape() as CompoundShape?;
 
 		// We will use the OptimizedBVH, AABB tree to cull potential child-overlaps
@@ -101,8 +98,7 @@ class CompoundCollisionAlgorithm extends CollisionAlgorithm {
 		Transform newChildWorldTrans = Transform();
 
 		int numChildren = _childCollisionAlgorithms.size;
-		int i;
-		for (i = 0; i < numChildren; i++) {
+		for (int i = 0; i < numChildren; i++) {
 			// temporarily exchange parent btCollisionShape with childShape, and recurse
 			CollisionShape? childShape = compoundShape?.getChildShape(i);
 
@@ -131,7 +127,7 @@ class CompoundCollisionAlgorithm extends CollisionAlgorithm {
 		CollisionObject? colObj = _isSwapped ? body1 : body0;
 		CollisionObject? otherObj = _isSwapped ? body0 : body1;
 
-		assert (colObj?.getCollisionShape()?.isCompound() ?? false);
+		assert (colObj!.getCollisionShape()!.isCompound());
 
 		CompoundShape? compoundShape = colObj?.getCollisionShape() as CompoundShape?;
 
@@ -148,8 +144,7 @@ class CompoundCollisionAlgorithm extends CollisionAlgorithm {
 		double hitFraction = 1;
 
 		int numChildren = _childCollisionAlgorithms.size;
-		int i;
-		for (i = 0; i < numChildren; i++) {
+		for (int i = 0; i < numChildren; i++) {
 			// temporarily exchange parent btCollisionShape with childShape, and recurse
 			CollisionShape? childShape = compoundShape?.getChildShape(i);
 
@@ -164,7 +159,7 @@ class CompoundCollisionAlgorithm extends CollisionAlgorithm {
 
 			CollisionShape? tmpShape = colObj?.getCollisionShape();
 			colObj?.internalSetTemporaryCollisionShape(childShape);
-			double frac = _childCollisionAlgorithms.getQuick(i)?.calculateTimeOfImpact(colObj, otherObj, dispatchInfo, resultOut) ?? 0;
+			double frac = _childCollisionAlgorithms.getQuick(i)!.calculateTimeOfImpact(colObj, otherObj, dispatchInfo, resultOut);
 			if (frac < hitFraction) {
 				hitFraction = frac;
 			}
@@ -188,7 +183,6 @@ class CompoundCollisionAlgorithm extends CollisionAlgorithm {
 ////////////////////////////////////////////////////////////////////////////
 
 class CCA2Func extends CollisionAlgorithmCreateFunc {
-
   @override
   CollisionAlgorithm createCollisionAlgorithm(CollisionAlgorithmConstructionInfo ci, CollisionObject? body0, CollisionObject? body1) {
     CompoundCollisionAlgorithm algo = CompoundCollisionAlgorithm();
@@ -197,9 +191,7 @@ class CCA2Func extends CollisionAlgorithmCreateFunc {
   }
 
   @override
-  void releaseCollisionAlgorithm(CollisionAlgorithm algo) {
-
-  }
+  void releaseCollisionAlgorithm(CollisionAlgorithm algo) {}
 }
 
 class SwappedCCA2Func extends CollisionAlgorithmCreateFunc {
@@ -211,7 +203,5 @@ class SwappedCCA2Func extends CollisionAlgorithmCreateFunc {
   }
 
   @override
-  void releaseCollisionAlgorithm(CollisionAlgorithm algo) {
-
-  }
+  void releaseCollisionAlgorithm(CollisionAlgorithm algo) {}
 }

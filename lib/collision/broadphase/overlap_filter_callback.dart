@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -23,14 +23,7 @@
 
 import 'package:bullet_physics/collision/broadphase/broadphase_proxy.dart';
 
-/**
- * Callback for filtering broadphase collisions.
- * 
- * @see OverlappingPairCache#setOverlapFilterCallback
- * @author jezek2
- */
 abstract class OverlapFilterCallback {
-
 	/**
 	 * Checks if given pair of collision objects needs collision.
 	 * 

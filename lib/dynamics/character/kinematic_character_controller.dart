@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -21,7 +21,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-import "package:bullet_physics/bullet_physics.dart";
 import "package:bullet_physics/collision/dispatch/collision_object.dart";
 import "package:bullet_physics/collision/dispatch/collision_world.dart";
 import "package:bullet_physics/collision/dispatch/pair_caching_ghost_object.dart";

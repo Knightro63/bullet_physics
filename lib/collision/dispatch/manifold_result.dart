@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -31,16 +31,8 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * ManifoldResult is helper class to manage contact results.
- * 
- * @author jezek2
- */
 class ManifoldResult extends Result{
-	
 	PersistentManifold? _manifoldPtr;
-
-	// we need this for compounds
 	final Transform _rootTransA = Transform();
 	final Transform _rootTransB = Transform();
 	CollisionObject? _body0;
@@ -57,8 +49,8 @@ class ManifoldResult extends Result{
 	void init(CollisionObject? body0, CollisionObject? body1) {
 		_body0 = body0;
 		_body1 = body1;
-		_body0?.getWorldTransform(_rootTransA);
-		_body1?.getWorldTransform(_rootTransB);
+		body0?.getWorldTransform(_rootTransA);
+		body1?.getWorldTransform(_rootTransB);
 	}
 
 	PersistentManifold? getPersistentManifold() {
@@ -148,7 +140,6 @@ class ManifoldResult extends Result{
 
 	}
 
-	///User can override this material combiner by implementing gContactAddedCallback and setting body0->m_collisionFlags |= btCollisionObject::customMaterialCallback;
 	static double _calculateCombinedFriction(CollisionObject? body0, CollisionObject? body1) {
 		double friction = (body0?.getFriction() ?? 0) * (body1?.getFriction() ?? 0);
 

@@ -23,10 +23,10 @@ dependencies:
   flutter_gl: ^0.0.21
   three_dart:
     git:
-      url: https://github.com/Knightro63/three_dart.git
+      url: https://github.com/Knightro/three_dart.git
   three_dart_jsm:
     git:
-      url: https://github.com/Knightro63/three_dart_jsm.git
+      url: https://github.com/Knightro/three_dart_jsm.git
   
   cupertino_icons: ^1.0.2
   vector_math: ^2.1.4

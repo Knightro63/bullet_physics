@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -35,11 +35,6 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * Provides collision detection between two spheres.
- * 
- * @author jezek2
- */
 class SphereSphereCollisionAlgorithm extends CollisionAlgorithm {
   static SSCAFunc CreateFunction() => SSCAFunc();
 	bool _ownManifold = false;
@@ -100,15 +95,9 @@ class SphereSphereCollisionAlgorithm extends CollisionAlgorithm {
 		double radius0 = sphere0?.getRadius() ?? 0;
 		double radius1 = sphere1?.getRadius() ?? 0;
 
-		//#ifdef CLEAR_MANIFOLD
-		//manifoldPtr.clearManifold(); // don't do this, it disables warmstarting
-		//#endif
-
 		// if distance positive, don't generate a contact
 		if (len > (radius0 + radius1)) {
-			//#ifndef CLEAR_MANIFOLD
 			resultOut?.refreshContactPoints();
-			//#endif //CLEAR_MANIFOLD
 			return;
 		}
 		// distance (negative means penetration)
@@ -134,10 +123,7 @@ class SphereSphereCollisionAlgorithm extends CollisionAlgorithm {
 
 		// report a contact. internally this will be kept persistent, and contact reduction is done
 		resultOut?.addContactPoint(normalOnSurfaceB, pos1, dist);
-
-		//#ifndef CLEAR_MANIFOLD
 		resultOut?.refreshContactPoints();
-		//#endif //CLEAR_MANIFOLD
 	}
 
 	@override

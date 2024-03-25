@@ -1,5 +1,5 @@
 /*
- * Dart port of Bullet (c) 2024 @Knightro63
+ * Dart port of Bullet (c) 2024 @Knightro
  *
  * Bullet Continuous Collision Detection and Physics Library
  * Copyright (c) 2003-2008 Erwin Coumans  http://www.bulletphysics.com/
@@ -25,12 +25,6 @@ import 'package:bullet_physics/collision/broadphase/broadphase_pair.dart';
 import 'package:bullet_physics/collision/broadphase/broadphase_proxy.dart';
 import 'package:bullet_physics/collision/broadphase/dispatcher.dart';
 
-/**
- * OverlappingPairCallback class is an additional optional broadphase user callback
- * for adding/removing overlapping pairs, similar interface to {@link OverlappingPairCache}.
- *
- * @author jezek2
- */
 abstract class OverlappingPairCallback {
 	BroadphasePair? addOverlappingPair(BroadphaseProxy? proxy0, BroadphaseProxy? proxy1);
 	Object? removeOverlappingPair(BroadphaseProxy? proxy0, BroadphaseProxy? proxy1, Dispatcher? dispatcher);
