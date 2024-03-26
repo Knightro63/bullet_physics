@@ -21,17 +21,9 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-/**
- * Clock is a portable basic clock that measures accurate time in seconds, use for profiling.
- * 
- * @author jezek2
- */
 class Clock {
 	late int _startTime;
 
-	/**
-	 * Creates a clock and resets it.
-	 */
 	Clock() {
 		reset();
 	}

@@ -31,14 +31,6 @@ import "package:bullet_physics/linearmath/vector_util.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 import 'package:vector_math/vector_math.dart';
 
-// JAVA NOTE: CompoundShape from 2.71
-
-/**
- * CompoundShape allows to store multiple other {@link CollisionShape}s. This allows
- * for moving concave collision objects. This is more general than the {@link BvhTriangleMeshShape}.
- * 
- * @author jezek2
- */
 class CompoundShape extends CollisionShape {
 
 	final ObjectArrayList<CompoundShapeChild> _children = ObjectArrayList();
@@ -51,8 +43,6 @@ class CompoundShape extends CollisionShape {
 	final Vector3 localScaling = Vector3(1, 1, 1);
 
 	void addChildShape(Transform localTransform, CollisionShape shape) {
-		//m_childTransforms.push_back(localTransform);
-		//m_childShapes.push_back(shape);
 		CompoundShapeChild child = CompoundShapeChild();
 		child.transform.copy(localTransform);
 		child.childShape = shape;
@@ -64,19 +54,6 @@ class CompoundShape extends CollisionShape {
 		// extend the local aabbMin/aabbMax
 		Vector3 localAabbMin = Vector3.zero(), localAabbMax = Vector3.zero();
 		shape.getAabb(localTransform, _localAabbMin, _localAabbMax);
-
-		// JAVA NOTE: rewritten
-//		for (int i=0;i<3;i++)
-//		{
-//			if (this.localAabbMin[i] > _localAabbMin[i])
-//			{
-//				this.localAabbMin[i] = _localAabbMin[i];
-//			}
-//			if (this.localAabbMax[i] < _localAabbMax[i])
-//			{
-//				this.localAabbMax[i] = _localAabbMax[i];
-//			}
-//		}
 		VectorUtil.setMin(_localAabbMin, localAabbMin);
 		VectorUtil.setMax(_localAabbMax, localAabbMax);
 	}

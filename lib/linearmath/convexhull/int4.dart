@@ -21,10 +21,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-/**
- *
- * @author jezek2
- */
 class Int4 {
 
 	late int x;

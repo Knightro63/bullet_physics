@@ -21,15 +21,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-
-
 import 'package:bullet_physics/collision/shapes/cone_shape.dart';
 
-/**
- * ConeShape implements a cone shape, around the Z axis.
- *
- * @author jezek2
- */
 class ConeShapeZ extends ConeShape {
 	ConeShapeZ(super.radius, super.height) {
 		setConeUpIndex(2);

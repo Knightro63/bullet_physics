@@ -25,13 +25,6 @@ import 'dart:typed_data';
 
 import 'package:bullet_physics/collision/shapes/scalar_type.dart';
 
-/**
- * IndexedMesh indexes into existing vertex and index arrays, in a similar way to
- * OpenGL's glDrawElements. Instead of the number of indices, we pass the number
- * of triangles.
- * 
- * @author jezek2
- */
 class IndexedMesh {
 	int numTriangles = 0;
 	Uint8List? triangleIndexBase;
@@ -39,7 +32,5 @@ class IndexedMesh {
 	int numVertices = 0;
 	Float64List? vertexBase;
 	int vertexStride = 0;
-	// The index type is set when adding an indexed mesh to the
-	// TriangleIndexVertexArray, do not set it manually
 	ScalarType? indexType;
 }

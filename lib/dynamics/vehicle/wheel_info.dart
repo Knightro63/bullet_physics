@@ -27,15 +27,8 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * WheelInfo contains information per wheel about friction and suspension.
- * 
- * @author jezek2
- */
 class WheelInfo {
-
 	//final BulletStack stack = BulletStack.get();
-	
 	final RaycastInfo raycastInfo = RaycastInfo();
 
 	final Transform worldTransform = Transform();

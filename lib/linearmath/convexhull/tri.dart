@@ -23,10 +23,6 @@
 
 import 'package:bullet_physics/linearmath/convexhull/int3.dart';
 
-/**
- *
- * @author jezek2
- */
 class Tri extends Int3{
 	
 	late Int3 n = Int3(-1, -1, -1);

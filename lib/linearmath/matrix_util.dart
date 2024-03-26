@@ -21,9 +21,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-//import com.bulletphysics.util.ArrayPool;
 import 'package:bullet_physics/linearmath/vector_util.dart';
-
 import '../core/bullet_globals.dart';
 import 'package:vector_math/vector_math.dart';
 import 'dart:math';

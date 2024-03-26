@@ -25,17 +25,7 @@ import 'package:bullet_physics/utils/int_array_list.dart';
 import 'package:bullet_physics/utils/object_array_list.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- * Contains resulting polygonal representation.<p>
- * 
- * Depending on the {@link #polygons} flag, array of indices consists of:<br>
- * <b>for triangles:</b> indices are array indexes into the vertex list<br>
- * <b>for polygons:</b> indices are in the form (number of points in face) (p1, p2, p3, ...)
- * 
- * @author jezek2
- */
 class HullResult {
-	
 	/** True if indices represents polygons, false indices are triangles. */
 	bool polygons = true;
 	

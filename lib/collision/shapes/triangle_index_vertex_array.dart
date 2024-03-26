@@ -22,7 +22,6 @@
  */
 
 import 'dart:typed_data';
-
 import 'package:bullet_physics/collision/shapes/byte_buffer_vertex_data.dart';
 import 'package:bullet_physics/collision/shapes/indexed_mesh.dart';
 import 'package:bullet_physics/collision/shapes/scalar_type.dart';

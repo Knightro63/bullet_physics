@@ -35,15 +35,7 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * SimpleDynamicsWorld serves as unit-test and to verify more complicated and
- * optimized dynamics worlds. Please use {@link DiscreteDynamicsWorld} instead
- * (or ContinuousDynamicsWorld once it is finished).
- * 
- * @author jezek2
- */
 class SimpleDynamicsWorld extends DynamicsWorld {
-
 	ConstraintSolver constraintSolver;
 	bool ownsConstraintSolver = false;
 	final Vector3 gravity = Vector3(0, 0, -10);

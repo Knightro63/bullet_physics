@@ -25,13 +25,7 @@ import 'package:bullet_physics/collision/shapes/collision_shape.dart';
 import 'package:bullet_physics/collision/shapes/triangle_callback.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- * ConcaveShape class provides an interface for non-moving (static) concave shapes.
- * 
- * @author jezek2
- */
 abstract class ConcaveShape extends CollisionShape {
-
 	double collisionMargin = 0;
 
 	void processAllTriangles(TriangleCallback? callback, Vector3 aabbMin, Vector3 aabbMax);

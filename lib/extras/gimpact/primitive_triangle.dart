@@ -33,15 +33,10 @@ import 'package:bullet_physics/linearmath/vector_util.dart';
 import 'package:bullet_physics/utils/object_array_list.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 class PrimitiveTriangle {
-
-	final ObjectArrayList<Vector3> _tmpVecList1 = ObjectArrayList();//List<Vector3>(TriangleContact.maxTriClipping);
-	final ObjectArrayList<Vector3> _tmpVecList2 = ObjectArrayList();//List<Vector3>(TriangleContact.maxTriClipping);
-	final ObjectArrayList<Vector3> _tmpVecList3 = ObjectArrayList();//List<Vector3>(TriangleContact.maxTriClipping);
+	final ObjectArrayList<Vector3> _tmpVecList1 = ObjectArrayList(TriangleContact.maxTriClipping);//List<Vector3>(TriangleContact.maxTriClipping);
+	final ObjectArrayList<Vector3> _tmpVecList2 = ObjectArrayList(TriangleContact.maxTriClipping);//List<Vector3>(TriangleContact.maxTriClipping);
+	final ObjectArrayList<Vector3> _tmpVecList3 = ObjectArrayList(TriangleContact.maxTriClipping);//List<Vector3>(TriangleContact.maxTriClipping);
 	
 	void _init(){
 		for (int i=0; i<TriangleContact.maxTriClipping; i++) {
@@ -51,7 +46,7 @@ class PrimitiveTriangle {
 		}
 	}
 	
-	final List<Vector3> vertices = [];//Vector3[3];
+	final List<Vector3> vertices = [Vector3.zero(),Vector3.zero(),Vector3.zero()];//Vector3[3];
 	final Vector4 plane = Vector4.zero();
 	double margin = 0.01;
 

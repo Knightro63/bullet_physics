@@ -21,32 +21,15 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-
-
 import "package:bullet_physics/linearmath/i_debug_draw.dart";
 import "package:bullet_physics/linearmath/transform.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * This interface is made to be used by an iterative approach to do TimeOfImpact calculations.<p>
- * 
- * This interface allows to query for closest points and penetration depth between two (convex) objects
- * the closest point is on the second object (B), and the normal points from the surface on B towards A.
- * distance is between closest points on B and closest point on A. So you can calculate closest point on A
- * by taking <code>closestPointInA = closestPointInB + distance * normalOnSurfaceB</code>.
- * 
- * @author jezek2
- */
 abstract class DiscreteCollisionDetectorInterface {
-	/**
-	 * Give either closest points (distance > 0) or penetration (distance)
-	 * the normal always points from B towards A.
-	 */
 	void getClosestPoints(ClosestPointInput input,Result output, IDebugDraw debugDraw, [bool swapResults = false]);
 }
 
 abstract class Result {
-  ///setShapeIdentifiers provides experimental support for per-triangle material / custom material combiner
   void setShapeIdentifiers(int partId0, int index0, int partId1, int index1);
   void addContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld, double depth);
 }
@@ -55,12 +38,10 @@ class ClosestPointInput {
   final Transform transformA = Transform();
   final Transform transformB = Transform();
   double maximumDistanceSquared = 0;
-  //btStackAlloc* m_stackAlloc;
 
   ClosestPointInput() {
     init();
   }
-
   void init() {
     maximumDistanceSquared = double.infinity;
   }

@@ -22,10 +22,6 @@
  */
 
 // includes modifications/improvements by John Ratcliff, see BringOutYourDead below.
-// import "package:bullet_physics/core/bullet_globals.dart";
-// import com.bulletphysics.collision.shapes.ShapeHull;
-// import "package:bullet_physics/linearmath/misc_util.dart";
-// import "package:bullet_physics/linearmath/vector_util.dart";
 
 import 'dart:math';
 import 'package:bullet_physics/core/bullet_globals.dart';
@@ -41,17 +37,9 @@ import 'package:bullet_physics/linearmath/vector_util.dart';
 import 'package:bullet_physics/utils/int_array_list.dart';
 import 'package:bullet_physics/utils/object_array_list.dart';
 import 'package:vector_math/vector_math.dart';
-/**
- * HullLibrary class can create a convex hull from a collection of vertices, using
- * the ComputeHull method. The {@link ShapeHull} class uses this HullLibrary to create
- * a approximate convex mesh given a general (non-polyhedral) convex shape.
- *
- * @author jezek2
- */
+
 class HullLibrary {
-
 	final IntArrayList vertexIndexMapping = IntArrayList();
-
 	final ObjectArrayList<Tri?> _tris = ObjectArrayList();
 	
 	/**
@@ -70,7 +58,7 @@ class HullLibrary {
 		if (vcount < 8) vcount = 8;
 		
 		ObjectArrayList<Vector3> vertexSource = ObjectArrayList();
-		MiscUtil.resizeObjectArray(vertexSource, vcount, Vector3.zero());
+		MiscUtil.resizeObjectArray(vertexSource, vcount, Vector3);
 
 		Vector3 scale = Vector3.zero();
 
@@ -92,7 +80,7 @@ class HullLibrary {
 			if (ok) {
 				// re-index triangle mesh so it refers to only used vertices, rebuild a vertex table.
 				ObjectArrayList<Vector3> vertexScratch = ObjectArrayList();
-				MiscUtil.resizeObjectArray(vertexScratch, hr.vcount, Vector3.zero());
+				MiscUtil.resizeObjectArray(vertexScratch, hr.vcount, Vector3);
 
 				_bringOutYourDead(hr.vertices, hr.vcount, vertexScratch, ovcount, hr.indices, hr.indexCount);
 
@@ -101,7 +89,7 @@ class HullLibrary {
 				if (desc.hasHullFlag(HullFlags.triangles)) { // if he wants the results as triangle!
 					result.polygons = false;
 					result.numOutputVertices = ovcount[0];
-					MiscUtil.resizeObjectArray(result.outputVertices, ovcount[0], Vector3.zero());
+					MiscUtil.resizeObjectArray(result.outputVertices, ovcount[0], Vector3);
 					result.numFaces = hr.faceCount;
 					result.numIndices = hr.indexCount;
 
@@ -137,7 +125,7 @@ class HullLibrary {
 				else {
 					result.polygons = true;
 					result.numOutputVertices = ovcount[0];
-					MiscUtil.resizeObjectArray(result.outputVertices, ovcount[0], Vector3.zero());
+					MiscUtil.resizeObjectArray(result.outputVertices, ovcount[0], Vector3);
 					result.numFaces = hr.faceCount;
 					result.numIndices = hr.indexCount + hr.faceCount;
 					MiscUtil.resizeArray(result.indices, result.numIndices, 0);

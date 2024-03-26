@@ -24,11 +24,6 @@
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * Allows accessing vertex data.
- * 
- * @author jezek2
- */
 abstract class VertexData {
 	int getVertexCount();
 	int getIndexCount();

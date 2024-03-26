@@ -21,11 +21,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-/**
- * Collision object type.
- * 
- * @author jezek2
- */
 enum CollisionObjectType {
 	collisionObject, // =1
 	rigidBody,

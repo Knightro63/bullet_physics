@@ -58,11 +58,6 @@ import "package:bullet_physics/linearmath/vector_util.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * DiscreteDynamicsWorld provides discrete rigid body simulation.
- * 
- * @author jezek2
- */
 class DiscreteDynamicsWorld extends DynamicsWorld {
 
 	late ConstraintSolver constraintSolver;
@@ -547,11 +542,9 @@ class DiscreteDynamicsWorld extends DynamicsWorld {
 	void calculateSimulationIslands() {
 		BulletStats.pushProfile("calculateSimulationIslands");
 		try {
-			getSimulationIslandManager().updateActivationState(getCollisionWorld(), getCollisionWorld().getDispatcher());
+		getSimulationIslandManager().updateActivationState(getCollisionWorld(), getCollisionWorld().getDispatcher());
 
-      int i;
-      int numConstraints = constraints.size;
-      for (i = 0; i < numConstraints; i++) {
+      for (int i = 0; i < constraints.size; i++) {
         TypedConstraint? constraint = constraints.getQuick(i);
 
         RigidBody? colObj0 = constraint?.getRigidBodyA();
@@ -823,7 +816,6 @@ class _InplaceSolverIslandCallback extends IslandCallback {
   ObjectArrayList<TypedConstraint>? sortedConstraints;
   int numConstraints = 0;
   IDebugDraw? debugDrawer;
-  //StackAlloc* m_stackAlloc;
   Dispatcher? dispatcher;
 
   void init(ContactSolverInfo? solverInfo, ConstraintSolver? solver, ObjectArrayList<TypedConstraint>? sortedConstraints, int numConstraints, IDebugDraw? debugDrawer, Dispatcher? dispatcher) {
@@ -836,7 +828,7 @@ class _InplaceSolverIslandCallback extends IslandCallback {
   }
   @override
   void processIsland(ObjectArrayList<CollisionObject> bodies, int numBodies, ObjectArrayList<PersistentManifold> manifolds, int manifoldsOffset, int numManifolds, int islandId) {
-    if (islandId < 0) {
+    if (islandId > 0) {
       solver!.solveGroup(bodies, numBodies, manifolds, manifoldsOffset, numManifolds, sortedConstraints, 0, numConstraints, solverInfo, debugDrawer, dispatcher);
     }
     else {

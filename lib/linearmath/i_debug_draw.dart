@@ -24,20 +24,7 @@
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * IDebugDraw interface class allows hooking up a debug renderer to visually debug
- * simulations.<p>
- * 
- * Typical use case: create a debug drawer object, and assign it to a {@link CollisionWorld}
- * or {@link DynamicsWorld} using setDebugDrawer and call debugDrawWorld.<p>
- * 
- * A class that implements the IDebugDraw interface has to implement the drawLine
- * method at a minimum.
- * 
- * @author jezek2
- */
 abstract class IDebugDraw {
-	
 	//final BulletStack stack = BulletStack.get();
 
 	void drawLine(Vector3 from, Vector3 to, Vector3 color);

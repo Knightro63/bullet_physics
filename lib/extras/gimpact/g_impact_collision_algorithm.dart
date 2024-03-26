@@ -58,17 +58,6 @@ import "package:bullet_physics/utils/int_array_list.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * Collision Algorithm for GImpact Shapes.<p>
- * 
- * For register this algorithm in Bullet, proceed as following:
- * <pre>
- * CollisionDispatcher dispatcher = (CollisionDispatcher)dynamicsWorld.getDispatcher();
- * GImpactCollisionAlgorithm.registerAlgorithm(dispatcher);
- * </pre>
- * 
- * @author jezek2
- */
 class GImpactCollisionAlgorithm extends CollisionAlgorithm {
 
 	CollisionAlgorithm? convexAlgorithm;
@@ -448,19 +437,12 @@ class GImpactCollisionAlgorithm extends CollisionAlgorithm {
 		int pairPointer = 0;
 
 		while ((pair_count--) != 0) {
-			//triface0 = pairs.get(pairPointer);
-			//triface1 = pairs.get(pairPointer + 1);
-			//pairPointer += 2;
 			Pair pair = pairs.get(pairPointer++);
 			triface0 = pair.index1;
 			triface1 = pair.index2;
 
 			shape0?.getPrimitiveTriangle(triface0, ptri0);
 			shape1?.getPrimitiveTriangle(triface1, ptri1);
-
-			//#ifdef TRI_COLLISION_PROFILING
-			//bt_begin_gim02_tri_time();
-			//#endif
 
 			ptri0.applyTransform(orgtrans0);
 			ptri1.applyTransform(orgtrans1);
@@ -486,10 +468,6 @@ class GImpactCollisionAlgorithm extends CollisionAlgorithm {
 					}
 				}
 			}
-
-			//#ifdef TRI_COLLISION_PROFILING
-			//bt_end_gim02_tri_time();
-			//#endif
 		}
 
 		shape0?.unlockChildShapes();

@@ -41,18 +41,6 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/utils/int_array_list.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * This class manages a sub part of a mesh supplied by the StridingMeshInterface interface.<p>
- * 
- * - Simply create this shape by passing the StridingMeshInterface to the constructor
- *   GImpactMeshShapePart, then you must call updateBound() after creating the mesh<br>
- * - When making operations with this shape, you must call <b>lock</b> before accessing
- *   to the trimesh primitives, and then call <b>unlock</b><br>
- * - You can handle deformable meshes with this shape, by calling postUpdate() every time
- *   when changing the mesh vertices.
- * 
- * @author jezek2
- */
 class GImpactMeshShapePart extends GImpactShapeInterface {
 
 	TrimeshPrimitiveManager primitiveManager = TrimeshPrimitiveManager();

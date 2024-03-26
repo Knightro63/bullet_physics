@@ -23,6 +23,5 @@
 import 'package:bullet_physics/collision/broadphase/broadphase_pair.dart';
 
 abstract class OverlapCallback {
-	//return true for deletion of the pair
 	bool processOverlap(BroadphasePair pair);
 }

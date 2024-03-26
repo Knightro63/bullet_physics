@@ -40,10 +40,6 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 class GImpactMeshShape extends GImpactShapeInterface {
 	
 	ObjectArrayList<GImpactMeshShapePart> meshParts = ObjectArrayList();//List<GImpactMeshShapePart>();
@@ -99,7 +95,6 @@ class GImpactMeshShape extends GImpactShapeInterface {
 
 	@override
 	void calculateLocalInertia(double mass, Vector3 inertia) {
-		//#ifdef CALC_EXACT_INERTIA
 		inertia.setValues(0, 0, 0);
 
 		int i = getMeshPartCount();
@@ -111,21 +106,6 @@ class GImpactMeshShape extends GImpactShapeInterface {
 			getMeshPart(i)?.calculateLocalInertia(partmass, partinertia);
 			inertia.add(partinertia);
 		}
-
-		////#else
-		//
-		//// Calc box inertia
-		//
-		//btScalar lx= m_localAABB.m_max[0] - m_localAABB.m_min[0];
-		//btScalar ly= m_localAABB.m_max[1] - m_localAABB.m_min[1];
-		//btScalar lz= m_localAABB.m_max[2] - m_localAABB.m_min[2];
-		//const btScalar x2 = lx*lx;
-		//const btScalar y2 = ly*ly;
-		//const btScalar z2 = lz*lz;
-		//const btScalar scaledmass = mass * btScalar(0.08333333);
-		//
-		//inertia = scaledmass * (btVector3(y2+z2,x2+z2,x2+y2));
-		////#endif
 	}
 	
 	@override

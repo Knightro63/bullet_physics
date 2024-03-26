@@ -30,7 +30,7 @@ import "package:bullet_physics/linearmath/matrix_util.dart";
 import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 
-	enum PhyScalarType{double, uchar, int}
+enum PhyScalarType{double, uchar, int}
 
 class HeightfieldTerrainShape extends ConcaveShape{
 	late Vector3 mLocalAabbMin;

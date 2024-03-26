@@ -32,17 +32,15 @@ import 'package:bullet_physics/utils/object_array_list.dart';
 import 'package:vector_math/vector_math.dart';
 
 class SimpleBroadphase extends BroadphaseInterface {
-
-	final ObjectArrayList<SimpleBroadphaseProxy> _handles = ObjectArrayList();//List<SimpleBroadphaseProxy>();
-	//int _maxHandles = 0;						// max number of handles
+	final ObjectArrayList<SimpleBroadphaseProxy> _handles = ObjectArrayList();
 	late OverlappingPairCache _pairCache;
-	//bool _ownsPairCache = false;
+	bool ownsPairCache = false;
 	
 	SimpleBroadphase([int maxProxies = 16384, OverlappingPairCache? overlappingPairCache]) {
 		_pairCache = overlappingPairCache ?? HashedOverlappingPairCache();;
 
 		if (overlappingPairCache == null) {
-			//_ownsPairCache = true;
+			ownsPairCache = true;
 		}
 	}
 

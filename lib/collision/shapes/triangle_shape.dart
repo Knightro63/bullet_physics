@@ -27,11 +27,6 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * Single triangle shape.
- * 
- * @author jezek2
- */
 class TriangleShape extends PolyhedralConvexShape {
 	
 	final List<Vector3> vertices1/*[3]*/ = [ Vector3.zero(), Vector3.zero(), Vector3.zero() ];

@@ -29,13 +29,6 @@ import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 import 'dart:math';
 
-/**
- * CylinderShape class implements a cylinder shape primitive, centered around
- * the origin. Its central axis aligned with the Y axis. {@link CylinderShapeX}
- * is aligned with the X axis and {@link CylinderShapeZ} around the Z axis.
- * 
- * @author jezek2
- */
 class CylinderShape extends BoxShape {
 	int upAxis = 1;
 

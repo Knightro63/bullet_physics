@@ -26,10 +26,6 @@ import 'package:bullet_physics/collision/shapes/scalar_type.dart';
 import 'package:bullet_physics/collision/shapes/vertex_data.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 class ByteBufferVertexData extends VertexData {
 
 	Float64List? vertexData;

@@ -21,18 +21,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-
-
 import 'package:bullet_physics/collision/shapes/capsule_shape.dart';
 
-/**
- * CapsuleShapeZ represents a capsule around the Z axis.<p>
- * 
- * The total height is <code>height+2*radius</code>, so the height is just the
- * height between the center of each "sphere" of the capsule caps.
- * 
- * @author jezek2
- */
 class CapsuleShapeZ extends CapsuleShape {
 	CapsuleShapeZ(double radius, double height) {
 		upAxis = 2;

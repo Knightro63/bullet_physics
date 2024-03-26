@@ -21,12 +21,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-/**
- * Called when contact has been destroyed between two collision objects.
- *
- * @see BulletGlobals#setContactDestroyedCallback
- * @author jezek2
- */
 abstract class ContactDestroyedCallback {
 	bool contactDestroyed(Object userPersistentData);
 }

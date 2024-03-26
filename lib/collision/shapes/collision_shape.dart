@@ -26,15 +26,7 @@ import 'package:bullet_physics/linearmath/vector_util.dart';
 import 'package:bullet_physics/linearmath/transform.dart';
 import 'package:vector_math/vector_math.dart';
 
-
-/**
- * CollisionShape class provides an interface for collision shapes that can be
- * shared among {@link CollisionObject}s.
- * 
- * @author jezek2
- */
 abstract class CollisionShape {
-
 	//final BulletStack stack = BulletStack.get();
 
 	Object? userPointer;

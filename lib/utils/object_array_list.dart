@@ -23,7 +23,6 @@
 
 
 final class ObjectArrayList<T>{
-
 	late List<T?> array;
 	int _size = 0;
 
@@ -42,7 +41,6 @@ final class ObjectArrayList<T>{
 	
 	bool add(T? value) {
 		if (_size == array.length) {
-			//_expand();
       array.add(value);
 		}
     array[_size++] = value;
@@ -57,46 +55,25 @@ final class ObjectArrayList<T>{
     array = array.reversed.toList();
   }
 
-	void addAt(int index, T value) {
-		// if (_size == array.length) {
-		// 	_expand();
-		// }
-
-		int num = _size - index;
-		if (num > 0) {
-			//System.arraycopy(array, index, array, index+1, num);
-      array = array..replaceRange(index, index+1+num, array.sublist(index+1,index+1+num));
-		}
-
-		array[index] = value;
-		_size++;
-	}
-
 	T? removeAt(int index) {
-		_size--;
-    return array.removeAt(index);
+    T? temp = array.removeAt(index);
+    _size--;
+    return temp;
   }
 	T? remove(T? object) {
+    bool temp = array.remove(object);
 		_size--;
-		return array.remove(object)?object:null;
+		return temp?object:null;
   }
   void resize(int newSize){
     array.length = newSize;
   }
-	void _expand() {
-		List<T?> newArray = List.filled(array.length << 1, null, growable: true);//(T[])new Object[array.length << 1];
-		//System.arraycopy(array, 0, newArray, 0, array.length);
-    if(newArray.isNotEmpty){
-		  array = newArray..replaceRange(0, array.length-1, array);
-    }
-    else{
-      array = newArray;
-    }
-	}
 
 	void removeQuick(int index) {
-    _size--;
-    array.removeAt(index);
+    T? temp = array.removeAt(index);
+    if(temp != null){
+      _size--;
+    }
 	}
 
 	T? get(int index) {
@@ -126,16 +103,6 @@ final class ObjectArrayList<T>{
 		_size = 0;
 	}
 
-	// int indexOf(Object? o) {
-	// 	int _size = size;
-	// 	List<T?> _array = array;
-	// 	for (int i=0; i<_size; i++) {
-	// 		if (o == null? _array[i] == null : o == _array[i]) {
-	// 			return i;
-	// 		}
-	// 	}
-	// 	return -1;
-	// }
 	int indexOf(T o) {
     return array.indexOf(o);
 	}

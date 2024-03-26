@@ -64,7 +64,7 @@ class sStkCLN {
 }
 
 class ICollide {
-  void process(Node n1, [Node? n2, double f = 0]) {}
+  void process(Node? n1, [Node? n2, double f = 0]) {}
 
   bool descent(Node? n) {
     return true;
@@ -82,6 +82,5 @@ abstract class IWriter {
 }
 
 class IClone {
-  void cloneLeaf(Node n) {
-  }
+  void cloneLeaf(Node n) {}
 }

@@ -27,10 +27,6 @@
 
 import 'package:bullet_physics/extras/gimpact/pair.dart';
 
-/**
- *
- * @author jezek2
- */
 class PairSet {
 	List<Pair> _array = [];
 	int _size = 0;

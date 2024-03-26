@@ -32,10 +32,6 @@ import "package:bullet_physics/extras/gimpact/g_impact_shape_interface.dart";
 import "package:bullet_physics/extras/gimpact/triangle_shape_ex.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 class GImpactTriangleCallback extends TriangleCallback {
 	GImpactCollisionAlgorithm? algorithm;
 	CollisionObject? body0;

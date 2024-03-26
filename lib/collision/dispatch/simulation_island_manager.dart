@@ -31,15 +31,8 @@ import "package:bullet_physics/collision/narrowphase/persistent_manifold.dart";
 import "package:bullet_physics/linearmath/misc_util.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 
-/**
- * SimulationIslandManager creates and handles simulation islands, using {@link UnionFind}.
- * 
- * @author jezek2
- */
 class SimulationIslandManager {
-
 	final UnionFind _unionFind = UnionFind();
-
 	final ObjectArrayList<PersistentManifold> _islandmanifold = ObjectArrayList();
 	final ObjectArrayList<CollisionObject> _islandBodies = ObjectArrayList();
 	
@@ -81,12 +74,12 @@ class SimulationIslandManager {
     for (int i = 0; i < colWorld.getCollisionObjectArray().size; i++) {
       CollisionObject? collisionObject = colWorld.getCollisionObjectArray().getQuick(i);
       if (!(collisionObject!.isStaticOrKinematicObject())) {
-        collisionObject?.setIslandTag(_unionFind.find(i));
-        collisionObject?.setCompanionId(-1);
+        collisionObject.setIslandTag(_unionFind.find(i));
+        collisionObject.setCompanionId(-1);
       }
       else {
-        collisionObject?.setIslandTag(-1);
-        collisionObject?.setCompanionId(-2);
+        collisionObject.setIslandTag(-1);
+        collisionObject.setCompanionId(-2);
       }
 		}
 	}
@@ -116,7 +109,7 @@ class SimulationIslandManager {
 			// update the sleeping state for bodies, if all are sleeping
 			for (startIslandIndex = 0; startIslandIndex < numElem; startIslandIndex = endIslandIndex) {
 				int islandId = getUnionFind().getElement(startIslandIndex)?.id ?? 0;
-				//for (endIslandIndex = startIslandIndex + 1; (endIslandIndex < numElem) && (getUnionFind().getElement(endIslandIndex)?.id == islandId); endIslandIndex++) {}
+				for (endIslandIndex = startIslandIndex + 1; (endIslandIndex < numElem) && (getUnionFind().getElement(endIslandIndex)?.id == islandId); endIslandIndex++) {}
 
 				bool allSleeping = true;
 				for (int idx = startIslandIndex; idx < endIslandIndex; idx++) {
@@ -192,7 +185,7 @@ class SimulationIslandManager {
 					if (colObj1!.isKinematicObject() && colObj1.getActivationState() != CollisionObject.islandSleeping) {
 						colObj0.activate();
 					}
-					if (dispatcher?.needsResponse(colObj0, colObj1) ?? false) {
+					if (dispatcher!.needsResponse(colObj0, colObj1)) {
 						_islandmanifold.add(manifold!);
 					}
 				}
@@ -223,7 +216,8 @@ class SimulationIslandManager {
 				bool islandSleeping = false;
 
 				for (endIslandIndex = startIslandIndex; (endIslandIndex < numElem) && (getUnionFind().getElement(endIslandIndex)?.id == islandId); endIslandIndex++) {
-					int i = getUnionFind().getElement(endIslandIndex)?.sz ?? 0;
+
+          int i = getUnionFind().getElement(endIslandIndex)?.sz ?? 0;
 					CollisionObject? colObj0 = collisionObjects.getQuick(i);
 					_islandBodies.add(colObj0);
 					if (!colObj0!.isActive()) {
@@ -242,7 +236,7 @@ class SimulationIslandManager {
 					if (curIslandId == islandId) {
 						startManifoldIdx = startManifoldIndex;
 
-						//for (endManifoldIndex = startManifoldIndex + 1; (endManifoldIndex < numManifolds) && (islandId == _getIslandId(_islandmanifold.getQuick(endManifoldIndex))); endManifoldIndex++) {}
+						for (endManifoldIndex = startManifoldIndex + 1; (endManifoldIndex < numManifolds) && (islandId == _getIslandId(_islandmanifold.getQuick(endManifoldIndex))); endManifoldIndex++) {}
 						numIslandManifolds = endManifoldIndex - startManifoldIndex;
 					}
 

@@ -30,10 +30,6 @@ import "package:bullet_physics/extras/gimpact/clip_polygon.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 class TriangleContact {
 	
 	final List<List<int>> _intArrays = [];

@@ -21,13 +21,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-
-
-/**
- * Callback for operating with {@link OptimizedBvh}.
- * 
- * @author jezek2
- */
 abstract class NodeOverlapCallback {
 	void processNode(int subPart, int triangleIndex);
 }

@@ -122,7 +122,6 @@ class ContactConstraint {
     ManifoldPoint? contactPoint,
     ContactSolverInfo? solverInfo,
   ){
-		
 		Vector3 tmpVec = Vector3.zero();
 
 		Vector3 pos1_ = contactPoint?.getPositionWorldOnA(Vector3.zero()) ?? Vector3.zero();
@@ -169,7 +168,6 @@ class ContactConstraint {
 
 		normalImpulse = cpd.appliedImpulse - oldNormalImpulse;
 
-		//#ifdef USE_INTERNAL_APPLY_IMPULSE
 		Vector3 tmp = Vector3.zero();
 		if ((body1?.getInvMass() ?? 0) != 0) {
 			tmp.scaleFrom(body1!.getInvMass(), contactPoint!.normalWorldOnB);
@@ -179,10 +177,6 @@ class ContactConstraint {
 			tmp.scaleFrom(body2!.getInvMass(), contactPoint!.normalWorldOnB);
 			body2.internalApplyImpulse(tmp, cpd.angularComponentB, -normalImpulse);
 		}
-		//#else //USE_INTERNAL_APPLY_IMPULSE
-		//	body1.applyImpulse(normal*(normalImpulse), relPos1);
-		//	body2.applyImpulse(-normal*(normalImpulse), relPos2);
-		//#endif //USE_INTERNAL_APPLY_IMPULSE
 
 		return normalImpulse;
 	}

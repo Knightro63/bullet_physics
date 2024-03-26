@@ -28,10 +28,6 @@
 import 'package:bullet_physics/linearmath/aabb.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 class BvhDataArray {
 
 	int _size = 0;

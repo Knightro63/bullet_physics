@@ -121,17 +121,20 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 
 		// Remove the last pair from the hash table.
 		BroadphasePair? last = _overlappingPairArray.getQuick(lastPairIndex)!;
-		/* missing swap here too, Nat. */
+		/* missing swap while too, Nat. */
+    print(last.pProxy0!.getUid());
 		int lastHash = _getHash(last.pProxy0!.getUid(), last.pProxy1!.getUid()) & (_overlappingPairArray.capacity - 1);
 
 		index = _hashTable[lastHash];
 		assert (index != _nullPair);
 
 		previous = _nullPair;
-
+    print(_hashTable);
+    print(_next);
 		while (index != lastPairIndex) {
 			previous = index;
 			index = _next.get(index);
+      print(index);
 		}
 
 		if (previous != _nullPair) {
@@ -168,7 +171,6 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 	@override
 	void processAllOverlappingPairs(OverlapCallback callback, Dispatcher? dispatcher) {
 		for (int i=0; i<_overlappingPairArray.size; ) {
-
 			BroadphasePair? pair = _overlappingPairArray.getQuick(i);
 			if(pair != null && callback.processOverlap(pair)) {
 				removeOverlappingPair(pair.pProxy0!, pair.pProxy1!, dispatcher);
@@ -277,7 +279,7 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 		int oldCapacity = _overlappingPairArray.capacity;
 		_overlappingPairArray.add(null);
 
-		// this is where we add an actual pair, so also call the 'ghost'
+		// this is wwhile we add an actual pair, so also call the 'ghost'
 		_ghostPairCallback?.addOverlappingPair(proxy0, proxy1);
 		
 		int newCapacity = _overlappingPairArray.capacity;
@@ -327,8 +329,8 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 		return pair.pProxy0!.getUid() == proxyId1 && pair.pProxy1!.getUid() == proxyId2;
 	}
 
-	int _getHash(int? proxyId1, int? proxyId2) {
-		int key = (proxyId1!) | (proxyId2! << 16);
+	int _getHash(int? proxyId1, int? proxyId2) { //32 bit hash
+		int key = ((proxyId1!) | (proxyId2! << 16));
 		// Thomas Wang's hash
 
 		key += ~(key << 15);
@@ -339,14 +341,26 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 		key ^= (key >>> 16);
 		return key;
 	}
+	// int _getHash(int? proxyId1, int? proxyId2) { // 64 bit hash
+	// 	int key = ((proxyId1!) | (proxyId2! << 16));
+	// 	// Thomas Wang's hash
 
+  //   key += ~(key << 32);
+  //   key ^= (key >> 22);
+  //   key += ~(key << 13);
+  //   key ^= (key >> 8);
+  //   key += (key << 3);
+  //   key ^= (key >> 15);
+  //   key += ~(key << 27);
+  //   key ^= (key >> 31);
+	// 	return key.toUnsigned(64);
+	// }
 	BroadphasePair? _internalFindPair(BroadphaseProxy? proxy0, BroadphaseProxy? proxy1, int hash) {
 		int proxyId1 = proxy0!.getUid();
 		int proxyId2 = proxy1!.getUid();
-    
 		int index = _hashTable.get(hash);
 
-		while(index != _nullPair && _equalsPair(_overlappingPairArray.getQuick(index)!, proxyId1, proxyId2) == false) {
+		while(index != _nullPair && !_equalsPair(_overlappingPairArray.getQuick(index)!, proxyId1, proxyId2)) {
       index = _next.get(index);
 		}
 

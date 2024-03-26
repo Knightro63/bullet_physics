@@ -22,9 +22,11 @@
  */
 
 import 'dart:typed_data';
-
+import 'package:bullet_physics/bullet_physics.dart';
+import 'package:bullet_physics/collision/broadphase/broadphase_pair.dart';
 import 'package:bullet_physics/utils/int_array_list.dart';
 import 'package:bullet_physics/utils/object_array_list.dart';
+import 'package:vector_math/vector_math.dart';
 
 extension M on Map{
   V? get<K,V>(K i){
@@ -86,11 +88,6 @@ extension L<T> on List<T>{
   // }
 }
 
-/**
- * Miscellaneous utility functions.
- * 
- * @author jezek2
- */
 class MiscUtil {
 	// static int getListCapacityForHash(List list) {
 	// 	return getListCapacityForHash(list.length);
@@ -131,10 +128,28 @@ class MiscUtil {
 	 * Resizes list to exact size, filling with new instances of given class type
 	 * when expanding.
 	 */
-	static void resizeObjectArray<T>(ObjectArrayList<T> list, int size, T? valueCls) {
+	static void resizeObjectArray<T>(ObjectArrayList<T> list, int size, Type? valueCls) {
 		try {
 			while (list.size < size) {
-				list.add(null);//valueCls != null? valueCls as T : null
+        if(valueCls == Element){
+          list.add(new Element() as T);//
+        }
+        else if(valueCls == Vector3){
+          list.add(new Vector3.zero() as T);//
+        }
+        else if(valueCls == OptimizedBvhNode){
+          list.add(new OptimizedBvhNode() as T);//
+        }
+        else if(valueCls == Node){
+          list.add(new Node() as T);//
+        }
+        else if(valueCls == BroadphasePair){
+          list.add(new BroadphasePair() as T);//
+        }
+        else{
+          list.add(null);//
+        }
+				
 			}
 			while (list.size > size) {
 				list.removeQuick(list.size - 1);
@@ -308,6 +323,7 @@ class MiscUtil {
 				i++;
 				j--;
 			}
+      
 		}
 		while (i <= j);
 

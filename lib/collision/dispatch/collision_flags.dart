@@ -21,11 +21,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-/**
- * Flags for collision objects.
- * 
- * @author jezek2
- */
 class CollisionFlags {
 	static final int staticObject            = 1;
 	static final int kinematicObject         = 2;

@@ -21,11 +21,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-/**
- * Dynamics world type.
- * 
- * @author jezek2
- */
 enum DynamicsWorldType {
 	simple,
 	discrete,

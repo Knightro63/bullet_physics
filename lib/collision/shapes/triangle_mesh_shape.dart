@@ -31,12 +31,6 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * Concave triangle mesh abstract class. Use {@link BvhTriangleMeshShape} as concrete
- * implementation.
- * 
- * @author jezek2
- */
 abstract class TriangleMeshShape extends ConcaveShape {
 	final Vector3 localAabbMin = Vector3.zero();
 	final Vector3 localAabbMax = Vector3.zero();

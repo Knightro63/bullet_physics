@@ -21,23 +21,13 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-
-
 import "package:bullet_physics/collision/broadphase/broadphase_native_type.dart";
 import "package:bullet_physics/collision/shapes/convex_shape.dart";
 import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * UniformScalingShape allows to re-use uniform scaled instances of {@link ConvexShape}
- * in a memory efficient way. Istead of using {@link UniformScalingShape}, it is better
- * to use the non-uniform setLocalScaling method on convex shapes that implement it.
- * 
- * @author jezek2
- */
 class UniformScalingShape extends ConvexShape {
-
 	late ConvexShape _childConvexShape;
 	late double _uniformScalingFactor;
 

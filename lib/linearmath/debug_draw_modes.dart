@@ -20,11 +20,7 @@
  *    misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
-/**
- * Debug draw modes, used by demo framework.
- * 
- * @author jezek2
- */
+
 class DebugDrawModes {
 	static const int noDebug              = 0;
 	static const int drawWireframe        = 1;

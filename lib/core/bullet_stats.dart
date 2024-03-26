@@ -25,11 +25,6 @@ import '../linearmath/c_profile_manager.dart';
 import '../linearmath/clock.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- * Bullet statistics and profile support.
- * 
- * @author jezek2
- */
 class BulletStats {
   static int gTotalContactPoints = 0;
 	// GjkPairDetector
@@ -58,9 +53,6 @@ class BulletStats {
 
 	// DiscreteDynamicsWorld:
 	static int gNumClampedCcdMotions = 0;
-
-
-	
 	static bool _enableProfile = false;
 	
 	////////////////////////////////////////////////////////////////////////////
@@ -79,8 +71,8 @@ class BulletStats {
 	}
 
 	static double profileGetTickRate() {
-		//return 1000000;
-		return 1000;
+		return 1000000;
+		//return 1000;
 	}
 	
 	/**

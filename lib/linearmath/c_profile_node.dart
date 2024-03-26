@@ -31,11 +31,6 @@
 
 import '../core/bullet_stats.dart';
 
-/**
- * A node in the Profile Hierarchy Tree.
- * 
- * @author jezek2
- */
 class CProfileNode {
 	String name;
 	int totalCalls = 0;

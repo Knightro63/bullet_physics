@@ -33,7 +33,6 @@ import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
 class HeightfieldTerrainShapeDom extends ConcaveShape {
-
 	static const int xAxis = 0;
 	static const int yAxis = 1;
 	static const int zAxis = 2;

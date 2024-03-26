@@ -27,11 +27,6 @@ import 'package:bullet_physics/linearmath/vector_util.dart';
 import 'package:vector_math/vector_math.dart';
 import 'dart:math';
 
-/**
- * Utility functions for axis aligned bounding boxes (AABB).
- * 
- * @author jezek2
- */
 class AabbUtil2 {
 
 	static void aabbExpand(Vector3 aabbMin, Vector3 aabbMax, Vector3 expansionMin, Vector3 expansionMax) {

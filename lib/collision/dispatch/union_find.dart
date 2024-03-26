@@ -63,7 +63,7 @@ class UnionFind {
 	}
 
 	void allocate(int N) {
-		MiscUtil.resizeObjectArray(_elements, N, Element());
+		MiscUtil.resizeObjectArray(_elements, N, Element);
 	}
 
 	void free() {
@@ -71,7 +71,9 @@ class UnionFind {
 	}
 
 	void unite(int p, int q) {
-		int i = find(p), j = find(q);
+		int i = find(p);
+    int j = find(q);
+
 		if (i == j) {
 			return;
 		}

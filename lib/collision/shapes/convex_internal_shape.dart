@@ -28,13 +28,7 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * ConvexInternalShape is an internal base class, shared by most convex shape implementations.
- * 
- * @author jezek2
- */
 abstract class ConvexInternalShape extends ConvexShape {
-
 	// local scaling. collisionMargin is not scaled !
 	final Vector3 localScaling = Vector3(1, 1, 1);
 	final Vector3 implicitShapeDimensions = Vector3.zero();

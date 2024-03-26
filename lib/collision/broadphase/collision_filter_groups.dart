@@ -21,11 +21,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-/**
- * Common collision filter groups.
- * 
- * @author jezek2
- */
 class CollisionFilterGroups {
 	static const int defaultFilter   = 1;
 	static const int staticFilter    = 2;
@@ -33,5 +28,5 @@ class CollisionFilterGroups {
 	static const int debrisFilter    = 8;
 	static const int sensorTrigger   = 16;
 	static const int charcterFilter  = 32;
-	static const int allFilter       = -1; // all bits sets: DefaultFilter | StaticFilter | KinematicFilter | DebrisFilter | SensorTrigger
+	static const int allFilter       = -1;
 }

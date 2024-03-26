@@ -25,10 +25,6 @@ import 'package:bullet_physics/utils/int_array_list.dart';
 import 'package:bullet_physics/utils/object_array_list.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 class PHullResult {
 	int vcount = 0;
 	int indexCount = 0;

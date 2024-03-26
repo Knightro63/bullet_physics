@@ -23,12 +23,6 @@
 import 'package:bullet_physics/linearmath/motion_state.dart';
 import 'package:bullet_physics/linearmath/transform.dart';
 
-/**
- * DefaultMotionState provides a common implementation to synchronize world transforms
- * with offsets.
- * 
- * @author jezek2
- */
 class DefaultMotionState extends MotionState {
 
 	/** Current interpolated world transform, used to draw object. */

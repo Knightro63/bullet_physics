@@ -24,13 +24,7 @@
 import 'package:bullet_physics/collision/shapes/cylinder_shape.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- * Cylinder shape around the X axis.
- * 
- * @author jezek2
- */
 class CylinderShapeX extends CylinderShape {
-
 	CylinderShapeX(super.halfExtents) {
 		upAxis = 0;
 		recalcLocalAabb();

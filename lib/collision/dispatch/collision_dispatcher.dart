@@ -166,7 +166,6 @@ class CollisionDispatcher extends Dispatcher {
 
 	@override
 	bool needsResponse(CollisionObject body0, CollisionObject body1) {
-    print('here');
 		bool hasResponse = (body0.hasContactResponse() && body1.hasContactResponse());
 		hasResponse = hasResponse && ((!body0.isStaticOrKinematicObject()) || (!body1.isStaticOrKinematicObject()));
 		return hasResponse;

@@ -62,13 +62,7 @@ extension Quat4 on Quaternion{
   }
 }
 
-/**
- * Utility functions for quaternions.
- * 
- * @author jezek2
- */
 class QuaternionUtil {
-
 	static double getAngle(Quaternion q) {
 		double s = 2 * acos(q.w);
 		return s;

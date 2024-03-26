@@ -95,17 +95,15 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
 	int btSeed2 = 0;
 
 	SequentialImpulseConstraintSolver() {
-    {
-      for (int i=0; i<_gOrder.length; i++) {
-        _gOrder[i] = _OrderIndex();
-      }
+    for (int i=0; i<_gOrder.length; i++) {
+      _gOrder[i] = _OrderIndex();
     }
+  
 		BulletGlobals.setContactDestroyedCallback(_CDC());
 
 		// initialize default friction/contact funcs
-		int i, j;
-		for (i = 0; i < _maxContactSolverTypes; i++) {
-			for (j = 0; j < _maxContactSolverTypes; j++) {
+		for (int i = 0; i < _maxContactSolverTypes; i++) {
+			for (int j = 0; j < _maxContactSolverTypes; j++) {
 				contactDispatch[i][j] = ContactConstraint.resolveSingleCollision;
 				frictionDispatch[i][j] = ContactConstraint.resolveSingleFriction;
 			}
@@ -435,74 +433,11 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
 			}
 			PersistentManifold? manifold;
 			CollisionObject? colObj0, colObj1;
-
-			//btRigidBody* rb0=0,*rb1=0;
-
-	//	//#ifdef FORCE_REFESH_CONTACT_MANIFOLDS
-	//
-	//		BEGIN_PROFILE("refreshManifolds");
-	//
-	//		int i;
-	//
-	//
-	//
-	//		for (i=0;i<numManifolds;i++)
-	//		{
-	//			manifold = manifoldPtr[i];
-	//			rb1 = (btRigidBody*)manifold->getBody1();
-	//			rb0 = (btRigidBody*)manifold->getBody0();
-	//
-	//			manifold->refreshContactPoints(rb0->getCenterOfMassTransform(),rb1->getCenterOfMassTransform());
-	//
-	//		}
-	//
-	//		END_PROFILE("refreshManifolds");
-	//	//#endif //FORCE_REFESH_CONTACT_MANIFOLDS
-
 			Transform tmpTrans = Transform();
-
-			//int sizeofSB = sizeof(btSolverBody);
-			//int sizeofSC = sizeof(btSolverConstraint);
 
 			//if (1)
 			{
-				//if m_stackAlloc, try to pack bodies/constraints to speed up solving
-				//		btBlock*					sablock;
-				//		sablock = stackAlloc->beginBlock();
-
-				//	int memsize = 16;
-				//		unsigned char* stackMemory = stackAlloc->allocate(memsize);
-
-
-				// todo: use stack allocator for this temp memory
-				//int minReservation = numManifolds * 2;
-
-				//m_tmpSolverBodyPool.reserve(minReservation);
-
-				//don't convert all bodies, only the one we need so solver the constraints
-				/*
 				{
-				for (int i=0;i<numBodies;i++)
-				{
-				btRigidBody* rb = btRigidBody::upcast(bodies[i]);
-				if (rb && 	(rb->getIslandTag() >= 0))
-				{
-				btAssert(rb->getCompanionId() < 0);
-				int solverBodyId = m_tmpSolverBodyPool.length;
-				btSolverBody& solverBody = m_tmpSolverBodyPool.expand();
-				initSolverBody(&solverBody,rb);
-				rb->setCompanionId(solverBodyId);
-				} 
-				}
-				}
-				*/
-
-				//m_tmpSolverConstraintPool.reserve(minReservation);
-				//m_tmpSolverFrictionConstraintPool.reserve(minReservation);
-
-				{
-					int i;
-					
 					Vector3 relPos1 = Vector3.zero();
 					Vector3 relPos2 = Vector3.zero();
 
@@ -519,7 +454,7 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
 
 					Matrix3 tmpMat = Matrix3.zero();
 					
-					for (i = 0; i < numManifolds; i++) {
+					for (int i = 0; i < numManifolds; i++) {
 						manifold = manifoldPtr?[manifoldOffset+i];
 						colObj0 = manifold?.getBody0() as CollisionObject?;
 						colObj1 = manifold?.getBody1() as CollisionObject?;
@@ -620,11 +555,7 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
 										solverConstraint.angularComponentB.setValues(0, 0, 0);
 									}
 
-									{
-										//#ifdef COMPUTE_IMPULSE_DENOM
-										//btScalar denom0 = rb0->computeImpulseDenominator(pos1,cp.m_normalWorldOnB);
-										//btScalar denom1 = rb1->computeImpulseDenominator(pos2,cp.m_normalWorldOnB);
-										//#else							
+									{					
 										double denom0 = 0;
 										double denom1 = 0;
 										if (rb0 != null) {
@@ -635,7 +566,6 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
 											vec.cross2(solverConstraint.angularComponentB, relPos2);
 											denom1 = rb1.getInvMass() + (cp?.normalWorldOnB.dot(vec) ?? 0);
 										}
-										//#endif //COMPUTE_IMPULSE_DENOM		
 
 										double denom = relaxation / (denom0 + denom1);
 										solverConstraint.jacDiagABInv = denom;
@@ -768,24 +698,15 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
 				}
 			}
 
-			// TODO: btContactSolverInfo info = infoGlobal;
+			for (int j = 0; j < numConstraints; j++) {
+        TypedConstraint? constraint = constraints![constraintsOffset+j];
+        constraint?.buildJacobian();
+      }
 
-			{
-				int j;
-				for (j = 0; j < numConstraints; j++) {
-					TypedConstraint? constraint = constraints![constraintsOffset+j];
-					constraint?.buildJacobian();
-				}
-			}
-
-			{
-				int j;
-				for (j = 0; j < numConstraints; j++) {
-					TypedConstraint? constraint = constraints![constraintsOffset+j];
-					constraint?.getInfo2(infoGlobal as ContactSolverInfo);
-				}
-			}
-
+      for (int j = 0; j < numConstraints; j++) {
+        TypedConstraint? constraint = constraints![constraintsOffset+j];
+        constraint?.getInfo2(infoGlobal as ContactSolverInfo);
+      }
 
 			int numConstraintPool = _tmpSolverConstraintPool.size;
 			int numFrictionPool = _tmpSolverFrictionConstraintPool.size;
@@ -793,16 +714,14 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
 			// todo: use stack allocator for such temporarily memory, same for solver bodies/constraints
 			MiscUtil.resizeArray(_orderTmpConstraintPool, numConstraintPool, 0);
 			MiscUtil.resizeArray(_orderFrictionConstraintPool, numFrictionPool, 0);
-			{
-				int i;
-				for (i = 0; i < numConstraintPool; i++) {
-					_orderTmpConstraintPool.set(i, i);
-				}
-				for (i = 0; i < numFrictionPool; i++) {
-					_orderFrictionConstraintPool.set(i, i);
-				}
-			}
 
+      for (int i = 0; i < numConstraintPool; i++) {
+        _orderTmpConstraintPool.set(i, i);
+      }
+      for (int i = 0; i < numFrictionPool; i++) {
+        _orderFrictionConstraintPool.set(i, i);
+      }
+			
 			return 0;
 		}
 		finally {
@@ -820,7 +739,7 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
     int constraintsOffset, 
     int numConstraints, 
     ContactSolverInfo? infoGlobal, 
-    IDebugDraw? debugDrawer/*,btStackAlloc* stackAlloc*/
+    IDebugDraw? debugDrawer
   ) {
 		BulletStats.pushProfile("solveGroupCacheFriendlyIterations");
 		try {
@@ -971,17 +890,6 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
 			}
 		}
 
-		//	printf("m_tmpSolverConstraintPool.length = %i\n",m_tmpSolverConstraintPool.length);
-
-		/*
-		printf("m_tmpSolverBodyPool.length = %i\n",m_tmpSolverBodyPool.length);
-		printf("m_tmpSolverConstraintPool.length = %i\n",m_tmpSolverConstraintPool.length);
-		printf("m_tmpSolverFrictionConstraintPool.length = %i\n",m_tmpSolverFrictionConstraintPool.length);
-		printf("m_tmpSolverBodyPool.capacity() = %i\n",m_tmpSolverBodyPool.capacity());
-		printf("m_tmpSolverConstraintPool.capacity() = %i\n",m_tmpSolverConstraintPool.capacity());
-		printf("m_tmpSolverFrictionConstraintPool.capacity() = %i\n",m_tmpSolverFrictionConstraintPool.capacity());
-		*/
-
 		_tmpSolverBodyPool.clear();
 		_tmpSolverConstraintPool.clear();
 		_tmpSolverFrictionConstraintPool.clear();
@@ -1009,90 +917,78 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
 		BulletStats.pushProfile("solveGroup");
 		try {
 			// TODO: solver cache friendly
-			if (((infoGlobal?.solverMode ?? 0) & SolverMode.cacheFriendly) != 0) {
-				// you need to provide at least some bodies
-				// SimpleDynamicsWorld needs to switch off SOLVER_CACHE_FRIENDLY
-				assert (bodies != null);
-				assert (numBodies != 0);
-				double value = solveGroupCacheFriendly(bodies, numBodies, manifoldPtr, manifoldOffset, numManifolds, constraints, constraintsOffset, numConstraints, infoGlobal, debugDrawer/*,stackAlloc*/);
-				return value;
-			}
+			// if ((infoGlobal!.solverMode & SolverMode.cacheFriendly) != 0) {
+			// 	// you need to provide at least some bodies
+			// 	// SimpleDynamicsWorld needs to switch off SOLVER_CACHE_FRIENDLY
+			// 	assert (bodies != null);
+			// 	assert (numBodies != 0);
+			// 	double value = solveGroupCacheFriendly(bodies, numBodies, manifoldPtr, manifoldOffset, numManifolds, constraints, constraintsOffset, numConstraints, infoGlobal, debugDrawer);
+      //   return value;
+			// }
 
 			ContactSolverInfo info = ContactSolverInfo(infoGlobal);
-
-			int numiter = infoGlobal?.numIterations ?? 0;
-
+			int numiter = infoGlobal!.numIterations;
 			int totalPoints = 0;
-			{
-				int j;
-				for (j = 0; j < numManifolds; j++) {
-					PersistentManifold? manifold = manifoldPtr?[manifoldOffset+j];
-					prepareConstraints(manifold, info, debugDrawer);
+      for (int j = 0; j < numManifolds; j++) {
+        PersistentManifold? manifold = manifoldPtr?[manifoldOffset+j];
+        prepareConstraints(manifold, info, debugDrawer);
 
-					for (int p = 0; p < (manifoldPtr?[manifoldOffset+j]?.getNumContacts() ?? 0); p++) {
-						_gOrder[totalPoints]?.manifoldIndex = j;
-						_gOrder[totalPoints]?.pointIndex = p;
-						totalPoints++;
-					}
-				}
-			}
+        for (int p = 0; p < (manifoldPtr?[manifoldOffset+j]?.getNumContacts() ?? 0); p++) {
+          _gOrder[totalPoints]?.manifoldIndex = j;
+          _gOrder[totalPoints]?.pointIndex = p;
+          totalPoints++;
+        }
+      }
 
-			{
-				int j;
-				for (j = 0; j < numConstraints; j++) {
-					TypedConstraint? constraint = constraints?[constraintsOffset+j];
-					constraint?.buildJacobian();
-				}
-			}
+      for (int j = 0; j < numConstraints; j++) {
+        TypedConstraint? constraint = constraints?[constraintsOffset+j];
+        constraint?.buildJacobian();
+      }
+			
+      // should traverse the contacts random order...
+      for (int iteration = 0; iteration < numiter; iteration++) {
+        if ((infoGlobal.solverMode & SolverMode.randomOrder) != 0) {
+          if ((iteration & 7) == 0) {
+            for (int j = 0; j < totalPoints; ++j) {
+              // JAVA NOTE: swaps references instead of copying values (but that's fine in this context)
+              _OrderIndex tmp = _gOrder[j]!;
+              int swapi = randInt2(j + 1);
+              _gOrder[j] = _gOrder[swapi];
+              _gOrder[swapi] = tmp;
+            }
+          }
+        }
 
-			// should traverse the contacts random order...
-			int iteration;
-			{
-				for (iteration = 0; iteration < numiter; iteration++) {
-					int j;
-					if (((infoGlobal?.solverMode ?? 0) & SolverMode.randomOrder) != 0) {
-						if ((iteration & 7) == 0) {
-							for (j = 0; j < totalPoints; ++j) {
-								// JAVA NOTE: swaps references instead of copying values (but that's fine in this context)
-								_OrderIndex tmp = _gOrder[j]!;
-								int swapi = randInt2(j + 1);
-								_gOrder[j] = _gOrder[swapi];
-								_gOrder[swapi] = tmp;
-							}
-						}
-					}
+        for (int j = 0; j < numConstraints; j++) {
+          TypedConstraint? constraint = constraints![constraintsOffset+j];
+          constraint?.solveConstraint(info.timeStep);
+        }
 
-					for (j = 0; j < numConstraints; j++) {
-						TypedConstraint? constraint = constraints![constraintsOffset+j];
-						constraint?.solveConstraint(info.timeStep);
-					}
+        for (int j = 0; j < totalPoints; j++) {
+          PersistentManifold? manifold = manifoldPtr![manifoldOffset+_gOrder[j]!.manifoldIndex];
+          solve(
+            manifold?.getBody0() as RigidBody?,
+            manifold?.getBody1() as RigidBody?, 
+            manifold?.getContactPoint(_gOrder[j]!.pointIndex), 
+            info, 
+            iteration, 
+            debugDrawer
+          );
+        }
 
-					for (j = 0; j < totalPoints; j++) {
-						PersistentManifold? manifold = manifoldPtr![manifoldOffset+_gOrder[j]!.manifoldIndex];
-						solve(
-              manifold?.getBody0() as RigidBody?,
-							manifold?.getBody1() as RigidBody?, 
-              manifold?.getContactPoint(_gOrder[j]!.pointIndex), 
-              info, 
-              iteration, 
-              debugDrawer
-            );
-					}
-
-					for (j = 0; j < totalPoints; j++) {
-						PersistentManifold? manifold = manifoldPtr![manifoldOffset+_gOrder[j]!.manifoldIndex];
-						solveFriction(
-              manifold?.getBody0() as RigidBody?,
-							manifold?.getBody1() as RigidBody?, 
-              manifold?.getContactPoint(_gOrder[j]!.pointIndex), 
-              info, 
-              iteration, 
-              debugDrawer
-            );
-					}
-
-				}
-			}
+        for (int j = 0; j < totalPoints; j++) {
+          PersistentManifold? manifold = manifoldPtr![manifoldOffset+_gOrder[j]!.manifoldIndex];
+          solveFriction(
+            manifold?.getBody0() as RigidBody?,
+            manifold?.getBody1() as RigidBody?, 
+            manifold?.getContactPoint(_gOrder[j]!.pointIndex), 
+            info, 
+            iteration, 
+            debugDrawer
+          );
+        }
+      }
+			
 
 			return 0;
 		}
@@ -1107,9 +1003,6 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
 
 		// only necessary to refresh the manifold once (first iteration). The integration is done outside the loop
 		{
-			//#ifdef FORCE_REFESH_CONTACT_MANIFOLDS
-			//manifoldPtr->refreshContactPoints(body0->getCenterOfMassTransform(),body1->getCenterOfMassTransform());
-			//#endif //FORCE_REFESH_CONTACT_MANIFOLDS		
 			int numpoints = manifoldPtr?.getNumContacts() ?? 0;
 
 			BulletStats.gTotalContactPoints += numpoints;
@@ -1246,15 +1139,8 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
 					denom = relaxation / (denom0 + denom1);
 					cpd.jacDiagABInvTangent1 = denom;
 
-					//btVector3 totalImpulse = 
-					//	//#ifndef NO_FRICTION_WARMSTART
-					//	//cpd->m_frictionWorldTangential0*cpd->m_accumulatedTangentImpulse0+
-					//	//cpd->m_frictionWorldTangential1*cpd->m_accumulatedTangentImpulse1+
-					//	//#endif //NO_FRICTION_WARMSTART
-					//	cp.normalWorldOnB*cpd.appliedImpulse;
 					totalImpulse.scaleFrom(cpd.appliedImpulse, cp.normalWorldOnB);
 
-					///
 					{
 						torqueAxis0.cross2(relPos1, cp.normalWorldOnB);
 
@@ -1306,50 +1192,40 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
 
 	double solveCombinedContactFriction(RigidBody body0, RigidBody body1, ManifoldPoint cp, ContactSolverInfo info, int iter, IDebugDraw debugDrawer) {
 		double maxImpulse = 0;
-
-		{
-			if (cp.getDistance() <= 0) {
-				{
-					//btConstraintPersistentData* cpd = (btConstraintPersistentData*) cp.m_userPersistentData;
-					double impulse = ContactConstraint.resolveSingleCollisionCombined(body0, body1, cp, info);
-
-					if (maxImpulse < impulse) {
-						maxImpulse = impulse;
-					}
-				}
-			}
-		}
+    if (cp.getDistance() <= 0) {
+      //btConstraintPersistentData* cpd = (btConstraintPersistentData*) cp.m_userPersistentData;
+      double impulse = ContactConstraint.resolveSingleCollisionCombined(body0, body1, cp, info);
+      if (maxImpulse < impulse) {
+        maxImpulse = impulse;
+      }
+    }
 		return maxImpulse;
 	}
 	
 	double solve(RigidBody? body0, RigidBody? body1, ManifoldPoint? cp, ContactSolverInfo info, int iter, IDebugDraw? debugDrawer) {
 		double maxImpulse = 0;
-
-		{
-			if ((cp?.getDistance() ?? 0) <= 0) {{
-					ConstraintPersistentData? cpd = cp?.userPersistentData as ConstraintPersistentData?;
-          if(cpd != null){
-            double impulse = cpd.contactSolverFunc!(body0, body1, cp, info);
-            if (maxImpulse < impulse) {
-              maxImpulse = impulse;
-            }
+  
+    if ((cp?.getDistance() ?? 0) <= 0) {{
+        ConstraintPersistentData? cpd = cp?.userPersistentData as ConstraintPersistentData?;
+        if(cpd != null){
+          double impulse = cpd.contactSolverFunc!(body0, body1, cp, info);
+          if (maxImpulse < impulse) {
+            maxImpulse = impulse;
           }
-				}
-			}
-		}
-
+        }
+      }
+    }
+		
 		return maxImpulse;
 	}
 
 	double solveFriction(RigidBody? body0, RigidBody? body1, ManifoldPoint? cp, ContactSolverInfo? info, int iter, IDebugDraw? debugDrawer) {
-		{
-			if ((cp?.getDistance() ?? 0) <= 0) {
-				ConstraintPersistentData? cpd = cp?.userPersistentData as ConstraintPersistentData?;
-        if(cpd != null){
-				  cpd.frictionSolverFunc!(body0, body1, cp, info);
-        }
-			}
-		}
+    if ((cp?.getDistance() ?? 0) <= 0) {
+      ConstraintPersistentData? cpd = cp?.userPersistentData as ConstraintPersistentData?;
+      if(cpd != null){
+        cpd.frictionSolverFunc!(body0, body1, cp, info);
+      }
+    }
 		return 0;
 	}
 	

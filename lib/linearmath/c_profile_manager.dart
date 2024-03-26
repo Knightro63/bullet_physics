@@ -32,11 +32,7 @@
 import '../core/bullet_stats.dart';
 import './c_profile_node.dart';
 import './c_profile_iterator.dart';
-/**
- * Manager for the profile system.
- * 
- * @author jezek2
- */
+
 class CProfileManager{
 
 	static final CProfileNode _root = CProfileNode("Root", null);

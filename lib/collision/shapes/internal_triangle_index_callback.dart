@@ -21,16 +21,8 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-
-
 import 'package:vector_math/vector_math.dart';
 
-/**
- * Callback for internal processing of triangles.
- * 
- * @see StridingMeshInterface#internalProcessAllTriangles
- * @author jezek2
- */
 abstract class InternalTriangleIndexCallback {
 	void internalProcessTriangleIndex(List<Vector3> triangle, int partId, int triangleIndex);
 }

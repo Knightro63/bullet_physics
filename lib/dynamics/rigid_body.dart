@@ -40,7 +40,6 @@ import 'package:vector_math/vector_math.dart';
 import 'dart:math';
 
 class RigidBody extends CollisionObject {
-
 	static final double _maxAngvel = BulletGlobals.simdHalfPi;
 	
 	final Matrix3 _invInertiaTensorWorld = Matrix3.zero();

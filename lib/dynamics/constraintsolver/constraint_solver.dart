@@ -29,12 +29,6 @@ import "package:bullet_physics/dynamics/constraintsolver/typed_constraint.dart";
 import "package:bullet_physics/linearmath/i_debug_draw.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 
-
-/**
- * Abstract class for constraint solvers.
- * 
- * @author jezek2
- */
 abstract class ConstraintSolver {
 	//final BulletStack stack = BulletStack.get();
 	void prepareSolve (int numBodies, int numManifolds) {}
@@ -42,7 +36,7 @@ abstract class ConstraintSolver {
 	 * Solve a group of constraints.
 	 */
 	double solveGroup(ObjectArrayList<CollisionObject>? bodies, int numBodies, ObjectArrayList<PersistentManifold>? manifold, int manifoldOffset, int numManifolds, ObjectArrayList<TypedConstraint>? constraints, int constraintsOffset, int numConstraints, ContactSolverInfo? info, IDebugDraw? debugDrawer/*, btStackAlloc* stackAlloc*/, Dispatcher? dispatcher);
-	void allSolved(ContactSolverInfo info, IDebugDraw? debugDrawer/*, btStackAlloc* stackAlloc*/) {}
+	void allSolved(ContactSolverInfo info, IDebugDraw? debugDrawer) {}
 	/**
 	 * Clear internal cached data and reset random seed.
 	 */

@@ -32,12 +32,6 @@ import "package:bullet_physics/dynamics/rigid_body.dart";
 import "package:bullet_physics/dynamics/vehicle/raycast_vehicle.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * DynamicsWorld is the interface class for several dynamics implementation,
- * basic, discrete, parallel, and continuous etc.
- * 
- * @author jezek2
- */
 abstract class DynamicsWorld extends CollisionWorld {
 	InternalTickCallback? internalTickCallback;
 	Object? worldUserInfo;
@@ -88,12 +82,10 @@ abstract class DynamicsWorld extends CollisionWorld {
 		return null;
 	}
 
-	// JAVA NOTE: not part of the original api
 	int getNumActions() {
 		return 0;
 	}
 
-	// JAVA NOTE: not part of the original api
 	ActionInterface? getAction(int index) {
 		return null;
 	}
@@ -121,5 +113,4 @@ abstract class DynamicsWorld extends CollisionWorld {
 	ContactSolverInfo getSolverInfo() {
 		return solverInfo;
 	}
-	
 }

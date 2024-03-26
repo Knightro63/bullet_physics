@@ -31,11 +31,6 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * GjkConvexCast performs a raycast on a convex object using support mapping.
- * 
- * @author jezek2
- */
 class GjkConvexCast extends ConvexCast {
 	static const int _maxIterations = 32;
 	

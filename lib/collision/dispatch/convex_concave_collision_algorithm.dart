@@ -103,11 +103,6 @@ class ConvexConcaveCollisionAlgorithm extends CollisionAlgorithm {
 		}
 
 		Transform tmpTrans = Transform();
-		
-		//const btVector3& from = convexbody->m_worldTransform.getOrigin();
-		//btVector3 to = convexbody->m_interpolationWorldTransform.getOrigin();
-		//todo: only do if the motion exceeds the 'radius'
-
 		Transform? triInv = triBody?.getWorldTransform(Transform());
 		triInv?.inverse();
 

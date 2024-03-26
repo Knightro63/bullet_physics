@@ -30,13 +30,7 @@ import '../core/bullet_globals.dart';
 import 'package:vector_math/vector_math.dart';
 import 'dart:math';
 
-/**
- * Utility functions for transforms.
- * 
- * @author jezek2
- */
 class TransformUtil {
-	
 	static const double simdSqrt12 = 0.7071067811865475244008443621048490;
 	static const double angularMotionThreshold = 0.5*BulletGlobals.simdHalfPi;
 	

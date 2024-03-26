@@ -25,12 +25,7 @@ import "package:bullet_physics/collision/shapes/triangle_callback.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 abstract class TriangleRaycastCallback extends TriangleCallback {
-	
 	//final BulletStack stack = BulletStack.get();
 
 	final Vector3 from = Vector3.zero();

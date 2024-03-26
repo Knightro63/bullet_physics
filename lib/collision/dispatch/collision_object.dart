@@ -276,7 +276,6 @@ class CollisionObject {
 
 	// Don't do continuous collision detection if the motion (in one step) is less then ccdMotionThreshold
 	void setCcdMotionThreshold(double ccdMotionThreshold) {
-		// JAVA NOTE: fixed bug with usage of ccdMotionThreshold*ccdMotionThreshold
 		this.ccdMotionThreshold = ccdMotionThreshold;
 	}
 

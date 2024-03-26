@@ -38,17 +38,6 @@ import "package:bullet_physics/utils/object_array_list.dart";
 import 'package:vector_math/vector_math.dart';
 import 'dart:math';
 
-/**
- * KinematicCharacterController is an object that supports a sliding motion in
- * a world. It uses a {@link GhostObject} and convex sweep test to test for upcoming
- * collisions. This is combined with discrete collision detection to recover
- * from penetrations.<p>
- *
- * Interaction between KinematicCharacterController and dynamic rigid bodies
- * needs to be explicity implemented by the user.
- * 
- * @author tomrbryn
- */
 class KinematicCharacterController extends ActionInterface {
 
 	final List<Vector3> _upAxisDirection = [
@@ -398,10 +387,6 @@ class KinematicCharacterController extends ActionInterface {
 		Transform newTrans = ghostObject.getWorldTransform(Transform());
 		newTrans.origin.setFrom(currentPosition);
 		ghostObject.setWorldTransform(newTrans);
-		//printf("m_touchingNormal = %f,%f,%f\n",m_touchingNormal[0],m_touchingNormal[1],m_touchingNormal[2]);
-
-		//System.out.println("recoverFromPenetration "+penetration+" "+touchingNormal);
-
 		return penetration;
 	}
 	
@@ -458,16 +443,16 @@ class KinematicCharacterController extends ActionInterface {
 			Vector3 reflectDir = computeReflectionDirection(movementDirection, hitNormal, Vector3.zero());
 			reflectDir.normalize();
 
-			Vector3 parallelDir = parallelComponent(reflectDir, hitNormal, Vector3.zero());
+			//Vector3 parallelDir = parallelComponent(reflectDir, hitNormal, Vector3.zero());
 			Vector3 perpindicularDir = perpindicularComponent(reflectDir, hitNormal, Vector3.zero());
 
 			targetPosition.setFrom(currentPosition);
-			if (false) {//tangentMag != 0.0)
-				Vector3 parComponent = Vector3.zero();
-				parComponent.scaleFrom(tangentMag * movementLength, parallelDir);
-				//printf("parComponent=%f,%f,%f\n",parComponent[0],parComponent[1],parComponent[2]);
-				targetPosition.add(parComponent);
-			}
+			// if (false) {//tangentMag != 0.0)
+			// 	Vector3 parComponent = Vector3.zero();
+			// 	parComponent.scaleFrom(tangentMag * movementLength, parallelDir);
+			// 	//printf("parComponent=%f,%f,%f\n",parComponent[0],parComponent[1],parComponent[2]);
+			// 	targetPosition.add(parComponent);
+			// }
 
 			if (normalMag != 0.0) {
 				Vector3 perpComponent = Vector3.zero();

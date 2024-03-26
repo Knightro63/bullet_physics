@@ -34,13 +34,7 @@ import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 import 'dart:math';
 
-/**
- * GjkPairDetector uses GJK to implement the {@link DiscreteCollisionDetectorInterface}.
- * 
- * @author jezek2
- */
 class GjkPairDetector extends DiscreteCollisionDetectorInterface {
-
 	//final BulletStack stack = BulletStack.get();
 	
 	// must be above the machine epsilon
@@ -127,8 +121,7 @@ class GjkPairDetector extends DiscreteCollisionDetectorInterface {
 			Vector3 tmpPointOnA = Vector3.zero(), tmpPointOnB = Vector3.zero();
 			Vector3 tmpNormalInB = Vector3.zero();
 			
-			for (;;) //while (true)
-			{
+			for (;;){
 				seperatingAxisInA.negateFrom(_cachedSeparatingAxis);
 				MatrixUtil.transposeTransform(seperatingAxisInA, seperatingAxisInA, input.transformA.basis);
 
@@ -317,17 +310,12 @@ class GjkPairDetector extends DiscreteCollisionDetectorInterface {
 		}
 
 		if (isValid) {
-			//#ifdef __SPU__
-			//		//spu_printf("distance\n");
-			//#endif //__CELLOS_LV2__
-
 			tmp.add2(pointOnB, positionOffset);
 			output?.addContactPoint(
         normalInB,
         tmp,
         distance
       );
-		//printf("gjk add:%f",distance);
 		}
 	}
 

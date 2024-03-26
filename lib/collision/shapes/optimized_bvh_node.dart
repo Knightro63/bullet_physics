@@ -42,5 +42,4 @@ class OptimizedBvhNode{ // implements Serializable
 		subPart = n.subPart;
 		triangleIndex = n.triangleIndex;
 	}
-
 }

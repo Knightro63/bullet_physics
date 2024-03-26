@@ -27,20 +27,12 @@ import 'package:bullet_physics/collision/broadphase/dispatcher.dart';
 import 'package:bullet_physics/collision/broadphase/overlapping_pair_cache.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- * BroadphaseInterface for AABB overlapping object pairs.
- * 
- * @author jezek2
- */
 abstract class BroadphaseInterface {
 	BroadphaseProxy createProxy(Vector3 aabbMin, Vector3 aabbMax, BroadphaseNativeType shapeType, Object userPtr, int collisionFilterGroup, int collisionFilterMask, Dispatcher? dispatcher, Object? multiSapProxy);
 	void destroyProxy(BroadphaseProxy proxy, Dispatcher? dispatcher);
 	void setAabb(BroadphaseProxy? proxy, Vector3 aabbMin, Vector3 aabbMax, Dispatcher? dispatcher);
-	///calculateOverlappingPairs is optional: incremental algorithms (sweep and prune) might do it during the set aabb
 	void calculateOverlappingPairs(Dispatcher? dispatcher);
 	OverlappingPairCache? getOverlappingPairCache();
-	///getAabb returns the axis aligned bounding box in the 'global' coordinate frame
-	///will add some transform later
 	void getBroadphaseAabb(Vector3 aabbMin, Vector3 aabbMax);
 	void printStats();
 }

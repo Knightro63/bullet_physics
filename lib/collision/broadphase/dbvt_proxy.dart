@@ -27,10 +27,6 @@ import 'package:bullet_physics/collision/broadphase/broadphase_proxy.dart';
 import 'package:bullet_physics/collision/broadphase/dbvt_aabb_mm.dart';
 import 'package:bullet_physics/collision/broadphase/node.dart';
 
-/**
- *
- * @author jezek2
- */
 class DbvtProxy extends BroadphaseProxy {
 	final DbvtAabbMm aabb = DbvtAabbMm();
 	Node? leaf;

@@ -23,12 +23,6 @@
 
 import 'package:bullet_physics/dynamics/dynamics_world.dart';
 
-/**
- * Callback called for each internal tick.
- * 
- * @see DynamicsWorld#setInternalTickCallback
- * @author jezek2
- */
 abstract class InternalTickCallback {
 	void internalTick(DynamicsWorld world, double timeStep);
 }

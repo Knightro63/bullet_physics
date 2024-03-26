@@ -21,11 +21,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-/**
- * Vehicle tuning parameters.
- * 
- * @author jezek2
- */
 class VehicleTuning {
 	double suspensionStiffness = 5.88;
 	double suspensionCompression = 0.83;

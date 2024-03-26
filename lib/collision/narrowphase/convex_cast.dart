@@ -25,13 +25,7 @@ import "package:bullet_physics/linearmath/i_debug_draw.dart";
 import "package:bullet_physics/linearmath/transform.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * ConvexCast is an interface for casting.
- * 
- * @author jezek2
- */
 abstract class ConvexCast {
-  
 	bool calcTimeOfImpact(Transform fromA, Transform toA, Transform? fromB, Transform? toB, CastResult result);
 }
 

@@ -23,14 +23,7 @@
 
 import 'package:vector_math/vector_math.dart';
 
-/**
- * ManifoldPoint collects and maintains persistent contactpoints. Used to improve
- * stability and performance of rigidbody dynamics response.
- * 
- * @author jezek2
- */
 class ManifoldPoint {
-
 	final Vector3 localPointA = Vector3(0,0,0);
 	final Vector3 localPointB = Vector3(0,0,0);
 	final Vector3 positionWorldOnB = Vector3(0,0,0);

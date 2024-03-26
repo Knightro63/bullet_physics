@@ -27,29 +27,10 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * PersistentManifold is a contact point cache, it stays persistent as int as objects
- * are overlapping in the broadphase. Those contact points are created by the collision
- * narrow phase.<p>
- * 
- * The cache can be empty, or hold 1, 2, 3 or 4 points. Some collision algorithms (GJK)
- * might only add one point at a time, updates/refreshes old contact points, and throw
- * them away if necessary (distance becomes too large).<p>
- * 
- * Reduces the cache to 4 points, when more then 4 points are added, using following rules:
- * the contact point with deepest penetration is always kept, and it tries to maximize the
- * area covered by the points.<p>
- * 
- * Note that some pairs of objects might have more then one contact manifold.
- * 
- * @author jezek2
- */
 class PersistentManifold {
-
 	//final BulletStack stack = BulletStack.get();
 	
 	static const int manifoleCacheSize = 4;
-	
 	final List<ManifoldPoint> _pointCache = [];//ManifoldPoint[MANIFOLD_CACHE_SIZE];
 	/// this two body pointers can point to the physics rigidbody class.
 	/// void* will allow any rigidbody class
@@ -79,8 +60,6 @@ class PersistentManifold {
 		//also need to keep 'deepest'
 
 		int maxPenetrationIndex = -1;
-//#define KEEP_DEEPEST_POINT 1
-//#ifdef KEEP_DEEPEST_POINT
 		double maxPenetration = pt.getDistance();
 		for (int i = 0; i < 4; i++) {
 			if (_pointCache[i].getDistance() < maxPenetration) {
@@ -88,7 +67,6 @@ class PersistentManifold {
 				maxPenetration = _pointCache[i].getDistance();
 			}
 		}
-//#endif //KEEP_DEEPEST_POINT
 
 		double res0 = 0, res1 = 0, res2 = 0, res3 = 0;
 		if (maxPenetrationIndex != 0) {
@@ -165,28 +143,10 @@ class PersistentManifold {
 	void clearUserCache(ManifoldPoint pt) {
 		Object? oldPtr = pt.userPersistentData;
 		if (oldPtr != null) {
-    //#ifdef DEBUG_PERSISTENCY
-    //			int i;
-    //			int occurance = 0;
-    //			for (i = 0; i < cachedPoints; i++) {
-    //				if (pointCache[i].userPersistentData == oldPtr) {
-    //					occurance++;
-    //					if (occurance > 1) {
-    //						throw InternalError();
-    //					}
-    //				}
-    //			}
-    //			assert (occurance <= 0);
-    //#endif //DEBUG_PERSISTENCY
-
-    if (pt.userPersistentData != null && BulletGlobals.getContactDestroyedCallback() != null) {
-      BulletGlobals.getContactDestroyedCallback()?.contactDestroyed(pt.userPersistentData!);
-      pt.userPersistentData = null;
-    }
-
-    //#ifdef DEBUG_PERSISTENCY
-    //			DebugPersistency();
-    //#endif
+      if (pt.userPersistentData != null && BulletGlobals.getContactDestroyedCallback() != null) {
+        BulletGlobals.getContactDestroyedCallback()?.contactDestroyed(pt.userPersistentData!);
+        pt.userPersistentData = null;
+      }
 		}
 	}
 
@@ -227,16 +187,13 @@ class PersistentManifold {
 
 		int insertIndex = getNumContacts();
 		if (insertIndex == manifoleCacheSize) {
-			//#if MANIFOLD_CACHE_SIZE >= 4
 			if (manifoleCacheSize >= 4) {
 				//sort cache so best points come first, based on area
 				insertIndex = _sortCachedPoints(newPoint);
 			}
 			else {
-				//#else
 				insertIndex = 0;
 			}
-			//#endif
 			
 			clearUserCache(_pointCache[insertIndex]);
 		}
@@ -252,7 +209,6 @@ class PersistentManifold {
 		clearUserCache(_pointCache[index]);
 
 		int lastUsedIndex = getNumContacts() - 1;
-//		m_pointCache[index] = m_pointCache[lastUsedIndex];
 		if (index != lastUsedIndex) {
 			// TODO: possible bug
 			_pointCache[index].set(_pointCache[lastUsedIndex]);
@@ -272,8 +228,6 @@ class PersistentManifold {
 	void replaceContactPoint(ManifoldPoint newPoint, int insertIndex) {
 		assert (_validContactDistance(newPoint));
 
-//#define MAINTAIN_PERSISTENCY 1
-//#ifdef MAINTAIN_PERSISTENCY
 		int lifeTime = _pointCache[insertIndex].getLifeTime();
 		double appliedImpulse = _pointCache[insertIndex].appliedImpulse;
 		double appliedLateralImpulse1 = _pointCache[insertIndex].appliedImpulseLateral1;
@@ -290,10 +244,6 @@ class PersistentManifold {
 		_pointCache[insertIndex].appliedImpulseLateral2 = appliedLateralImpulse2;
 
 		_pointCache[insertIndex].lifeTime = lifeTime;
-//#else
-//		clearUserCache(m_pointCache[insertIndex]);
-//		m_pointCache[insertIndex] = newPoint;
-//#endif
 	}
 
 	bool _validContactDistance(ManifoldPoint pt) {
@@ -304,15 +254,6 @@ class PersistentManifold {
 	void refreshContactPoints(Transform trA, Transform trB) {
 		Vector3 tmp = Vector3.zero();
 		int i;
-//#ifdef DEBUG_PERSISTENCY
-//	printf("refreshContactPoints posA = (%f,%f,%f) posB = (%f,%f,%f)\n",
-//		trA.getOrigin().getX(),
-//		trA.getOrigin().getY(),
-//		trA.getOrigin().getZ(),
-//		trB.getOrigin().getX(),
-//		trB.getOrigin().getY(),
-//		trB.getOrigin().getZ());
-//#endif //DEBUG_PERSISTENCY
 		// first refresh worldspace positions and distance
 		for (i = getNumContacts() - 1; i >= 0; i--) {
 			ManifoldPoint manifoldPoint = _pointCache[i];
@@ -358,9 +299,6 @@ class PersistentManifold {
 				}
 			}
 		}
-//#ifdef DEBUG_PERSISTENCY
-//	DebugPersistency();
-//#endif //
 	}
 
 	void clearManifold() {

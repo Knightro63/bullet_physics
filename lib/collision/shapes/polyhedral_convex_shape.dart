@@ -28,11 +28,6 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * PolyhedralConvexShape is an internal interface class for polyhedral convex shapes.
- * 
- * @author jezek2
- */
 abstract class PolyhedralConvexShape extends ConvexInternalShape {
 
 	final List<Vector3> _directions = [

@@ -166,16 +166,12 @@ class ConvexConvexAlgorithm extends CollisionAlgorithm {
           result
         )
       ) {
-				// store result.m_fraction in both bodies
-
 				if ((col0?.getHitFraction() ?? 0) > result.fraction) {
 					col0?.setHitFraction(result.fraction);
 				}
-
 				if ((col1?.getHitFraction() ?? 0) > result.fraction) {
 					col1?.setHitFraction(result.fraction);
 				}
-
 				if (resultFraction > result.fraction) {
 					resultFraction = result.fraction;
 				}

@@ -21,23 +21,14 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-
-
 import "package:bullet_physics/collision/broadphase/broadphase_native_type.dart";
 import "package:bullet_physics/collision/shapes/convex_internal_shape.dart";
 import "package:bullet_physics/collision/shapes/convex_shape.dart";
 import "package:bullet_physics/linearmath/matrix_util.dart";
 import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
-
 import 'package:vector_math/vector_math.dart';
 
-/**
- * MinkowskiSumShape is only for advanced users. This shape represents implicit
- * based minkowski sum of two convex implicit shapes.
- * 
- * @author jezek2
- */
 class MinkowskiSumShape extends ConvexInternalShape {
 	final Transform _transA = Transform();
 	final Transform _transB = Transform();

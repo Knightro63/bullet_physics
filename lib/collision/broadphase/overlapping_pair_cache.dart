@@ -29,7 +29,6 @@ import "package:bullet_physics/collision/broadphase/overlap_filter_callback.dart
 import "package:bullet_physics/collision/broadphase/overlapping_pair_callback.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 
-
 abstract class OverlappingPairCache extends OverlappingPairCallback {
 	ObjectArrayList<BroadphasePair?> getOverlappingPairArray();
 	void cleanOverlappingPair(BroadphasePair? pair, Dispatcher? dispatcher);

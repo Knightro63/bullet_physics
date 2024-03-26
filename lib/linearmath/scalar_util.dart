@@ -23,11 +23,6 @@
 
 import '../core/bullet_globals.dart';
 
-/**
- * Utility functions for scalars (doubles).
- * 
- * @author jezek2
- */
 class ScalarUtil {
 
 	static double fsel(double a, double b, double c) {

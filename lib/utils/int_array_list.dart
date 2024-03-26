@@ -21,43 +21,29 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-/**
- *
- * @author jezek2
- */
 class IntArrayList {
 	List<int> _array = List.filled(16, 0,growable: true);
-  //Map<int,int> _array = {};
 	int _size = 0;
 
   int operator [](i) => _array[i];
 	
 	void add(int value) {
 		if (_size == _array.length) {
-			//_expand();
       _array.add(value);
 		}
 		
 		_array[_size++] = value;
 	}
-	
-	void _expand() {
-		List<int> newArray = List.filled(_array.length << 1, 0, growable: true);
-		//System.arraycopy(_array, 0, newArray, 0, _array.length);
-    _array = newArray..replaceRange(0, _array.length-1, _array);
-	}
 
 	int? remove(int index) {
 		if (index >= _size) throw 'new IndexOutOfBoundsException()';
-		int? old = _array.removeAt(index);//_array[index];
-		//System.arraycopy(_array, index+1, _array, index, _size - index - 1);
-    _array = _array..replaceRange(0, _array.length-1, _array);
+		int? old = _array.removeAt(index);
 		_size--;
 		return old;
 	}
 
 	int get(int index) {
-		//if (index >= _size) throw 'new IndexOutOfBoundsException $index, $_size';
+		if (index >= _size) throw 'new IndexOutOfBoundsException $index, $_size';
 		return _array[index];
 	}
 

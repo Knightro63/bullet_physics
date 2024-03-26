@@ -24,11 +24,6 @@
 import 'package:bullet_physics/collision/shapes/cylinder_shape.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- * Cylinder shape around the Z axis.
- * 
- * @author jezek2
- */
 class CylinderShapeZ extends CylinderShape {
 	CylinderShapeZ(super.halfExtents) {
 		upAxis = 2;

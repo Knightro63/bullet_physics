@@ -28,10 +28,8 @@ import "package:bullet_physics/collision/shapes/triangle_mesh_shape.dart";
 import "package:bullet_physics/collision/shapes/triangle_callback.dart";
 import "package:bullet_physics/collision/shapes/vertex_data.dart";
 import "package:bullet_physics/core/bullet_globals.dart";
-
 import "package:bullet_physics/collision/broadphase/broadphase_native_type.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
-
 import 'package:vector_math/vector_math.dart';
 
 class BvhTriangleMeshShape extends TriangleMeshShape {

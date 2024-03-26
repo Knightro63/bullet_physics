@@ -24,12 +24,6 @@
 import "package:bullet_physics/collision/dispatch/collision_world.dart";
 import "package:bullet_physics/linearmath/i_debug_draw.dart";
 
-/**
- * Basic interface to allow actions such as vehicles and characters to be
- * updated inside a {@link DynamicsWorld}.
- *
- * @author tomrbryn
- */
 abstract class ActionInterface {
 	void updateAction(CollisionWorld collisionWorld, double deltaTimeStep);
 	void debugDraw(IDebugDraw? debugDrawer);

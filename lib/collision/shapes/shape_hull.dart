@@ -33,12 +33,6 @@ import 'package:bullet_physics/utils/int_array_list.dart';
 import 'package:bullet_physics/utils/object_array_list.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- * ShapeHull takes a {@link ConvexShape}, builds the convex hull using {@link HullLibrary}
- * and provides triangle indices and vertices.
- * 
- * @author jezek2
- */
 class ShapeHull {
 	ObjectArrayList<Vector3> vertices = ObjectArrayList();
 	IntArrayList indices = IntArrayList();
@@ -51,7 +45,7 @@ class ShapeHull {
 		vertices.clear();
 		indices.clear();
 
-		MiscUtil.resizeObjectArray(unitSpherePoints, _numUintSpherePoints+ConvexShape.maxPreferredPenetrationDirections*2, Vector3.zero());
+		MiscUtil.resizeObjectArray(unitSpherePoints, _numUintSpherePoints+ConvexShape.maxPreferredPenetrationDirections*2, Vector3);
 		for (int i=0; i<_constUnitSpherePoints.length; i++) {
 			unitSpherePoints.getQuick(i)?.setFrom(_constUnitSpherePoints.getQuick(i));
 		}
@@ -73,7 +67,7 @@ class ShapeHull {
 		}
 
 		ObjectArrayList<Vector3> supportPoints = ObjectArrayList();
-		MiscUtil.resizeObjectArray(supportPoints, _numUintSpherePoints + ConvexShape.maxPreferredPenetrationDirections * 2, Vector3.zero());
+		MiscUtil.resizeObjectArray(supportPoints, _numUintSpherePoints + ConvexShape.maxPreferredPenetrationDirections * 2, Vector3);
 
 		for (int i=0; i<numSampleDirections; i++) {
       if(supportPoints.getQuick(i) != null){
@@ -99,7 +93,7 @@ class ShapeHull {
 			return false;
 		}
 
-		MiscUtil.resizeObjectArray(vertices, hr.numOutputVertices, Vector3.zero());
+		MiscUtil.resizeObjectArray(vertices, hr.numOutputVertices, Vector3);
 
 		for (int i=0; i<hr.numOutputVertices; i++) {
       if(hr.outputVertices.getQuick(i) != null){

@@ -25,17 +25,11 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-
-
 import "package:bullet_physics/core/bullet_globals.dart";
 import "package:bullet_physics/extras/gimpact/clip_polygon.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 class GeometryOperations {
 
 	static const double planeDirEpsilon = 0.0000001;

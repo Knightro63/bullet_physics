@@ -37,10 +37,6 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/utils/int_array_list.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 class GImpactBvh {
 	BvhTree boxTree = BvhTree();
 	PrimitiveManagerBase? primitiveManager;
@@ -76,7 +72,6 @@ class GImpactBvh {
 				setNodeBound(nodecount, leafbox);
 			}
 			else {
-				//const BT_BVH_TREE_NODE * nodepointer = get_node_pointer(nodecount);
 				//get left bound
 				bound.invalidate();
 

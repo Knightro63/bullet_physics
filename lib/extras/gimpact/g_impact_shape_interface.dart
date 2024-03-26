@@ -25,8 +25,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-
-
 import "package:bullet_physics/collision/broadphase/broadphase_native_type.dart";
 import "package:bullet_physics/collision/dispatch/collision_world.dart";
 import "package:bullet_physics/collision/shapes/concave_shape.dart";
@@ -42,11 +40,6 @@ import "package:bullet_physics/linearmath/aabb.dart";
 import "package:bullet_physics/linearmath/transform.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * Base class for gimpact shapes.
- * 
- * @author jezek2
- */
 abstract class GImpactShapeInterface extends ConcaveShape {
   AABB localAABB = AABB();
   bool needsUpdate = false;

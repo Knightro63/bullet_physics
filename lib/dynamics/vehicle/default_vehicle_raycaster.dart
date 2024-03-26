@@ -28,11 +28,6 @@ import "package:bullet_physics/dynamics/vehicle/vehicle_raycaster.dart";
 import "package:bullet_physics/dynamics/vehicle/vehicle_raycaster_result.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * Default implementation of {@link VehicleRaycaster}.
- * 
- * @author jezek2
- */
 class DefaultVehicleRaycaster extends VehicleRaycaster {
 	late DynamicsWorld dynamicsWorld;
 

@@ -129,7 +129,6 @@ class ConvexPlaneCollisionAlgorithm extends CollisionAlgorithm {
 
 	@override
 	double calculateTimeOfImpact(CollisionObject? body0, CollisionObject? body1, DispatcherInfo dispatchInfo, ManifoldResult resultOut) {
-		// not yet
 		return 1;
 	}
 

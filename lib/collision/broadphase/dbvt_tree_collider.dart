@@ -27,15 +27,13 @@ import 'package:bullet_physics/collision/broadphase/dbvt_proxy.dart';
 import 'package:bullet_physics/collision/broadphase/node.dart';
 
 class DbvtTreeCollider extends ICollide {
-
 	DbvtBroadphase pbp;
-
 	DbvtTreeCollider(this.pbp);
 
 	@override
-	void process(Node na, [Node? nb, double f = 0]) {
+	void process(Node? na, [Node? nb, double f = 0]) {
     assert(nb != null);
-		DbvtProxy pa = na.data as DbvtProxy;
+		DbvtProxy pa = na!.data as DbvtProxy;
 		DbvtProxy pb = nb!.data as DbvtProxy;
 		if (DbvtAabbMm.intersect(pa.aabb, pb.aabb)){
 			if (pa.hashCode > pb.hashCode) {

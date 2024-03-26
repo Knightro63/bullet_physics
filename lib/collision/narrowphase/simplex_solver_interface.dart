@@ -22,14 +22,6 @@
  */
 import 'package:vector_math/vector_math.dart';
 
-/**
- * SimplexSolverInterface can incrementally calculate distance between origin and
- * up to 4 vertices. Used by GJK or Linear Casting. Can be implemented by the
- * Johnson-algorithm or alternative approaches based on voronoi regions or barycentric
- * coordinates.
- * 
- * @author jezek2
- */
 abstract class SimplexSolverInterface {
 	void reset();
 	void addVertex(Vector3 w, Vector3 p, Vector3 q);

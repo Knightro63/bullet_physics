@@ -25,17 +25,7 @@ import 'package:bullet_physics/linearmath/matrix_util.dart';
 import 'package:bullet_physics/linearmath/vector_util.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- * Transform represents translation and rotation (rigid transform). Scaling and
- * shearing is not supported.<p>
- * 
- * You can use local shape scaling or {@link UniformScalingShape} for static rescaling
- * of collision objects.
- * 
- * @author jezek2
- */
 class Transform {
-	
 	//BulletStack stack;
 
 	/** Rotation matrix of this Transform. */

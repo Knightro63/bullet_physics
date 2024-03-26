@@ -25,11 +25,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-/**
- * Overlapping pair.
- * 
- * @author jezek2
- */
 class Pair {
 	int index1 = 0;
 	int index2 = 0;

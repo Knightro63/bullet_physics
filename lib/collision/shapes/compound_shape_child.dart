@@ -25,11 +25,6 @@ import "package:bullet_physics/collision/broadphase/broadphase_native_type.dart"
 import "package:bullet_physics/collision/shapes/collision_shape.dart";
 import "package:bullet_physics/linearmath/transform.dart";
 
-/**
- * Compound shape child.
- * 
- * @author jezek2
- */
 class CompoundShapeChild {
 	final Transform transform = Transform();
 	CollisionShape? childShape;

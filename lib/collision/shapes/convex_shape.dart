@@ -25,17 +25,8 @@ import 'package:bullet_physics/collision/shapes/collision_shape.dart';
 import 'package:bullet_physics/linearmath/transform.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- * ConvexShape is an abstract shape class. It describes general convex shapes
- * using the {@link #localGetSupportingVertex localGetSupportingVertex} interface
- * used in combination with GJK or ConvexCast.
- * 
- * @author jezek2
- */
 abstract class ConvexShape extends CollisionShape {
-
 	static const int maxPreferredPenetrationDirections = 10;
-	
 	Vector3 localGetSupportingVertex(Vector3 vec, Vector3 out);
 
 	//#ifndef __SPU__

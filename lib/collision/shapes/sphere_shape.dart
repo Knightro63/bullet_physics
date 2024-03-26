@@ -27,13 +27,7 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * SphereShape implements an implicit sphere, centered around a local origin with radius.
- * 
- * @author jezek2
- */
 class SphereShape extends ConvexInternalShape {
-	
 	SphereShape(double radius) {
 		implicitShapeDimensions.x = radius;
 		collisionMargin = radius;

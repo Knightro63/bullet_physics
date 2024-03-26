@@ -61,7 +61,6 @@ class Dbvt {
 	void optimizeBottomUp() {
 		if (root != null) {
 			ObjectArrayList<Node> leaves = ObjectArrayList(this.leaves);
-      leaves.reverse(); // Added
 			_fetchleaves(this, root, leaves);
 			_bottomup(this, leaves);
 			root = leaves.getQuick(0);
@@ -71,7 +70,6 @@ class Dbvt {
 	void optimizeTopDown([int buTreshold = 128]) {
 		if (root != null) {
 			ObjectArrayList<Node> leaves = ObjectArrayList(this.leaves);
-      leaves.reverse(); // Added
 			_fetchleaves(this, root, leaves);
 			root = _topdown(this, leaves, buTreshold);
 		}
@@ -205,15 +203,11 @@ class Dbvt {
 	}
 
 	static void enumNodes(Node? root, ICollide? policy) {
-		//DBVT_CHECKTYPE
-    if(root != null){
 		  policy?.process(root);
-    
-      if (root.isinternal()) {
-        enumNodes(root.childs[0], policy);
-        enumNodes(root.childs[1], policy);
+      if (root?.isinternal() ?? false) {
+        enumNodes(root?.childs[0], policy);
+        enumNodes(root?.childs[1], policy);
       }
-    }
 	}
 
 	static void enumLeaves(Node? root, ICollide? policy) {
@@ -222,7 +216,7 @@ class Dbvt {
 			enumLeaves(root?.childs[0], policy);
 			enumLeaves(root?.childs[1], policy);
 		}
-		else if(root != null){
+		else{
 			policy?.process(root);
 		}
 	}
@@ -260,7 +254,7 @@ class Dbvt {
 							stack.add(sStkNN(p.a, p.b?.childs[1]));
 						}
 						else {
-							//policy.process(p.a!, p.b);
+							policy.process(p.a!, p.b);
 						}
 					}
 				}
@@ -336,7 +330,7 @@ class Dbvt {
 						stack.add(n.childs[0]);
 						stack.add(n.childs[1]);
 					}
-					else if(n != null){
+					else{
 						policy.process(n);
 					}
 				}
@@ -363,7 +357,7 @@ class Dbvt {
 						stack.add(node?.childs[0]);
 						stack.add(node?.childs[1]);
 					}
-					else if(node != null){
+					else{
 						policy.process(node);
 					}
 				}
@@ -693,8 +687,8 @@ class Dbvt {
 	
 	static void _split(ObjectArrayList<Node> leaves, ObjectArrayList<Node> left, ObjectArrayList<Node> right, Vector3 org, Vector3 axis) {
 		Vector3 tmp = Vector3.zero();
-		MiscUtil.resizeObjectArray(left, 0, Node());
-		MiscUtil.resizeObjectArray(right, 0, Node());
+		MiscUtil.resizeObjectArray(left, 0, Node);
+		MiscUtil.resizeObjectArray(right, 0, Node);
 		for (int i=0, ni=leaves.size; i<ni; i++) {
 			leaves.getQuick(i)?.volume.center(tmp);
 			tmp.sub(org);

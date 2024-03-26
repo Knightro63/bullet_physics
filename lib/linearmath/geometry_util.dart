@@ -25,14 +25,7 @@ import 'package:bullet_physics/linearmath/vector_util.dart';
 import 'package:bullet_physics/utils/object_array_list.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- * GeometryUtil helper class provides a few methods to convert between plane
- * equations and vertices.
- * 
- * @author jezek2
- */
 class GeometryUtil {
-
 	static bool isPointInsidePlanes(ObjectArrayList<Vector4> planeEquations, Vector3 point, double margin) {
 		int numbrushes = planeEquations.size;
 		for (int i = 0; i < numbrushes; i++) {

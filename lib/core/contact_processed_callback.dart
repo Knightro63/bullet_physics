@@ -23,12 +23,6 @@
 
 import "package:bullet_physics/collision/narrowphase/manifold_point.dart";
 
-/**
- * Called when existing contact between two collision objects has been processed.
- * 
- * @see BulletGlobals#setContactProcessedCallback
- * @author jezek2
- */
 abstract class ContactProcessedCallback {
 	bool contactProcessed(ManifoldPoint cp, Object? body0, Object? body1);
 }

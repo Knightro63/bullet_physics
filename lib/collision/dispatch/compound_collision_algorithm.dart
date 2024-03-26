@@ -33,12 +33,6 @@ import "package:bullet_physics/collision/shapes/compound_shape.dart";
 import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 
-/**
- * CompoundCollisionAlgorithm supports collision between {@link CompoundShape}s and
- * other collision shapes.
- * 
- * @author jezek2
- */
 class CompoundCollisionAlgorithm extends CollisionAlgorithm {
   static CCA2Func CreateFunction() => CCA2Func();
   static SwappedCCA2Func SwappedCreateFunction() => SwappedCCA2Func();

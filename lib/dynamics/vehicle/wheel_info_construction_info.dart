@@ -23,12 +23,7 @@
 
 import 'package:vector_math/vector_math.dart';
 
-/**
- * 
- * @author jezek2
- */
 class WheelInfoConstructionInfo {
-
 	final Vector3 chassisConnectionCS = Vector3.zero();
 	final Vector3 wheelDirectionCS = Vector3.zero();
 	final Vector3 wheelAxleCS = Vector3.zero();

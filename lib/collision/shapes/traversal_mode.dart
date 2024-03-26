@@ -21,13 +21,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-
-
-/**
- * Traversal mode for {@link OptimizedBvh}.
- * 
- * @author jezek2
- */
 enum TraversalMode {
 	stackless,
 	stacklessCacheFriendly,

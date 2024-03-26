@@ -21,20 +21,11 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-
-
 import 'package:bullet_physics/collision/shapes/internal_triangle_index_callback.dart';
 import 'package:bullet_physics/collision/shapes/vertex_data.dart';
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * StridingMeshInterface is the abstract class for high performance access to
- * triangle meshes. It allows for sharing graphics and collision meshes. Also
- * it provides locking/unlocking of graphics meshes that are in GPU memory.
- * 
- * @author jezek2
- */
 abstract class StridingMeshInterface {
 
 	final Vector3 scaling = Vector3(1, 1, 1);

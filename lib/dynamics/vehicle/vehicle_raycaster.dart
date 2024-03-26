@@ -23,11 +23,6 @@
 import 'package:bullet_physics/dynamics/vehicle/vehicle_raycaster_result.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- * VehicleRaycaster is provides interface for between vehicle simulation and raycasting.
- * 
- * @author jezek2
- */
 abstract class VehicleRaycaster {
 	Object? castRay(Vector3 from, Vector3 to, VehicleRaycasterResult result);
 }

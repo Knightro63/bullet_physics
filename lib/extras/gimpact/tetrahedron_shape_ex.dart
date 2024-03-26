@@ -25,16 +25,9 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-
-
 import 'package:bullet_physics/collision/shapes/bu_simplex1to4.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- * Helper class for tetrahedrons.
- * 
- * @author jezek2
- */
 class TetrahedronShapeEx extends BUSimplex1to4 {
 	TetrahedronShapeEx() {
 		numVertices = 4;

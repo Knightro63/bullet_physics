@@ -32,10 +32,10 @@ class DbvtLeafCollider extends ICollide {
 	DbvtLeafCollider(this.pbp, this.ppx);
 
 	@override
-	void process(Node na,[Node? nb, double f = 0]) {
+	void process(Node? na,[Node? nb, double f = 0]) {
 		nb = ppx.leaf;
 		if (nb != na) {
-			DbvtProxy pa = na.data as DbvtProxy;
+			DbvtProxy pa = na!.data as DbvtProxy;
 			DbvtProxy pb = nb!.data as DbvtProxy;
 
 			if (DbvtAabbMm.intersect(pa.aabb, pb.aabb)){

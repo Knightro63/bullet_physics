@@ -24,11 +24,6 @@ import 'hull_flags.dart';
 import 'package:vector_math/vector_math.dart';
 import '../../utils/object_array_list.dart';
 
-/**
- * Describes point cloud data and other input for conversion to polygonal representation.
- * 
- * @author jezek2
- */
 class HullDesc {
 	
 	HullDesc([int? flag, int? vcount, this.vertices, int? stride]) {

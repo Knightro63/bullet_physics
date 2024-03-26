@@ -31,11 +31,6 @@
 
 import './c_profile_node.dart';
 
-/**
- * Iterator to navigate through profile tree.
- * 
- * @author jezek2
- */
 class CProfileIterator {
 
 	CProfileNode? _currentParent;

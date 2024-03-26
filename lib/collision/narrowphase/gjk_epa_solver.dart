@@ -71,8 +71,7 @@ class GjkEpaSolver {
     Transform wtrs0,
     ConvexShape? shape1, 
     Transform wtrs1,
-    double radialmargin/*,
-    btStackAlloc* stackAlloc*/,
+    double radialmargin,
     Results results
   ) {
 		
@@ -85,7 +84,7 @@ class GjkEpaSolver {
 		results.epaIterations = 0;
 		results.gjkIterations = 0;
 		/* Use GJK to locate origin		*/
-		_gjk.init(/*stackAlloc,*/
+		_gjk.init(
 				wtrs0.basis, wtrs0.origin, shape0,
 				wtrs1.basis, wtrs1.origin, shape1,
 				radialmargin + _gjkValues.epaAccuracy);
@@ -128,9 +127,6 @@ class GjkEpaSolver {
 
 class GJK {
   //final BulletStack stack = BulletStack.get();
-  
-  //btStackAlloc sa;
-  //Block sablock;
   final List<He?> table = List.filled(_gjkValues.gjkHashsize, null);
   final List<Matrix3> wrotations/*[2]*/ = [ Matrix3.zero(), Matrix3.zero() ];
   final List<Vector3> positions/*[2]*/ = [ Vector3.zero(), Vector3.zero() ];
@@ -154,7 +150,7 @@ class GJK {
     init(wrot0, pos0, shape0, wrot1, pos1, shape1, pmargin);
   }
   
-  void init(/*StackAlloc psa,*/
+  void init(
     Matrix3? wrot0, 
     Vector3? pos0, 
     ConvexShape? shape0,
@@ -361,7 +357,7 @@ class GJK {
 
     fetchSupport();
     ray.negateFrom(simplex[0].w);
-    for (; iterations < _gjkValues.gjkMaxiterations; ++iterations) {
+    for (; iterations < _gjkValues.gjkMaxiterations; iterations++) {
       double rl = ray.length;
       ray.scale(1 / (rl > 0 ? rl : 1));
       if (fetchSupport()) {
@@ -745,16 +741,15 @@ class EPA {
             }
             break;
         }
-        int i;
 
-        for (i = 0; i <= gjk.order; ++i) {
+        for (int i = 0; i <= gjk.order; ++i) {
           basemkv[i] = Mkv();
           basemkv[i]?.set(gjk.simplex[i]);
         }
-        for (i = 0; i < nfidx; ++i, pfidxIndex++) {
+        for (int i = 0; i < nfidx; ++i, pfidxIndex++) {
           basefaces[i] = newFace(basemkv[pfidxPtr?[pfidxIndex][0] ?? 0], basemkv[pfidxPtr?[pfidxIndex][1] ?? 0], basemkv[pfidxPtr?[pfidxIndex][2] ?? 0]);
         }
-        for (i = 0; i < neidx; ++i, peidxIndex++) {
+        for (int i = 0; i < neidx; ++i, peidxIndex++) {
           link(basefaces[peidxPtr?[peidxIndex][0] ?? 0], peidxPtr?[peidxIndex][1] ?? 0, basefaces[peidxPtr?[peidxIndex][2]?? 0] , peidxPtr?[peidxIndex][3] ?? 0);
         }
       }

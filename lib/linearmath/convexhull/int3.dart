@@ -21,12 +21,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-//import 'package:bullet_physics/linearmath/convexhull/int_ref.dart';
-
-/**
- *
- * @author jezek2
- */
 class Int3{
 
 	late int x;

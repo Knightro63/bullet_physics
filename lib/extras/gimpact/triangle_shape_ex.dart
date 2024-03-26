@@ -25,8 +25,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-
-
 import "package:bullet_physics/collision/shapes/triangle_shape.dart";
 import "package:bullet_physics/extras/gimpact/clip_polygon.dart";
 import "package:bullet_physics/linearmath/aabb.dart";
@@ -34,10 +32,6 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 class TriangleShapeEx extends TriangleShape {
 	TriangleShapeEx([super.p0, super.p1, super.p2]);
 

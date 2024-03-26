@@ -30,15 +30,7 @@ import "package:bullet_physics/utils/object_array_list.dart";
 import 'package:vector_math/vector_math.dart';
 import 'dart:math';
 
-/**
- * ConvexHullShape implements an implicit convex hull of an array of vertices.
- * Bullet provides a general and fast collision detector for convex shapes based
- * on GJK and EPA using localGetSupportingVertex.
- * 
- * @author jezek2
- */
 class ConvexHullShape extends PolyhedralConvexShape {
-
 	final ObjectArrayList<Vector3> _points = ObjectArrayList();
 	
 	/**

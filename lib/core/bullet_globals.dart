@@ -24,13 +24,8 @@
 import './contact_destroyed_callback.dart';
 import './contact_added_callback.dart';
 import './contact_processed_callback.dart';
-/**
- * Bullet global settings and constants.
- * 
- * @author jezek2
- */
+
 class BulletGlobals{
-	
 	static const bool debug = false;
 	
 	static const double convexDistanceMargin = 0.04;

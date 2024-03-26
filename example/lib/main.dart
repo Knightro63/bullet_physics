@@ -90,7 +90,7 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
   List<int> fps = [0,0,0,0];
   double toRad = 0.0174532925199432957;
   int type = 1;
-  int max = 200;
+  int max = 1;
 
   @override
   void initState() {
@@ -210,13 +210,12 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
 		// use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
 		bullet.CollisionDispatcher dispatcher = bullet.CollisionDispatcher(collisionConfiguration);
 		bullet.BroadphaseInterface broadphase = bullet.DbvtBroadphase();
-		math.Vector3 worldAabbMin = math.Vector3(-10000, -10000, -10000);
-		math.Vector3 worldAabbMax = math.Vector3(10000, 10000, 10000);
-		int maxProxies = 1024;
+		// math.Vector3 worldAabbMin = math.Vector3(-10000, -10000, -10000);
+		// math.Vector3 worldAabbMax = math.Vector3(10000, 10000, 10000);
+		// int maxProxies = 1024;
 		//bullet.AxisSweep3 broadphase = bullet.AxisSweep3(worldAabbMin, worldAabbMax, maxProxies);
 
-		bullet.SequentialImpulseConstraintSolver sol = bullet.SequentialImpulseConstraintSolver();
-		bullet.ConstraintSolver solver = sol;
+		bullet.SequentialImpulseConstraintSolver solver = bullet.SequentialImpulseConstraintSolver();
     world = bullet.DiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
     world.setGravity(math.Vector3(0, -200, 0));
     

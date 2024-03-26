@@ -27,13 +27,7 @@ import "package:bullet_physics/linearmath/i_debug_draw.dart";
 import "package:bullet_physics/linearmath/transform.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * ConvexPenetrationDepthSolver provides an interface for penetration depth calculation.
- * 
- * @author jezek2
- */
 abstract class ConvexPenetrationDepthSolver {
-
 	bool calcPenDepth(
     SimplexSolverInterface? simplexSolver,
     ConvexShape? convexA, 
@@ -43,6 +37,6 @@ abstract class ConvexPenetrationDepthSolver {
     Vector3 v, 
     Vector3 pa, 
     Vector3 pb,
-    IDebugDraw? debugDraw/*, btStackAlloc* stackAlloc*/
+    IDebugDraw? debugDraw
   );
 }

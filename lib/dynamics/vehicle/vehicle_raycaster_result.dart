@@ -23,13 +23,7 @@
 
 import 'package:vector_math/vector_math.dart';
 
-/**
- * Vehicle raycaster result.
- * 
- * @author jezek2
- */
 class VehicleRaycasterResult {
-
 	final Vector3 hitPointInWorld  = Vector3.zero();
 	final Vector3 hitNormalInWorld  = Vector3.zero();
 	double distFraction = -1;

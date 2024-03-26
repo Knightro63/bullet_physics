@@ -29,15 +29,7 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * ConeShape implements a cone shape primitive, centered around the origin and
- * aligned with the Y axis. The {@link ConeShapeX} is aligned around the X axis
- * and {@link ConeShapeZ} around the Z axis.
- * 
- * @author jezek2
- */
 class ConeShape extends ConvexInternalShape {
-
 	late double _sinAngle;
 	late double _radius;
 	late double _height;

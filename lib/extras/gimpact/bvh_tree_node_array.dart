@@ -28,10 +28,6 @@
 import "package:bullet_physics/extras/gimpact/bvh_data_array.dart";
 import "package:bullet_physics/linearmath/aabb.dart";
 
-/**
- *
- * @author jezek2
- */
 class BvhTreeNodeArray {
 	int size = 0;
 	List<double> _bound = [];//double[0];
@@ -97,12 +93,10 @@ class BvhTreeNodeArray {
 	}
 	
 	bool isLeafNode(int nodeIndex) {
-		// skipindex is negative (internal node), triangleindex >=0 (leafnode)
 		return (_escapeIndexOrDataIndex[nodeIndex] >= 0);
 	}
 
 	int getEscapeIndex(int nodeIndex) {
-		//btAssert(m_escapeIndexOrDataIndex < 0);
 		return -_escapeIndexOrDataIndex[nodeIndex];
 	}
 
@@ -111,7 +105,6 @@ class BvhTreeNodeArray {
 	}
 
 	int getDataIndex(int nodeIndex) {
-		//btAssert(m_escapeIndexOrDataIndex >= 0);
 		return _escapeIndexOrDataIndex[nodeIndex];
 	}
 

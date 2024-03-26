@@ -30,10 +30,6 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 class BoxCollision {
 	static const double boxPlaneEpsilon = 0.000001;
 	
@@ -43,7 +39,6 @@ class BoxCollision {
 		double pmin = VectorUtil.getCoord(pointa, i_comp_0) * dir0 + VectorUtil.getCoord(pointa, i_comp_1) * dir1;
 		double pmax = VectorUtil.getCoord(pointb, i_comp_0) * dir0 + VectorUtil.getCoord(pointb, i_comp_1) * dir1;
 		if (pmin > pmax) {
-			//BT_SWAP_NUMBERS(pmin,pmax);
 			pmin = pmin + pmax;
 			pmax = pmin - pmax;
 			pmin = pmin - pmax;
@@ -96,11 +91,6 @@ class BoxBoxTransformCache {
   }
   
   void calcAbsoluteMatrix() {
-    //static const btVector3 vepsi(1e-6,1e-6,1e-6);
-    //m_AR[0] = vepsi + m_R1to0[0].absolute();
-    //m_AR[1] = vepsi + m_R1to0[1].absolute();
-    //m_AR[2] = vepsi + m_R1to0[2].absolute();
-
     for (int i=0; i<3; i++) {
       for (int j=0; j<3; j++) {
         ar.setElement(i, j, 1e-6 + (r1to0.getElement(i, j)).abs());

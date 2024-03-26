@@ -21,11 +21,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-/**
- * Flags that affects convex hull generation, used in {@link HullDesc#flags}.
- * 
- * @author jezek2
- */
 class HullFlags {
 	static int triangles     = 1 << 0; // report results as triangles, not polygons.
 	static int reverseOrder = 1 << 1; // reverse order of the triangle indices.

@@ -38,12 +38,6 @@ import "package:bullet_physics/linearmath/vector_util.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * AxisSweep3Internal is an internal base class that implements sweep and prune.
- * Use concrete implementation {@link AxisSweep3} or {@link AxisSweep3_32}.
- * 
- * @author jezek2
- */
 abstract class AxisSweep3Internal extends BroadphaseInterface {
 	EdgeArray createEdgeArray(int size);
 	Handle createHandle();
@@ -290,10 +284,6 @@ abstract class AxisSweep3Internal extends BroadphaseInterface {
 			pEdgeIdx--;
 			pPrevIdx--;
 		}
-
-		//#ifdef DEBUG_BROADPHASE
-		//debugPrintAxis(axis);
-		//#endif //DEBUG_BROADPHASE
 	}
 	
 	// sorting a max edge upwards can only ever *add* overlaps
@@ -344,17 +334,15 @@ abstract class AxisSweep3Internal extends BroadphaseInterface {
 
 			// perform a sort, to find duplicates and to sort 'invalid' pairs to the end
 			MiscUtil.quickSortObjectArray(overlappingPairArray, BroadphasePair.broadphasePairSortPredicate);
-			MiscUtil.resizeObjectArray(overlappingPairArray, overlappingPairArray.size - invalidPair, BroadphasePair());
+			MiscUtil.resizeObjectArray(overlappingPairArray, overlappingPairArray.size - invalidPair, BroadphasePair);
 			invalidPair = 0;
-
-			int i;
 
 			BroadphasePair previousPair = BroadphasePair();
 			previousPair.pProxy0 = null;
 			previousPair.pProxy1 = null;
 			previousPair.algorithm = null;
 
-			for (i=0; i<overlappingPairArray.size; i++) {
+			for (int i=0; i<overlappingPairArray.size; i++) {
 				BroadphasePair? pair = overlappingPairArray.getQuick(i);
 
 				bool isDuplicate = (pair?.equals(previousPair) ?? false);
@@ -391,7 +379,7 @@ abstract class AxisSweep3Internal extends BroadphaseInterface {
 			}
 
 			MiscUtil.quickSortObjectArray(overlappingPairArray, BroadphasePair.broadphasePairSortPredicate);
-			MiscUtil.resizeObjectArray(overlappingPairArray, overlappingPairArray.size - invalidPair, null);
+			MiscUtil.resizeObjectArray(overlappingPairArray, overlappingPairArray.size - invalidPair, BroadphasePair);
 			invalidPair = 0;
 		}
 	}
@@ -455,14 +443,13 @@ abstract class AxisSweep3Internal extends BroadphaseInterface {
 
 		// compute current limit of edge arrays
 		int limit = numHandles * 2;
-		int axis;
 
-		for (axis = 0; axis < 3; axis++) {
+		for (int axis = 0; axis < 3; axis++) {
 			pHandles[0].setMaxEdges(axis, pHandles[0].getMaxEdges(axis) - 2);
 		}
 
 		// remove the edges by sorting them up to the end of the list
-		for (axis = 0; axis < 3; axis++) {
+		for (int axis = 0; axis < 3; axis++) {
 			EdgeArray pEdges = this.pEdges[axis]!;
 			int max = pHandle.getMaxEdges(axis);
 			pEdges.setPos(max, handleSentinel);

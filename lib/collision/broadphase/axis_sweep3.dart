@@ -31,7 +31,6 @@ import 'package:vector_math/vector_math.dart';
 class AxisSweep3 extends AxisSweep3Internal {
 	
 	AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, [int maxHandles = 16384, OverlappingPairCache? pairCache]):super(worldAabbMin, worldAabbMax, 0xfffe, 0xffff, maxHandles, pairCache){
-		// 1 handle is reserved as sentinel
 		assert (maxHandles > 1 && maxHandles < 32767);
 	}
 	

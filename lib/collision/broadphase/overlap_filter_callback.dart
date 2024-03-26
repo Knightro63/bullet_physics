@@ -24,13 +24,5 @@
 import 'package:bullet_physics/collision/broadphase/broadphase_proxy.dart';
 
 abstract class OverlapFilterCallback {
-	/**
-	 * Checks if given pair of collision objects needs collision.
-	 * 
-	 * @param proxy0 first object
-	 * @param proxy1 second object
-	 * @return true when pairs need collision
-	 */
 	bool needBroadphaseCollision(BroadphaseProxy? proxy0, BroadphaseProxy? proxy1);
-	
 }

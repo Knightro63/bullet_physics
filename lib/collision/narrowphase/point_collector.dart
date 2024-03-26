@@ -21,15 +21,9 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-
-
 import 'package:bullet_physics/collision/narrowphase/discrete_collision_detector_interface.dart';
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 class PointCollector extends Result{
 
 	final Vector3 normalOnBInWorld = Vector3.zero();
@@ -39,9 +33,7 @@ class PointCollector extends Result{
 	bool hasResult = false;
 	
   @override
-	void setShapeIdentifiers(int partId0, int index0, int partId1, int index1) {
-		// ??
-	}
+	void setShapeIdentifiers(int partId0, int index0, int partId1, int index1) {}
   @override
 	void addContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld, double depth) {
 		if (depth < distance) {

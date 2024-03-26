@@ -21,8 +21,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-
-
 import "package:bullet_physics/collision/broadphase/broadphase_native_type.dart";
 import "package:bullet_physics/collision/shapes/concave_shape.dart";
 import "package:bullet_physics/collision/shapes/triangle_callback.dart";
@@ -31,11 +29,6 @@ import "package:bullet_physics/linearmath/transform_util.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * StaticPlaneShape simulates an infinite non-moving (static) collision plane.
- * 
- * @author jezek2
- */
 class StaticPlaneShape extends ConcaveShape {
 
 	final Vector3 localAabbMin = Vector3.zero();

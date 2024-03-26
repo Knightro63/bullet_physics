@@ -27,10 +27,6 @@
 
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 class GImpactMassUtil {
 	static Vector3 getPointInertia(Vector3 point, double mass, Vector3 out) {
 		double x2 = point.x * point.x;

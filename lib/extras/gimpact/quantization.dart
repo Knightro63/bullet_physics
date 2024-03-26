@@ -28,10 +28,6 @@
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 class Quantization {
 
 	static void btCalcQuantizationParameters(Vector3 outMinBound, Vector3 outMaxBound, Vector3 bvhQuantization, Vector3 srcMinBound, Vector3 srcMaxBound, double quantizationMargin) {

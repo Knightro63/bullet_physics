@@ -30,12 +30,6 @@ import "package:bullet_physics/collision/dispatch/manifold_result.dart";
 import "package:bullet_physics/collision/narrowphase/persistent_manifold.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
 
-/**
- * Collision algorithm for handling narrowphase or midphase collision detection
- * between two collision object types.
- * 
- * @author jezek2
- */
 abstract class CollisionAlgorithm {
 	//final BulletStack stack = BulletStack.get();
 	CollisionAlgorithmCreateFunc? _createFunc;

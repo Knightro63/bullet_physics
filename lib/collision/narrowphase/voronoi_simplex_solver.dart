@@ -25,17 +25,8 @@ import 'package:bullet_physics/collision/narrowphase/simplex_solver_interface.da
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * VoronoiSimplexSolver is an implementation of the closest point distance algorithm
- * from a 1-4 points simplex to the origin. Can be used with GJK, as an alternative
- * to Johnson distance algorithm.
- * 
- * @author jezek2
- */
 class VoronoiSimplexSolver extends SimplexSolverInterface {
-
 	static const int voronoiSimplexMaxVerts = 5;
-	
 	static const int _vertA = 0;
 	static const int _vertB = 1;
 	static const int _vertC = 2;
@@ -675,49 +666,48 @@ class VoronoiSimplexSolver extends SimplexSolverInterface {
 }
 
 
-	////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+class UsageBitfield {
+  bool usedVertexA = false;
+  bool usedVertexB = false;
+  bool usedVertexC = false;
+  bool usedVertexD = false;
+  
+  void reset() {
+    usedVertexA = false;
+    usedVertexB = false;
+    usedVertexC = false;
+    usedVertexD = false;
+  }
+}
 	
-	class UsageBitfield {
-		bool usedVertexA = false;
-		bool usedVertexB = false;
-		bool usedVertexC = false;
-		bool usedVertexD = false;
-		
-		void reset() {
-			usedVertexA = false;
-			usedVertexB = false;
-			usedVertexC = false;
-			usedVertexD = false;
-		}
-	}
-	
-	class SubSimplexClosestResult {
-		final Vector3 closestPointOnSimplex = Vector3.zero();
-		//MASK for m_usedVertices
-		//stores the simplex vertex-usage, using the MASK, 
-		// if m_usedVertices & MASK then the related vertex is used
-		final UsageBitfield usedVertices = UsageBitfield();
-		final List<double> barycentricCoords = [0,0,0,0];
-		bool degenerate = false;
-		
-		void reset() {
-			degenerate = false;
-			setBarycentricCoordinates(0, 0, 0, 0);
-			usedVertices.reset();
-		}
+class SubSimplexClosestResult {
+  final Vector3 closestPointOnSimplex = Vector3.zero();
+  //MASK for m_usedVertices
+  //stores the simplex vertex-usage, using the MASK, 
+  // if m_usedVertices & MASK then the related vertex is used
+  final UsageBitfield usedVertices = UsageBitfield();
+  final List<double> barycentricCoords = [0,0,0,0];
+  bool degenerate = false;
+  
+  void reset() {
+    degenerate = false;
+    setBarycentricCoordinates(0, 0, 0, 0);
+    usedVertices.reset();
+  }
 
-		bool isValid() {
-			bool valid = (barycentricCoords[0] >= 0) &&
-					(barycentricCoords[1] >= 0) &&
-					(barycentricCoords[2] >= 0) &&
-					(barycentricCoords[3] >= 0);
-			return valid;
-		}
+  bool isValid() {
+    bool valid = (barycentricCoords[0] >= 0) &&
+        (barycentricCoords[1] >= 0) &&
+        (barycentricCoords[2] >= 0) &&
+        (barycentricCoords[3] >= 0);
+    return valid;
+  }
 
-		void setBarycentricCoordinates(double a, double b, double c, double d) {
-			barycentricCoords[0] = a;
-			barycentricCoords[1] = b;
-			barycentricCoords[2] = c;
-			barycentricCoords[3] = d;
-		}
-	}
+  void setBarycentricCoordinates(double a, double b, double c, double d) {
+    barycentricCoords[0] = a;
+    barycentricCoords[1] = b;
+    barycentricCoords[2] = c;
+    barycentricCoords[3] = d;
+  }
+}

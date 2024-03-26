@@ -24,12 +24,10 @@ import 'package:bullet_physics/collision/broadphase/broadphase_proxy.dart';
 import 'package:bullet_physics/collision/broadphase/collision_algorithm.dart';
 
 class BroadphasePair {
-
 	BroadphaseProxy? pProxy0;
 	BroadphaseProxy? pProxy1;
 	CollisionAlgorithm? algorithm;
 	Object? userInfo;
-
 	BroadphasePair([this.pProxy0, this.pProxy1]);
 	
 	void set(BroadphasePair? p) {

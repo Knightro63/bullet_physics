@@ -21,8 +21,6 @@
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
-
-
 import "package:bullet_physics/collision/narrowphase/convex_cast.dart";
 import "package:bullet_physics/collision/narrowphase/simplex_solver_interface.dart";
 import "package:bullet_physics/core/bullet_globals.dart";
@@ -32,25 +30,8 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- * SubsimplexConvexCast implements Gino van den Bergens' paper
- * "Ray Casting against bteral Convex Objects with Application to Continuous Collision Detection"
- * GJK based Ray Cast, optimized version
- * Objects should not start in overlap, otherwise results are not defined.
- * 
- * @author jezek2
- */
 class SubSimplexConvexCast extends ConvexCast {
-
 	//final BulletStack stack = BulletStack.get();
-	
-	// Typically the conservative advancement reaches solution in a few iterations, clip it to 32 for degenerate cases.
-	// See discussion about this here http://www.bulletphysics.com/phpBB2/viewtopic.php?t=565
-	//#ifdef BT_USE_DOUBLE_PRECISION
-	//#define MAX_ITERATIONS 64
-	//#else
-	//#define MAX_ITERATIONS 32
-	//#endif
 	
 	static const int _maxIterations = 32;
 	late SimplexSolverInterface _simplexSolver;
@@ -100,17 +81,12 @@ class SubSimplexConvexCast extends ConvexCast {
 
 		Vector3 n = Vector3.zero();
 		n.setValues(0, 0, 0);
-
 		//bool hasResult = false;
 		//Vector3 c = Vector3.zero();
 		//double lastLambda = lambda;
 
 		double dist2 = v.length2;
-		//#ifdef BT_USE_DOUBLE_PRECISION
-		//	btScalar epsilon = btScalar(0.0001);
-		//#else
 		double epsilon = 0.0001;
-		//#endif
 		Vector3 w = Vector3.zero();
     //p = Vector3.zero();
 		double vDotR;
@@ -141,41 +117,23 @@ class SubSimplexConvexCast extends ConvexCast {
 				}
 				else {
 					lambda = lambda - vDotW / vDotR;
-					
-					// interpolate to next lambda
-					//	x = s + lambda * r;
 					VectorUtil.setInterpolate3(interpolatedTransA.origin, fromA.origin, toA.origin, lambda);
           if(fromB?.origin !=null && toB?.origin != null){
 					  VectorUtil.setInterpolate3(interpolatedTransB.origin, fromB!.origin, toB!.origin, lambda);
           }
-					//m_simplexSolver->reset();
-					// check next line
 					w.sub2(supVertexA, supVertexB);
-					//lastLambda = lambda;
 					n.setFrom(v);
-					//hasResult = true;
 				}
 			}
 			_simplexSolver.addVertex(w, supVertexA , supVertexB);
 			if (_simplexSolver.closest(v)) {
 				dist2 = v.length2;
-				//hasResult = true;
-				// todo: check this normal for validity
-				//n.set(v);
-				//printf("V=%f , %f, %f\n",v[0],v[1],v[2]);
-				//printf("DIST2=%f\n",dist2);
-				//printf("numverts = %i\n",m_simplexSolver->numVertices());
 			}
 			else {
 				dist2 = 0;
 			}
 		}
-
-		//int numiter = MAX_ITERATIONS - maxIter;
-		//	printf("number of iterations: %d", numiter);
-	
-		// don't report a time of impact when moving 'away' from the hitnormal
-		
+    		
 		result.fraction = lambda;
 		if (n.length2 >= BulletGlobals.simdEpsilon * BulletGlobals.simdEpsilon) {
 			result.normal.normalizeFrom(n);

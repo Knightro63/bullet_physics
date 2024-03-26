@@ -41,11 +41,6 @@ import "package:bullet_physics/utils/object_array_list.dart";
 import 'package:vector_math/vector_math.dart';
 import 'dart:math';
 
-/**
- * Raycast vehicle, very special constraint that turn a rigidbody into a vehicle.
- * 
- * @author jezek2
- */
 class RaycastVehicle extends TypedConstraint {
 	static RigidBody _sFixedObject = RigidBody();
 	static final double _sideFrictionStiffness2 = 1.0;
@@ -58,8 +53,8 @@ class RaycastVehicle extends TypedConstraint {
 	// double _tau = 0;
 	// double _damping = 0;
 	VehicleRaycaster? _vehicleRaycaster;
-	double _pitchControl = 0;
-	double _steeringValue = 0; 
+	// double _pitchControl = 0;
+	// double _steeringValue = 0; 
 	double _currentVehicleSpeedKmHour = 0;
 
 	late RigidBody _chassisBody;
@@ -79,7 +74,7 @@ class RaycastVehicle extends TypedConstraint {
 	
 	void _defaultInit(VehicleTuning tuning) {
 		_currentVehicleSpeedKmHour = 0;
-		_steeringValue = 0;
+		//_steeringValue = 0;
 	}
 
 	/**
@@ -470,8 +465,8 @@ class RaycastVehicle extends TypedConstraint {
 			return;
 		}
 
-		MiscUtil.resizeObjectArray(forwardWS, numWheel, Vector3.zero());
-		MiscUtil.resizeObjectArray(axle, numWheel, Vector3.zero());
+		MiscUtil.resizeObjectArray(forwardWS, numWheel, Vector3);
+		MiscUtil.resizeObjectArray(axle, numWheel, Vector3);
 		MiscUtil.resize(forwardImpulse, numWheel, 0);
 		MiscUtil.resize(sideImpulse, numWheel, 0);
 
@@ -640,7 +635,7 @@ class RaycastVehicle extends TypedConstraint {
 	}
 
 	void setPitchControl(double pitch) {
-		_pitchControl = pitch;
+		//_pitchControl = pitch;
 	}
 
 	RigidBody getRigidBody() {

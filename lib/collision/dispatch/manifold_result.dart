@@ -112,7 +112,6 @@ class ManifoldResult extends Result{
 
 		/// todo, check this for any side effects
 		if (insertIndex >= 0) {
-			//const btManifoldPoint& oldPoint = m_manifoldPtr->getContactPoint(insertIndex);
 			_manifoldPtr?.replaceContactPoint(newPt, insertIndex);
 		}
 		else {

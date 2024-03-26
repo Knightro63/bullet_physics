@@ -31,10 +31,6 @@ import "package:bullet_physics/linearmath/aabb.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 class BvhTree {
 
 	int numNodes = 0;

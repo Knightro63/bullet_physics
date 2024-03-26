@@ -27,10 +27,6 @@ import "package:bullet_physics/collision/broadphase/hashed_overlapping_pair_cach
 import "package:bullet_physics/collision/dispatch/collision_object.dart";
 import "package:bullet_physics/collision/dispatch/ghost_object.dart";
 
-/**
- *
- * @author tomrbryn
- */
 class PairCachingGhostObject extends GhostObject {
 	HashedOverlappingPairCache hashPairCache = HashedOverlappingPairCache();
 

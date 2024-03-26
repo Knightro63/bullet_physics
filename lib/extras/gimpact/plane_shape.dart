@@ -31,10 +31,6 @@ import "package:bullet_physics/linearmath/transform.dart";
 import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
-/**
- *
- * @author jezek2
- */
 class PlaneShape {
 	static void getPlaneEquation(StaticPlaneShape shape, Vector4 equation) {
 		Vector3 tmp = Vector3.zero();

@@ -220,7 +220,7 @@ class OptimizedBvh{// implements Serializable
 
 			// TODO: check
 			//contiguousNodes.resize(2*numLeafNodes);
-			MiscUtil.resizeObjectArray(_contiguousNodes, 2 * numLeafNodes, OptimizedBvhNode());
+			MiscUtil.resizeObjectArray(_contiguousNodes, 2 * numLeafNodes, OptimizedBvhNode);
 		}
 
 		_curNodeIndex = 0;
@@ -807,22 +807,6 @@ class OptimizedBvh{// implements Serializable
 		bool aabbOverlap;
 
 		while (curIndex < endNodeIndex) {
-			////#define VISUALLY_ANALYZE_BVH 1
-			//#ifdef VISUALLY_ANALYZE_BVH
-			////some code snippet to debugDraw aabb, to visually analyze bvh structure
-			//static int drawPatch = 0;
-			////need some global access to a debugDrawer
-			//extern btIDebugDraw* debugDrawerPtr;
-			//if (curIndex==drawPatch)
-			//{
-			//	btVector3 aabbMin,aabbMax;
-			//	aabbMin = unQuantize(rootNode->m_quantizedAabbMin);
-			//	aabbMax = unQuantize(rootNode->m_quantizedAabbMax);
-			//	btVector3	color(1,0,0);
-			//	debugDrawerPtr->drawAabb(aabbMin,aabbMax,color);
-			//}
-			//#endif//VISUALLY_ANALYZE_BVH
-
 			// catch bugs in tree data
 			assert (walkIterations < subTreeSize);
 
