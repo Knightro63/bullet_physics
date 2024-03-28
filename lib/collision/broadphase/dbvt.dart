@@ -619,7 +619,7 @@ class Dbvt {
 				node?.childs[1] = leaf;
 				leaf?.parent = node;
 				do {
-					if (!(prev?.volume.contain(node?.volume) ?? true)) {
+					if (!(prev?.volume.contain(node!.volume) ?? true)) {
 						DbvtAabbMm.merge(prev!.childs[0]!.volume, prev.childs[1]!.volume, prev.volume);
 					}
 					else {

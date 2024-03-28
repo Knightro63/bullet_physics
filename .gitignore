@@ -16,6 +16,7 @@
 *.iml
 *.lock
 
+/temp
 **/macos/
 **/web/
 **/ios/

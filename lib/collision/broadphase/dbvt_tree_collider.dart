@@ -33,6 +33,7 @@ class DbvtTreeCollider extends ICollide {
 	@override
 	void process(Node? na, [Node? nb, double f = 0]) {
     assert(nb != null);
+    assert(na != nb);
 		DbvtProxy pa = na!.data as DbvtProxy;
 		DbvtProxy pb = nb!.data as DbvtProxy;
 		if (DbvtAabbMm.intersect(pa.aabb, pb.aabb)){

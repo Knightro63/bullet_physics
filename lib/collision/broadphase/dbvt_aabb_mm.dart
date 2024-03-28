@@ -129,8 +129,7 @@ class DbvtAabbMm {
 		}
 	}
 
-	bool contain(DbvtAabbMm? a) {
-    if(a == null) return false;
+	bool contain(DbvtAabbMm a) {
 		return ((_mi.x <= a._mi.x) &&
 		        (_mi.y <= a._mi.y) &&
 		        (_mi.z <= a._mi.z) &&

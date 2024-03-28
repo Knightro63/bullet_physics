@@ -60,6 +60,10 @@ final class ObjectArrayList<T>{
     _size--;
     return temp;
   }
+  T? removeLast(){
+    _size--;
+    return array.removeLast();
+  }
 	T? remove(T? object) {
     bool temp = array.remove(object);
 		_size--;

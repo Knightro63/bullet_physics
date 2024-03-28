@@ -51,15 +51,17 @@ class DbvtBroadphase extends BroadphaseInterface {
 	double predictedframes = 2;                                  // Frames predicted
 	int stageCurrent = 0;                                       // Current stage
 	int fupdates = 1;                                           // % of fixed updates per frame
-	int dupdates = 1;                                           // % of dynamic updates per frame
+	int dupdates = 0; //1                                           // % of dynamic updates per frame
 	int pid = 0;                                                // Parse id
 	int gid = 0;                                                // Gen id
 	bool releasepaircache = false;                               // Release pair cache on delete
+  bool deferedCollide = false;
+  bool needCleanup = true;
 
 	DbvtBroadphase([OverlappingPairCache? paircache]) {
-		releasepaircache = (paircache != null? false : true);
+		releasepaircache = paircache == null;//(paircache != null? false : true);
 		this.paircache = paircache ?? HashedOverlappingPairCache();
-		for (int i=0; i<=stageCount; i++) {
+		for (int i=0; i < stageCount; i++) {
 			stageRoots[i] = null;
     }
 	}
@@ -77,39 +79,47 @@ class DbvtBroadphase extends BroadphaseInterface {
 				DbvtProxy? next = current!.links[1];
 				stageRoots[current.stage] = _listremove(current, stageRoots[current.stage]);
 				stageRoots[stageCount] = _listappend(current, stageRoots[stageCount]);
-				Dbvt.collideTT(sets[1].root, current.leaf, collider);
-				sets[0].remove(current.leaf);
-				current.leaf = sets[1].insert(current.aabb, current);
+				DbvtAabbMm curAabb = DbvtAabbMm();
+        DbvtAabbMm.fromMM(current.aabb.mins(), current.aabb.maxs(),curAabb);//DbvtVolume.collideTV(current.aabbMin, current.aabbMax);
+        //Dbvt.collideTT(sets[1].root, current.leaf, collider);
+				//sets[0].remove(current.leaf);
+				current.leaf = sets[1].insert(curAabb, current);
 				current.stage = stageCount;
 				current = next;
 			} while (current != null);
+      needCleanup = true;
 		}
-
-		// collide dynamics:
+    
     DbvtTreeCollider collider = DbvtTreeCollider(this);
-    Dbvt.collideTT(sets[0].root, sets[1].root, collider);
-    Dbvt.collideTT(sets[0].root, sets[0].root, collider);
-
+    if (deferedCollide) {
+		  // collide dynamics:
+      Dbvt.collideTT(sets[0].root, sets[1].root, collider);
+      Dbvt.collideTT(sets[0].root, sets[0].root, collider);
+    }
 		// clean up:
-    ObjectArrayList<BroadphasePair?> pairs = paircache.getOverlappingPairArray();
-    if (pairs.isNotEmpty) {//pairs != null && 
-      for (int i=0, ni=pairs.size; i<ni; i++) {
-        BroadphasePair? p = pairs.getQuick(i);
-        DbvtProxy? pa = p?.pProxy0 as DbvtProxy?;
-        DbvtProxy? pb = p?.pProxy1 as DbvtProxy?;
-        if (!DbvtAabbMm.intersect(pa!.aabb, pb!.aabb)) {
-          if (pa.hashCode > pb.hashCode) {
-            DbvtProxy? tmp = pa;
-            pa = pb;
-            pb = tmp;
+    if(needCleanup){
+      ObjectArrayList<BroadphasePair?> pairs = paircache.getOverlappingPairArray();
+      if (pairs.isNotEmpty) {//pairs != null && 
+        //var ni = min(pairs.size, max(newPairs, (pairs.size * cUpdates) / 100));
+        for (int i=0, ni=pairs.size; i<ni; i++) {
+          BroadphasePair? p = pairs.getQuick(i);
+          DbvtProxy? pa = p?.pProxy0 as DbvtProxy?;
+          DbvtProxy? pb = p?.pProxy1 as DbvtProxy?;
+          if (!DbvtAabbMm.intersect(pa!.aabb, pb!.aabb)) {
+            if (pa.hashCode > pb.hashCode) {
+              DbvtProxy? tmp = pa;
+              pa = pb;
+              pb = tmp;
+            }
+            paircache.removeOverlappingPair(pa, pb, dispatcher);
+            ni--;
+            i--;
           }
-          paircache.removeOverlappingPair(pa, pb, dispatcher);
-          ni--;
-          i--;
         }
       }
     }
 		pid++;
+    needCleanup = false;
 	}
 
 	static DbvtProxy? _listappend(DbvtProxy? item, DbvtProxy? list) {
@@ -150,7 +160,13 @@ class DbvtBroadphase extends BroadphaseInterface {
 		proxy.stage = stageCurrent;
 		proxy.uniqueId = ++gid;
 		stageRoots[stageCurrent] = _listappend(proxy, stageRoots[stageCurrent]);
-		return proxy;
+    if (deferedCollide) {
+      DbvtTreeCollider collider = DbvtTreeCollider(this);
+		  // collide dynamics:
+      Dbvt.collideTT(sets[0].root, sets[1].root, collider);
+      Dbvt.collideTT(sets[0].root, sets[0].root, collider);
+    }
+    return proxy;
 	}
   @override
 	void destroyProxy(BroadphaseProxy absproxy, Dispatcher? dispatcher) {
@@ -163,14 +179,18 @@ class DbvtBroadphase extends BroadphaseInterface {
 		}
 		stageRoots[proxy.stage] = _listremove(proxy, stageRoots[proxy.stage]);
 		paircache.removeOverlappingPairsContainingProxy(proxy, dispatcher);
+    needCleanup = true;
 	}
   @override
 	void setAabb(BroadphaseProxy? absproxy, Vector3 aabbMin, Vector3 aabbMax, Dispatcher? dispatcher) {
 		DbvtProxy? proxy = absproxy as DbvtProxy?;
 		DbvtAabbMm aabb = DbvtAabbMm.fromMM(aabbMin, aabbMax, DbvtAabbMm());
-		if (proxy?.stage == stageCount) {
+		
+    bool doCollide = false;
+    if (proxy?.stage == stageCount) {
 			sets[1].remove(proxy!.leaf!);
 			proxy.leaf = sets[0].insert(aabb, proxy);
+      doCollide = true;
 		}
 		else {
 			if (DbvtAabbMm.intersect(proxy!.leaf!.volume, aabb)) {
@@ -180,9 +200,11 @@ class DbvtBroadphase extends BroadphaseInterface {
 				delta.sub(proxy.aabb.center(Vector3.zero()));
 				delta.scale(predictedframes);
 				sets[0].updateWithVelocityAndMargin(proxy.leaf!, aabb, delta, DbvtBroadphase.dbvtBPmargin);
+        doCollide = true;
 			}
 			else {
 				sets[0].updateWithVolume(proxy.leaf, aabb);
+        doCollide = true;
 			}
 		}
 		
@@ -190,7 +212,16 @@ class DbvtBroadphase extends BroadphaseInterface {
 		proxy.aabb.set(aabb);
 		proxy.stage = stageCurrent;
 		stageRoots[stageCurrent] = _listappend(proxy, stageRoots[stageCurrent]);
-	}
+	
+    if (doCollide) {
+      needCleanup = true;
+      if (!deferedCollide) {
+        DbvtTreeCollider collider = DbvtTreeCollider(this);
+        Dbvt.collideTT(sets[0].root, sets[1].root, collider);
+        Dbvt.collideTT(sets[0].root, sets[0].root, collider);
+      }
+    }
+  }
 
   @override
 	void calculateOverlappingPairs(Dispatcher? dispatcher) {

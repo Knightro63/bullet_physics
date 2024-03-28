@@ -28,6 +28,7 @@ class BroadphasePair {
 	BroadphaseProxy? pProxy1;
 	CollisionAlgorithm? algorithm;
 	Object? userInfo;
+
 	BroadphasePair([this.pProxy0, this.pProxy1]);
 	
 	void set(BroadphasePair? p) {
@@ -40,7 +41,12 @@ class BroadphasePair {
 	bool equals(BroadphasePair p) {
 		return pProxy0 == p.pProxy0 && pProxy1 == p.pProxy1;
 	}
-	
+  @override
+	int get hashCode => _getHash();
+  int _getHash(){
+    return 31 * (pProxy0?.hashCode ?? 0) + (pProxy1?.hashCode ?? 0);
+  }
+
 	static Comparator<BroadphasePair?> broadphasePairSortPredicate = (BroadphasePair? a, BroadphasePair? b) {
     if(a?.pProxy0 == null || b?.pProxy0 == null){
       return -1;

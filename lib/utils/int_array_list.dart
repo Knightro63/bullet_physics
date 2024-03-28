@@ -26,7 +26,9 @@ class IntArrayList {
 	int _size = 0;
 
   int operator [](i) => _array[i];
-	
+	void operator []=(int i,int v)=>(){
+    _array[i] = v;
+  };
 	void add(int value) {
 		if (_size == _array.length) {
       _array.add(value);
@@ -41,7 +43,12 @@ class IntArrayList {
 		_size--;
 		return old;
 	}
-
+  int getOrElse(int index){
+    if(index > _array.length){
+      return 0xffffffff;
+    }
+    return _array[index];
+  }
 	int get(int index) {
 		if (index >= _size) throw 'new IndexOutOfBoundsException $index, $_size';
 		return _array[index];
