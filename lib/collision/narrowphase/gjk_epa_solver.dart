@@ -492,7 +492,7 @@ class Results {
 class Face{
   final List<Mkv?> v = [null,null,null];
   final List<Face?> f = [null,null,null];
-  final List<int> e = List.filled(3,0);
+  final List<int> e = [0,0,0];
   final Vector3 n = Vector3.zero();
   double d = 0;
   int mark = 0;

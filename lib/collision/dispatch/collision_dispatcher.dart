@@ -47,7 +47,7 @@ class CollisionDispatcher extends Dispatcher {
 	bool _staticWarningReported = false;
 	//ManifoldResult? _defaultManifoldResult;
 	NearCallback? _nearCallback;
-	final List<List<CollisionAlgorithmCreateFunc?>> _doubleDispatch = List.filled(_maxBroadphaseCollisionTypes, List.filled(_maxBroadphaseCollisionTypes, null));//CollisionAlgorithmCreateFunc[_maxBroadphaseCollisionTypes][_maxBroadphaseCollisionTypes];
+	final List<List<CollisionAlgorithmCreateFunc?>> _doubleDispatch = [];
 	late CollisionConfiguration _collisionConfiguration;
 	//static int _gNumManifold = 0;
 	
@@ -58,12 +58,15 @@ class CollisionDispatcher extends Dispatcher {
 
 		setNearCallback(DefaultNearCallback());
 
-		for (int i = 0; i < _maxBroadphaseCollisionTypes; i++) {
-			for (int j = 0; j < _maxBroadphaseCollisionTypes; j++) {
-				_doubleDispatch[i][j] = collisionConfiguration.getCollisionAlgorithmCreateFunc(
-					BroadphaseNativeType.forValue(i),
-					BroadphaseNativeType.forValue(j)
-				);
+		for (int i = 0; i <= _maxBroadphaseCollisionTypes; i++) {
+      _doubleDispatch.add([]);
+			for (int j = 0; j <= _maxBroadphaseCollisionTypes; j++) {
+				_doubleDispatch[i].add(
+          collisionConfiguration.getCollisionAlgorithmCreateFunc(
+            BroadphaseNativeType.forValue(i),
+            BroadphaseNativeType.forValue(j)
+          )
+        );
 				assert(_doubleDispatch[i][j] != null);
 			}
 		}
@@ -114,9 +117,8 @@ class CollisionDispatcher extends Dispatcher {
 	PersistentManifold getNewManifold(Object? b0, Object? b1) {
 		CollisionObject body0 = b0 as CollisionObject;
 		CollisionObject body1 = b1 as CollisionObject;
-		PersistentManifold manifold = PersistentManifold();
+		PersistentManifold manifold = new PersistentManifold();
 		manifold.init(body0,body1,0);
-		
 		manifold.index1a = _manifoldsPtr.size;
 		_manifoldsPtr.add(manifold);
 

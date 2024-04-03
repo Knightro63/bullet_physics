@@ -27,8 +27,8 @@ class BvhSubtreeInfo{ // implements Serializable
 
 	//static const int _serialVersionUID = 1;
 	
-	final /*unsigned*/ List<int> quantizedAabbMin = [0,0,0];//List.filled(3,0);
-	final /*unsigned*/ List<int> quantizedAabbMax = [0,0,0];//List.filled(3,0);
+	final /*unsigned*/ List<int> quantizedAabbMin = [0,0,0];
+	final /*unsigned*/ List<int> quantizedAabbMax = [0,0,0];
 	// points to the root of the subtree
 	int rootNodeIndex = 0;
 	int subtreeSize = 0;

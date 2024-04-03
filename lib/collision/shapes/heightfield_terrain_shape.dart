@@ -355,8 +355,8 @@ class HeightfieldTerrainShape extends ConcaveShape{
 	    - iterate over all triangles in that subset of the grid
 	 */
 	//quantize the aabbMin and aabbMax, and adjust the start/end ranges
-	List<int> quantizedAabbMin = List.filled(3,0);
-	List<int> quantizedAabbMax = List.filled(3,0);
+	List<int> quantizedAabbMin = [0,0,0];
+	List<int> quantizedAabbMax = [0,0,0];
 	List<Vector3> vertices = [Vector3.zero(),Vector3.zero(),Vector3.zero()];
 
 	void checkNormal(List<Vector3> vertices1, TriangleCallback? callback){

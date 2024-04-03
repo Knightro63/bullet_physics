@@ -88,8 +88,8 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
 	final IntArrayList _orderTmpConstraintPool = IntArrayList();
 	final IntArrayList _orderFrictionConstraintPool = IntArrayList();
 
-	final List<List<ContactSolverFunc?>> contactDispatch = List.filled(_maxContactSolverTypes, List.filled(_maxContactSolverTypes, null));//ContactSolverFunc[_maxContactSolverTypes][_maxContactSolverTypes];
-	final List<List<ContactSolverFunc?>> frictionDispatch = List.filled(_maxContactSolverTypes, List.filled(_maxContactSolverTypes, null));//ContactSolverFunc[_maxContactSolverTypes][_maxContactSolverTypes];
+	final List<List<ContactSolverFunc?>> contactDispatch = List.filled(_maxContactSolverTypes, new List.filled(_maxContactSolverTypes, null));//ContactSolverFunc[_maxContactSolverTypes][_maxContactSolverTypes];
+	final List<List<ContactSolverFunc?>> frictionDispatch = List.filled(_maxContactSolverTypes, new List.filled(_maxContactSolverTypes, null));//ContactSolverFunc[_maxContactSolverTypes][_maxContactSolverTypes];
 	
 	// btSeed2 is used for re-arranging the constraint rows. improves convergence/quality of friction
 	int btSeed2 = 0;

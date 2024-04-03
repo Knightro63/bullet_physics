@@ -50,7 +50,7 @@ class PairSet {
 	}
 	
 	void _expand() {
-		List<Pair> newArray = List.filled(_array.length << 1, Pair());
+		List<Pair> newArray = List.filled(_array.length << 1, new Pair());
     _array = newArray.sublist(0);
 		// System.arraycopy(array, 0, newArray, 0, array.length);
 		// _array = newArray;

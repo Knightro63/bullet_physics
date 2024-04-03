@@ -40,8 +40,8 @@ class BvhDataArray {
 
 	void resize(int? newSize) {
     if(newSize == null) return;
-		List<double> newBound = bound.sublist(0);//List.filled(newSize*6, 0);
-		List<int> newData = data.sublist(0);//List.filled(newSize, 0);
+		List<double> newBound = bound.sublist(0);
+		List<int> newData = data.sublist(0);
 		
 		// System.arraycopy(bound, 0, newBound, 0, size*6);
 		// System.arraycopy(data, 0, newData, 0, size);

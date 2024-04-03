@@ -36,16 +36,13 @@ class DefaultNearCallback extends NearCallback {
 	void handleCollision(BroadphasePair collisionPair, CollisionDispatcher dispatcher, DispatcherInfo dispatchInfo) {
 		CollisionObject? colObj0 = collisionPair.pProxy0?.clientObject as CollisionObject?;
 		CollisionObject? colObj1 = collisionPair.pProxy1?.clientObject as CollisionObject?;
-
 		if (dispatcher.needsCollision(colObj0, colObj1)) {
 			collisionPair.algorithm ??= dispatcher.findAlgorithm(colObj0, colObj1);
-
 			if (collisionPair.algorithm != null) {
 				_contactPointResult.init(colObj0, colObj1);
-
 				if (dispatchInfo.dispatchFunc == DispatchFunc.discrete) {
 					collisionPair.algorithm?.processCollision(colObj0, colObj1, dispatchInfo, _contactPointResult);
-				}
+				}  
 				else {
 					double toi = collisionPair.algorithm?.calculateTimeOfImpact(colObj0, colObj1, dispatchInfo, _contactPointResult) ?? 0;
 					if (dispatchInfo.timeOfImpact > toi) {

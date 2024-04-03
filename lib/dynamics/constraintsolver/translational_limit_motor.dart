@@ -55,7 +55,7 @@ class TranslationalLimitMotor {
   final Vector3 maxLimitForce     = Vector3.zero();   //!< max force on limit
   final Vector3 currentLimitError = Vector3.zero();   //!  How much is violated this limit
   final Vector3 currentLinearDiff = Vector3.zero();   //!  Current relative offset of constraint frames
-  final List<int> currentLimit    = List.filled(3,0);       //!< 0=free, 1=at lower limit, 2=at upper limit
+  final List<int> currentLimit    = [0,0,0];       //!< 0=free, 1=at lower limit, 2=at upper limit
         
 
 	TranslationalLimitMotor() {

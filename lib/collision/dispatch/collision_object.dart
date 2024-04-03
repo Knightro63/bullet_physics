@@ -55,9 +55,9 @@ class CollisionObject {
 	int islandTag1 = -1;
 	int companionId = -1;
 	int activationState1 = 1;
-	double? deactivationTime;
+	double deactivationTime = 0;
 	double friction = 0.5;
-	double? restitution;
+	double restitution = 0;
 
 	///users can point to their objects, m_userPointer is not used by Bullet, see setUserPointer/getUserPointer
 	Object? userObjectPointer;
@@ -134,7 +134,7 @@ class CollisionObject {
 		}
 	}
 
-	double? getDeactivationTime() {
+	double getDeactivationTime() {
 		return deactivationTime;
 	}
 
@@ -157,7 +157,7 @@ class CollisionObject {
 		return ((getActivationState() != islandSleeping) && (getActivationState() != disableSimulation));
 	}
 
-	double? getRestitution() {
+	double getRestitution() {
 		return restitution;
 	}
 

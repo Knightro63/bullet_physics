@@ -77,28 +77,37 @@ class DefaultCollisionConfiguration extends CollisionConfiguration {
 			return sphereSphereCF;
 		}
 
-		if (proxyType0.isConvex() && (proxyType1 == BroadphaseNativeType.staticPlaneProxytype))
-		{
+		// if ((proxyType0 == BroadphaseNativeType.sphereShapeProxytype) && (proxyType1 == BroadphaseNativeType.boxShapeProxyType)){
+		// 	return	sphereBoxCF;
+		// }
+		// if ((proxyType0 == BroadphaseNativeType.boxShapeProxyType ) && (proxyType1==BroadphaseNativeType.sphereShapeProxytype)){
+		// 	return	boxSphereCF;
+		// }
+		// if ((proxyType0 == BroadphaseNativeType.sphereShapeProxytype ) && (proxyType1 == BroadphaseNativeType.triangleShapeProxyType)){
+		// 	return	sphereTriangleCF;
+		// }
+		// if ((proxyType0 == BroadphaseNativeType.triangleShapeProxyType ) && (proxyType1 == BroadphaseNativeType.sphereShapeProxytype)){
+		// 	return	triangleSphereCF;
+		// }
+		// if ((proxyType0 == BroadphaseNativeType.boxShapeProxyType) && (proxyType1 == BroadphaseNativeType.boxShapeProxyType)) {
+		// 	return boxBoxCF;
+		// }
+
+		if (proxyType0.isConvex() && (proxyType1 == BroadphaseNativeType.staticPlaneProxytype)){
 			return convexPlaneCF;
 		}
-
-		if (proxyType1.isConvex() && (proxyType0 == BroadphaseNativeType.staticPlaneProxytype))
-		{
+		if (proxyType1.isConvex() && (proxyType0 == BroadphaseNativeType.staticPlaneProxytype)){
 			return planeConvexCF;
 		}
-
 		if (proxyType0.isConvex() && proxyType1.isConvex()) {
 			return convexConvexCreateFunc;
 		}
-
 		if (proxyType0.isConvex() && proxyType1.isConcave()) {
 			return convexConcaveCreateFunc;
 		}
-
 		if (proxyType1.isConvex() && proxyType0.isConcave()) {
 			return swappedConvexConcaveCreateFunc;
 		}
-
 		if (proxyType0.isCompound()) {
 			return compoundCreateFunc;
 		}

@@ -5,7 +5,7 @@ import 'package:bullet_physics/collision/broadphase/dbvt_aabb_mm.dart';
 class Node {
   final DbvtAabbMm volume = DbvtAabbMm();
   Node? parent;
-  final List<Node?> childs = List.filled(2, null);
+  final List<Node?> childs = [null,null];
   Object? data;
 
   bool isleaf() {

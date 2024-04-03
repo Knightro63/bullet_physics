@@ -36,12 +36,9 @@ class GhostPairCallback extends OverlappingPairCallback {
 		GhostObject? ghost0 = GhostObject.upcast(colObj0);
 		GhostObject? ghost1 = GhostObject.upcast(colObj1);
 
-		if (ghost0 != null) {
-			ghost0.addOverlappingObjectInternal(proxy1!, proxy0!);
-		}
-		if (ghost1 != null) {
-			ghost1.addOverlappingObjectInternal(proxy0!, proxy1!);
-		}
+		ghost0?.addOverlappingObjectInternal(proxy1!, proxy0!);
+		ghost1?.addOverlappingObjectInternal(proxy0!, proxy1!);
+	
 		return null;
 	}
   @override
@@ -50,13 +47,10 @@ class GhostPairCallback extends OverlappingPairCallback {
 		CollisionObject? colObj1 = proxy1?.clientObject as CollisionObject?;
 		GhostObject? ghost0 = GhostObject.upcast(colObj0);
 		GhostObject? ghost1 = GhostObject.upcast(colObj1);
-		
-		if (ghost0 != null) {
-			ghost0.removeOverlappingObjectInternal(proxy1, dispatcher, proxy0);
-		}
-		if (ghost1 != null) {
-			ghost1.removeOverlappingObjectInternal(proxy0, dispatcher, proxy1);
-		}
+
+    ghost0?.removeOverlappingObjectInternal(proxy1, dispatcher, proxy0);
+    ghost1?.removeOverlappingObjectInternal(proxy0, dispatcher, proxy1);
+
 		return null;
 	}
   @override

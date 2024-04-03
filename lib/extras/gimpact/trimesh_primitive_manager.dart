@@ -41,7 +41,7 @@ class TrimeshPrimitiveManager extends PrimitiveManagerBase {
 	int part = 0;
 	int lockCount = 0;
 
-	final List<int> _tmpIndices = List.filled(3,0);
+	final List<int> _tmpIndices = [0,0,0];
 
 	VertexData? _vertexData;
 	

@@ -31,7 +31,7 @@ class PersistentManifold {
 	//final BulletStack stack = BulletStack.get();
 	
 	static const int manifoleCacheSize = 4;
-	final List<ManifoldPoint> _pointCache = [];//ManifoldPoint[MANIFOLD_CACHE_SIZE];
+	final List<ManifoldPoint?> _pointCache = [null,null,null,null];
 	/// this two body pointers can point to the physics rigidbody class.
 	/// void* will allow any rigidbody class
 	Object? _body0;
@@ -42,7 +42,7 @@ class PersistentManifold {
 
 	PersistentManifold([Object? body0, Object? body1, int bla = 0]) {
     for (int i=0; i<_pointCache.length; i++){ 
-      _pointCache.add(ManifoldPoint());
+      _pointCache[i] = new ManifoldPoint();
     }
 		init(body0, body1, bla);
 	}
@@ -62,19 +62,19 @@ class PersistentManifold {
 		int maxPenetrationIndex = -1;
 		double maxPenetration = pt.getDistance();
 		for (int i = 0; i < 4; i++) {
-			if (_pointCache[i].getDistance() < maxPenetration) {
+			if ((_pointCache[i]?.getDistance() ?? 0) < maxPenetration) {
 				maxPenetrationIndex = i;
-				maxPenetration = _pointCache[i].getDistance();
+				maxPenetration = _pointCache[i]?.getDistance() ?? 0;
 			}
 		}
 
 		double res0 = 0, res1 = 0, res2 = 0, res3 = 0;
 		if (maxPenetrationIndex != 0) {
 			Vector3 a0 = Vector3.copy(pt.localPointA);
-			a0.sub(_pointCache[1].localPointA);
+			a0.sub(_pointCache[1]!.localPointA);
 
-			Vector3 b0 = Vector3.copy(_pointCache[3].localPointA);
-			b0.sub(_pointCache[2].localPointA);
+			Vector3 b0 = Vector3.copy(_pointCache[3]!.localPointA);
+			b0.sub(_pointCache[2]!.localPointA);
 
 			Vector3 cross = Vector3.zero();
 			cross.cross2(a0, b0);
@@ -84,10 +84,10 @@ class PersistentManifold {
 
 		if (maxPenetrationIndex != 1) {
 			Vector3 a1 = Vector3.copy(pt.localPointA);
-			a1.sub(_pointCache[0].localPointA);
+			a1.sub(_pointCache[0]!.localPointA);
 
-			Vector3 b1 = Vector3.copy(_pointCache[3].localPointA);
-			b1.sub(_pointCache[2].localPointA);
+			Vector3 b1 = Vector3.copy(_pointCache[3]!.localPointA);
+			b1.sub(_pointCache[2]!.localPointA);
 
 			Vector3 cross = Vector3.zero();
 			cross.cross2(a1, b1);
@@ -96,10 +96,10 @@ class PersistentManifold {
 
 		if (maxPenetrationIndex != 2) {
 			Vector3 a2 = Vector3.copy(pt.localPointA);
-			a2.sub(_pointCache[0].localPointA);
+			a2.sub(_pointCache[0]!.localPointA);
 
-			Vector3 b2 = Vector3.copy(_pointCache[3].localPointA);
-			b2.sub(_pointCache[1].localPointA);
+			Vector3 b2 = Vector3.copy(_pointCache[3]!.localPointA);
+			b2.sub(_pointCache[1]!.localPointA);
 
 			Vector3 cross = Vector3.zero();
 			cross.cross2(a2, b2);
@@ -109,10 +109,10 @@ class PersistentManifold {
 
 		if (maxPenetrationIndex != 3) {
 			Vector3 a3 = Vector3.copy(pt.localPointA);
-			a3.sub(_pointCache[0].localPointA);
+			a3.sub(_pointCache[0]!.localPointA);
 
-			Vector3 b3 = Vector3.copy(_pointCache[2].localPointA);
-			b3.sub(_pointCache[1].localPointA);
+			Vector3 b3 = Vector3.copy(_pointCache[2]!.localPointA);
+			b3.sub(_pointCache[1]!.localPointA);
 
 			Vector3 cross = Vector3.zero();
 			cross.cross2(a3, b3);
@@ -155,7 +155,7 @@ class PersistentManifold {
 	}
 
 	ManifoldPoint getContactPoint(int index) {
-		return _pointCache[index];
+		return _pointCache[index]!;
 	}
 
 	// todo: get this margin from the current physics / collision environment
@@ -169,7 +169,7 @@ class PersistentManifold {
 		int nearestPoint = -1;
 		Vector3 diffA = Vector3.zero();
 		for (int i = 0; i < size; i++) {
-			ManifoldPoint mp = _pointCache[i];
+			ManifoldPoint mp = _pointCache[i]!;
 
 			diffA.sub2(mp.localPointA,newPoint.localPointA);
 
@@ -195,55 +195,55 @@ class PersistentManifold {
 				insertIndex = 0;
 			}
 			
-			clearUserCache(_pointCache[insertIndex]);
+			clearUserCache(_pointCache[insertIndex]!);
 		}
 		else {
 			_cachedPoints++;
 		}
-		assert (_pointCache[insertIndex].userPersistentData == null);
-		_pointCache[insertIndex].set(newPoint);
+		assert (_pointCache[insertIndex]!.userPersistentData == null);
+		_pointCache[insertIndex]!.set(newPoint);
 		return insertIndex;
 	}
 
 	void removeContactPoint(int index) {
-		clearUserCache(_pointCache[index]);
+		clearUserCache(_pointCache[index]!);
 
 		int lastUsedIndex = getNumContacts() - 1;
 		if (index != lastUsedIndex) {
 			// TODO: possible bug
-			_pointCache[index].set(_pointCache[lastUsedIndex]);
+			_pointCache[index]?.set(_pointCache[lastUsedIndex]!);
 			//get rid of duplicated userPersistentData pointer
-			_pointCache[lastUsedIndex].userPersistentData = null;
-			_pointCache[lastUsedIndex].appliedImpulse = 0;
-			_pointCache[lastUsedIndex].lateralFrictionInitialized = false;
-			_pointCache[lastUsedIndex].appliedImpulseLateral1 = 0;
-			_pointCache[lastUsedIndex].appliedImpulseLateral2 = 0;
-			_pointCache[lastUsedIndex].lifeTime = 0;
+			_pointCache[lastUsedIndex]?.userPersistentData = null;
+			_pointCache[lastUsedIndex]?.appliedImpulse = 0;
+			_pointCache[lastUsedIndex]?.lateralFrictionInitialized = false;
+			_pointCache[lastUsedIndex]?.appliedImpulseLateral1 = 0;
+			_pointCache[lastUsedIndex]?.appliedImpulseLateral2 = 0;
+			_pointCache[lastUsedIndex]?.lifeTime = 0;
 		}
 
-		assert (_pointCache[lastUsedIndex].userPersistentData == null);
+		assert (_pointCache[lastUsedIndex]?.userPersistentData == null);
 		_cachedPoints--;
 	}
 
 	void replaceContactPoint(ManifoldPoint newPoint, int insertIndex) {
 		assert (_validContactDistance(newPoint));
 
-		int lifeTime = _pointCache[insertIndex].getLifeTime();
-		double appliedImpulse = _pointCache[insertIndex].appliedImpulse;
-		double appliedLateralImpulse1 = _pointCache[insertIndex].appliedImpulseLateral1;
-		double appliedLateralImpulse2 = _pointCache[insertIndex].appliedImpulseLateral2;
+		int lifeTime = _pointCache[insertIndex]!.getLifeTime();
+		double appliedImpulse = _pointCache[insertIndex]!.appliedImpulse;
+		double appliedLateralImpulse1 = _pointCache[insertIndex]!.appliedImpulseLateral1;
+		double appliedLateralImpulse2 = _pointCache[insertIndex]!.appliedImpulseLateral2;
 
 		assert (lifeTime >= 0);
-		Object? cache = _pointCache[insertIndex].userPersistentData;
+		Object? cache = _pointCache[insertIndex]!.userPersistentData;
 
-		_pointCache[insertIndex].set(newPoint);
+		_pointCache[insertIndex]?.set(newPoint);
 
-		_pointCache[insertIndex].userPersistentData = cache;
-		_pointCache[insertIndex].appliedImpulse = appliedImpulse;
-		_pointCache[insertIndex].appliedImpulseLateral1 = appliedLateralImpulse1;
-		_pointCache[insertIndex].appliedImpulseLateral2 = appliedLateralImpulse2;
+		_pointCache[insertIndex]?.userPersistentData = cache;
+		_pointCache[insertIndex]?.appliedImpulse = appliedImpulse;
+		_pointCache[insertIndex]?.appliedImpulseLateral1 = appliedLateralImpulse1;
+		_pointCache[insertIndex]?.appliedImpulseLateral2 = appliedLateralImpulse2;
 
-		_pointCache[insertIndex].lifeTime = lifeTime;
+		_pointCache[insertIndex]?.lifeTime = lifeTime;
 	}
 
 	bool _validContactDistance(ManifoldPoint pt) {
@@ -256,7 +256,7 @@ class PersistentManifold {
 		int i;
 		// first refresh worldspace positions and distance
 		for (i = getNumContacts() - 1; i >= 0; i--) {
-			ManifoldPoint manifoldPoint = _pointCache[i];
+			ManifoldPoint manifoldPoint = _pointCache[i]!;
 
 			manifoldPoint.positionWorldOnA.setFrom(manifoldPoint.localPointA);
 			trA.transform(manifoldPoint.positionWorldOnA);
@@ -277,7 +277,7 @@ class PersistentManifold {
 
 		for (i = getNumContacts() - 1; i >= 0; i--) {
 
-			ManifoldPoint manifoldPoint = _pointCache[i];
+			ManifoldPoint manifoldPoint = _pointCache[i]!;
 			// contact becomes invalid when signed distance exceeds margin (projected on contactnormal direction)
 			if (!_validContactDistance(manifoldPoint)) {
 				removeContactPoint(i);
@@ -304,7 +304,7 @@ class PersistentManifold {
 	void clearManifold() {
 		int i;
 		for (i = 0; i < _cachedPoints; i++) {
-			clearUserCache(_pointCache[i]);
+			clearUserCache(_pointCache[i]!);
 		}
 		_cachedPoints = 0;
 	}

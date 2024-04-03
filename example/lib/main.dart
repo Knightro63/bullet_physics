@@ -89,8 +89,8 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
 
   List<int> fps = [0,0,0,0];
   double toRad = 0.0174532925199432957;
-  int type = 1;
-  int max = 1;
+  int type = 4;
+  int max = 20;
 
   @override
   void initState() {

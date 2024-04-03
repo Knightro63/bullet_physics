@@ -102,7 +102,7 @@ abstract class AxisSweep3Internal extends BroadphaseInterface {
 		// handle 0 is reserved as the null index, and is also used as the sentinel
 		firstFreeHandle = 1;
 		
-    for (int i=firstFreeHandle; i<maxHandles; i++) {
+    for (int i = firstFreeHandle; i<maxHandles; i++) {
       pHandles[i].setNextFree(i+1);
     }
     pHandles[maxHandles - 1].setNextFree(0);
@@ -386,7 +386,7 @@ abstract class AxisSweep3Internal extends BroadphaseInterface {
 	
 	int addHandle(Vector3 aabbMin, Vector3 aabbMax, Object pOwner, int collisionFilterGroup, int collisionFilterMask, Dispatcher? dispatcher, Object? multiSapProxy) {
 		// quantize the bounds
-		List<int> min = List.filled(3,0), max = List.filled(3,0);
+		List<int> min = [0,0,0], max = [0,0,0];
 		quantize(min, aabbMin, 0);
 		quantize(max, aabbMax, 1);
 
@@ -473,7 +473,7 @@ abstract class AxisSweep3Internal extends BroadphaseInterface {
 		Handle pHandle = getHandle(handle);
 
 		// quantize the bounds
-		List<int> min = List.filled(3,0), max = List.filled(3,0);
+		List<int> min = [0,0,0], max = [0,0,0];
 		quantize(min, aabbMin, 0);
 		quantize(max, aabbMax, 1);
 

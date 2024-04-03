@@ -88,22 +88,17 @@ class ConvexConvexAlgorithm extends CollisionAlgorithm {
 			ownManifold = true;
 		}
 		resultOut?.setPersistentManifold(manifoldPtr!);
-
 		ConvexShape? min0 = body0?.getCollisionShape() as ConvexShape?;
 		ConvexShape? min1 = body1?.getCollisionShape() as ConvexShape?;
 		ClosestPointInput input = ClosestPointInput();
-
 		input.init();
 		_gjkPairDetector.setMinkowskiA(min0);
 		_gjkPairDetector.setMinkowskiB(min1);
-		input.maximumDistanceSquared = (min0?.getMargin() ?? 0) + (min1?.getMargin() ?? 0) + (manifoldPtr?.getContactBreakingThreshold() ?? 0);
+		input.maximumDistanceSquared = (min0?.getMargin() ?? 0) + (min1?.getMargin() ?? 0) + manifoldPtr!.getContactBreakingThreshold();
 		input.maximumDistanceSquared *= input.maximumDistanceSquared;
-
 		body0?.getWorldTransform(input.transformA);
 		body1?.getWorldTransform(input.transformB);
-
 		_gjkPairDetector.getClosestPoints(input, resultOut, dispatchInfo?.debugDraw);
-
 		if (ownManifold) {
 			resultOut?.refreshContactPoints();
 		}
@@ -182,7 +177,7 @@ class ConvexConvexAlgorithm extends CollisionAlgorithm {
 		{
 			ConvexShape? convex1 = col1?.getCollisionShape() as ConvexShape?;
 
-			SphereShape sphere0 = SphereShape(col0?.getCcdSweptSphereRadius() ?? 0); // todo: allow non-zero sphere sizes, for better approximation
+			SphereShape sphere0 = SphereShape(col0!.getCcdSweptSphereRadius()); // todo: allow non-zero sphere sizes, for better approximation
 			CastResult result = CastResult();
 			VoronoiSimplexSolver voronoiSimplex = VoronoiSimplexSolver();
 			//SubsimplexConvexCast ccd0(&sphere,min0,&voronoiSimplex);
@@ -190,16 +185,16 @@ class ConvexConvexAlgorithm extends CollisionAlgorithm {
 			GjkConvexCast ccd1 = GjkConvexCast(sphere0, convex1, voronoiSimplex);
 			//ContinuousConvexCollision ccd(min0,min1,&voronoiSimplex,0);
 			if (ccd1.calcTimeOfImpact(
-          col0?.getWorldTransform(tmpTrans1), 
-          col0?.getInterpolationWorldTransform(tmpTrans2),
+          col0.getWorldTransform(tmpTrans1), 
+          col0.getInterpolationWorldTransform(tmpTrans2),
 					col1?.getWorldTransform(tmpTrans3), 
           col1?.getInterpolationWorldTransform(tmpTrans4), 
           result
         )) {
 				//store result.m_fraction in both bodies
 
-				if ((col0?.getHitFraction() ?? 0) > result.fraction) {
-					col0?.setHitFraction(result.fraction);
+				if ((col0.getHitFraction()) > result.fraction) {
+					col0.setHitFraction(result.fraction);
 				}
 
 				if ((col1?.getHitFraction() ?? 0) > result.fraction) {

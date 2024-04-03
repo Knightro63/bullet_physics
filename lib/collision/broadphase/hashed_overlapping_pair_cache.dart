@@ -32,6 +32,7 @@ import "package:bullet_physics/core/bullet_stats.dart";
 import "package:bullet_physics/linearmath/misc_util.dart";
 import "package:bullet_physics/utils/int_array_list.dart";
 import "package:bullet_physics/utils/object_array_list.dart";
+import "package:flutter/material.dart";
 
 class HashedOverlappingPairCache extends OverlappingPairCache {
 	static const int _nullPair = 0xffffffff;
@@ -40,6 +41,7 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 	OverlapFilterCallback? _overlapFilterCallback;
 	final IntArrayList _hashTable = IntArrayList();
 	final IntArrayList _next = IntArrayList();
+  @protected
 	OverlappingPairCallback? _ghostPairCallback;
 
 	HashedOverlappingPairCache() {
@@ -85,11 +87,11 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 
 		int pairIndex = _overlappingPairArray.indexOf(pair);
 		assert (pairIndex != -1);
-		//assert (pairIndex < _overlappingPairArray.size);
+		assert (pairIndex < _overlappingPairArray.size);
 
 		// Remove the pair from the hash table.
 		int index = _hashTable[hash];
-		//assert (index != _nullPair);
+		assert (index != _nullPair);
 
 		int previous = _nullPair;
 		while (index != pairIndex) {
@@ -115,18 +117,17 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 
 		// If the removed pair is the last pair, we are done.
 		if (lastPairIndex == pairIndex) {
-			_overlappingPairArray.removeLast();
+			_overlappingPairArray.removeAt(_overlappingPairArray.size - 1);
 			return userData;
 		}
 
 		// Remove the last pair from the hash table.
 		BroadphasePair last = _overlappingPairArray.getQuick(lastPairIndex)!;
 		/* missing swap while too, Nat. */
-    print(last.pProxy0!.getUid());
 		int lastHash = _getHash(last.pProxy0!.getUid(), last.pProxy1!.getUid()) & (_overlappingPairArray.capacity - 1);
 
 		index = _hashTable[lastHash];
-		//assert (index != _nullPair);
+		assert (index != _nullPair);
 
 		previous = _nullPair;
 		while (index != lastPairIndex) {
@@ -149,7 +150,7 @@ class HashedOverlappingPairCache extends OverlappingPairCache {
 		_next[pairIndex] = _hashTable[lastHash];
 		_hashTable[lastHash] = pairIndex;
 
-		_overlappingPairArray.removeLast();
+		_overlappingPairArray.removeAt(_overlappingPairArray.size - 1);
 
 		return userData;
 	}

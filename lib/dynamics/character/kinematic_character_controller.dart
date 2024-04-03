@@ -213,7 +213,7 @@ class KinematicCharacterController extends ActionInterface {
 			stepForwardAndStrafe(collisionWorld, walkDirection);
 		}
 		else {
-			print("playerStep 4");
+			// print("playerStep 4");
 			//printf("  time: %f", m_velocityTimeInterval);
 
 			// still have some time left for moving!

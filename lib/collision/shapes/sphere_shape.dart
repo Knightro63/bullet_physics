@@ -28,7 +28,7 @@ import "package:bullet_physics/linearmath/vector_util.dart";
 import 'package:vector_math/vector_math.dart';
 
 class SphereShape extends ConvexInternalShape {
-	SphereShape(double radius) {
+	SphereShape(double radius):super() {
 		implicitShapeDimensions.x = radius;
 		collisionMargin = radius;
 	}

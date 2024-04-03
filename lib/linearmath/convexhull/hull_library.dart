@@ -570,7 +570,7 @@ class HullLibrary {
 
 		vcount[0] = 0;
 
-		List<double> recip = List.filled(3, 0);
+		List<double> recip = [0,0,0];
 
 		if (scale != null) {
 			scale.setValues(1, 1, 1);

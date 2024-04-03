@@ -302,7 +302,7 @@ class MatrixUtil {
 		//List<double> doubleArrays = ArrayPool.get(double.class);
 		
 		double trace = mat.storage[0] + mat.storage[4] + mat.storage[8];
-		List<double> temp = List.filled(4, 0);//doubleArrays.getFixed(4);
+		List<double> temp = [0,0,0,0];//doubleArrays.getFixed(4);
 
 		if (trace > 0) {
 			double s =sqrt(trace + 1);

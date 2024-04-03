@@ -109,12 +109,12 @@ class SimulationIslandManager {
 			// update the sleeping state for bodies, if all are sleeping
 			for (startIslandIndex = 0; startIslandIndex < numElem; startIslandIndex = endIslandIndex) {
 				int islandId = getUnionFind().getElement(startIslandIndex)?.id ?? 0;
-				for (endIslandIndex = startIslandIndex + 1; (endIslandIndex < numElem) && (getUnionFind().getElement(endIslandIndex)?.id == islandId); endIslandIndex++) {}
+				for (endIslandIndex = startIslandIndex + 1; (endIslandIndex < numElem) && (getUnionFind().getElement(endIslandIndex)?.id == islandId); endIslandIndex++) {
+        }
 
 				bool allSleeping = true;
 				for (int idx = startIslandIndex; idx < endIslandIndex; idx++) {
 					int i = getUnionFind().getElement(idx)?.sz ?? 0;
-
 					CollisionObject? colObj0 = collisionObjects.getQuick(i);
 					// if ((colObj0?.getIslandTag() != islandId) && (colObj0?.getIslandTag() != -1)) {
 					// 	//System.err.println("error in island management\n");
@@ -200,7 +200,7 @@ class SimulationIslandManager {
 		buildIslands(dispatcher, collisionObjects);
 
 		int endIslandIndex = 1;
-		int startIslandIndex;
+		int startIslandIndex = 0;
 		int numElem = getUnionFind().getNumElements();
 
 		BulletStats.pushProfile("processIslands");
@@ -216,7 +216,6 @@ class SimulationIslandManager {
 				bool islandSleeping = false;
 
 				for (endIslandIndex = startIslandIndex; (endIslandIndex < numElem) && (getUnionFind().getElement(endIslandIndex)?.id == islandId); endIslandIndex++) {
-
           int i = getUnionFind().getElement(endIslandIndex)?.sz ?? 0;
 					CollisionObject? colObj0 = collisionObjects.getQuick(i);
 					_islandBodies.add(colObj0);
@@ -236,7 +235,8 @@ class SimulationIslandManager {
 					if (curIslandId == islandId) {
 						startManifoldIdx = startManifoldIndex;
 
-						for (endManifoldIndex = startManifoldIndex + 1; (endManifoldIndex < numManifolds) && (islandId == _getIslandId(_islandmanifold.getQuick(endManifoldIndex))); endManifoldIndex++) {}
+						for (endManifoldIndex = startManifoldIndex + 1; (endManifoldIndex < numManifolds) && (islandId == _getIslandId(_islandmanifold.getQuick(endManifoldIndex))); endManifoldIndex++) {
+            }
 						numIslandManifolds = endManifoldIndex - startManifoldIndex;
 					}
 

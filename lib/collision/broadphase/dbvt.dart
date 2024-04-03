@@ -51,7 +51,6 @@ class Dbvt {
 		free = null;
     lkhd = -1;
     opath = 0;
-    //stkStack.clear();
 	}
 
 	bool empty() {
@@ -266,48 +265,42 @@ class Dbvt {
 	static void collideTTWithSingle(Node? root0, Node? root1, Transform xform, ICollide policy) {
 		//DBVT_CHECKTYPE
 		if (root0 != null && root1 != null) {
-      int depth = 1;
-      int treshold = doubleStackSize - 4;
 			ObjectArrayList<sStkNN> stack = ObjectArrayList(doubleStackSize);
-			stack[0] = sStkNN(root0, root1);
+			stack.add(sStkNN(root0, root1));
 			do {
-				sStkNN? p = stack[--depth];
-        if (depth > treshold){
-          stack.resize(stack.size * 2);
-          treshold = stack.size - 4;
-        }
-				if (p?.a == p?.b) {
-					if (p?.a?.isinternal() ?? false) {
-						stack.add(sStkNN(p!.a?.childs[0], p.a?.childs[0]));
-						stack.add(sStkNN(p.a?.childs[1], p.a?.childs[1]));
-						stack.add(sStkNN(p.a?.childs[0], p.a?.childs[1]));
+				sStkNN p = stack.removeAt(stack.size - 1)!;
+				if (p.a == p.b) {
+					if (p.a!.isinternal()) {
+						stack.add(sStkNN(p.a!.childs[0], p.a!.childs[0]));
+						stack.add(sStkNN(p.a!.childs[1], p.a!.childs[1]));
+						stack.add(sStkNN(p.a!.childs[0], p.a!.childs[1]));
 					}
 				}
-				else if (DbvtAabbMm.intersectWithTransform(p?.a?.volume, p?.b?.volume, xform)) {
-					if (p?.a?.isinternal() ?? false) {
-						if (p?.b?.isinternal() ?? false) {
-							stack.add(sStkNN(p!.a?.childs[0], p.b?.childs[0]));
-							stack.add(sStkNN(p.a?.childs[1], p.b?.childs[0]));
-							stack.add(sStkNN(p.a?.childs[0], p.b?.childs[1]));
-							stack.add(sStkNN(p.a?.childs[1], p.b?.childs[1]));
+				else if (DbvtAabbMm.intersectWithTransform(p.a!.volume, p.b!.volume, xform)) {
+					if (p.a!.isinternal()) {
+						if (p.b!.isinternal()) {
+							stack.add(sStkNN(p.a!.childs[0], p.b!.childs[0]));
+							stack.add(sStkNN(p.a!.childs[1], p.b!.childs[0]));
+							stack.add(sStkNN(p.a!.childs[0], p.b!.childs[1]));
+							stack.add(sStkNN(p.a!.childs[1], p.b!.childs[1]));
 						}
 						else {
-							stack.add(sStkNN(p!.a?.childs[0], p.b));
-							stack.add(sStkNN(p.a?.childs[1], p.b));
+							stack.add(sStkNN(p.a!.childs[0], p.b));
+							stack.add(sStkNN(p.a!.childs[1], p.b));
 						}
 					}
 					else {
-						if (p?.b?.isinternal() ?? false) {
-							stack.add(sStkNN(p!.a, p.b?.childs[0]));
+						if (p.b!.isinternal()) {
+							stack.add(sStkNN(p.a, p.b?.childs[0]));
 							stack.add(sStkNN(p.a, p.b?.childs[1]));
 						}
-						else{
-							policy.process(p!.a!, p.b);
+						else {
+							policy.process(p.a!, p.b);
 						}
 					}
 				}
 			}
-			while (stack.isNotEmpty);
+			while (stack.size > 0);
 		}
 	}
 

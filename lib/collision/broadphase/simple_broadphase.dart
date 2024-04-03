@@ -76,8 +76,7 @@ class SimpleBroadphase extends BroadphaseInterface {
 		sbp.max.setFrom(aabbMax);
 	}
 
-	static bool _aabbOverlap(SimpleBroadphaseProxy? proxy0, SimpleBroadphaseProxy? proxy1) {
-    if(proxy0 == null || proxy1 == null) return false;
+	static bool _aabbOverlap(SimpleBroadphaseProxy proxy0, SimpleBroadphaseProxy proxy1) {
 		return proxy0.min.x <= proxy1.max.x && proxy1.min.x <= proxy0.max.x &&
 				proxy0.min.y <= proxy1.max.y && proxy1.min.y <= proxy0.max.y &&
 				proxy0.min.z <= proxy1.max.z && proxy1.min.z <= proxy0.max.z;
@@ -91,7 +90,7 @@ class SimpleBroadphase extends BroadphaseInterface {
 				SimpleBroadphaseProxy? proxy1 = _handles.getQuick(j);
 				if (proxy0 == proxy1) continue;
 				
-				if (_aabbOverlap(proxy0, proxy1)) {
+				if (_aabbOverlap(proxy0!, proxy1!)) {
 					if (_pairCache.findPair(proxy0, proxy1) == null) {
 						_pairCache.addOverlappingPair(proxy0, proxy1);
 					}

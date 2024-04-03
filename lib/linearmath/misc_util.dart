@@ -323,7 +323,6 @@ class MiscUtil {
 				i++;
 				j--;
 			}
-      
 		}
 		while (i <= j);
 

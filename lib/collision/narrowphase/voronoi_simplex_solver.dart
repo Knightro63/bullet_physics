@@ -34,9 +34,9 @@ class VoronoiSimplexSolver extends SimplexSolverInterface {
 
 	int numVerts = 0;
 
-	final List<Vector3> simplexVectorW = List.filled(voronoiSimplexMaxVerts, Vector3.zero());
-	final List<Vector3> simplexPointsP = List.filled(voronoiSimplexMaxVerts, Vector3.zero());
-	final List<Vector3> simplexPointsQ = List.filled(voronoiSimplexMaxVerts, Vector3.zero());
+	final List<Vector3> simplexVectorW = [Vector3.zero(),Vector3.zero(),Vector3.zero(),Vector3.zero(),Vector3.zero()];
+	final List<Vector3> simplexPointsP = [Vector3.zero(),Vector3.zero(),Vector3.zero(),Vector3.zero(),Vector3.zero()];
+	final List<Vector3> simplexPointsQ = [Vector3.zero(),Vector3.zero(),Vector3.zero(),Vector3.zero(),Vector3.zero()];
 
 	final Vector3 cachedP1 = Vector3.zero();
 	final Vector3 cachedP2 = Vector3.zero();
