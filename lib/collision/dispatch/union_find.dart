@@ -95,8 +95,7 @@ class UnionFind {
 	
 	////////////////////////////////////////////////////////////////////////////
 	
-	static final Comparator<Element?> _elementComparator = (Element? o1, Element? o2) {
-    if(o1 == null || o2 == null) return -1;
+	static final Comparator<Element> _elementComparator = (Element o1, Element o2) {
 		return o1.id < o2.id? -1 : 1;
 	};
 }

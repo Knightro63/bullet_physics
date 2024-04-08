@@ -42,7 +42,7 @@ class CollisionDispatcher extends Dispatcher {
 
 	static final int _maxBroadphaseCollisionTypes = BroadphaseNativeType.maxBroadphaseCollisionTypes.index;
 	//int _count = 0;
-	final ObjectArrayList<PersistentManifold> _manifoldsPtr = ObjectArrayList();
+	final ObjectArrayList<PersistentManifold> _manifoldsPtr = new ObjectArrayList();
 	//bool _useIslands = true;
 	bool _staticWarningReported = false;
 	//ManifoldResult? _defaultManifoldResult;
@@ -51,7 +51,7 @@ class CollisionDispatcher extends Dispatcher {
 	late CollisionConfiguration _collisionConfiguration;
 	//static int _gNumManifold = 0;
 	
-	CollisionAlgorithmConstructionInfo _tmpCI = CollisionAlgorithmConstructionInfo();
+	CollisionAlgorithmConstructionInfo _tmpCI = new CollisionAlgorithmConstructionInfo();
 
 	CollisionDispatcher(CollisionConfiguration collisionConfiguration) {
 		_collisionConfiguration = collisionConfiguration;
@@ -106,7 +106,6 @@ class CollisionDispatcher extends Dispatcher {
 
 	@override
 	void freeCollisionAlgorithm(CollisionAlgorithm? algo) {
-    assert(algo != null);
 		CollisionAlgorithmCreateFunc? createFunc = algo!.internalGetCreateFunc();
 		algo.internalSetCreateFunc(null);
 		createFunc?.releaseCollisionAlgorithm(algo);
@@ -156,7 +155,7 @@ class CollisionDispatcher extends Dispatcher {
 			}
 		}
 
-		if ((!body0!.isActive()) && (!body1!.isActive())) {
+		if (!body0!.isActive() && !body1!.isActive()) {
 			needsCollision = false;
 		}
 		else if (!body0.checkCollideWith(body1!)) {
@@ -169,7 +168,7 @@ class CollisionDispatcher extends Dispatcher {
 	@override
 	bool needsResponse(CollisionObject body0, CollisionObject body1) {
 		bool hasResponse = (body0.hasContactResponse() && body1.hasContactResponse());
-		hasResponse = hasResponse && ((!body0.isStaticOrKinematicObject()) || (!body1.isStaticOrKinematicObject()));
+		hasResponse = hasResponse && (!body0.isStaticOrKinematicObject() || !body1.isStaticOrKinematicObject());
 		return hasResponse;
 	}
 	

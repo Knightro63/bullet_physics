@@ -932,7 +932,6 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
       for (int j = 0; j < numManifolds; j++) {
         PersistentManifold? manifold = manifoldPtr?[manifoldOffset+j];
         prepareConstraints(manifold, info, debugDrawer);
-
         for (int p = 0; p < (manifoldPtr?[manifoldOffset+j]?.getNumContacts() ?? 0); p++) {
           _gOrder[totalPoints]?.manifoldIndex = j;
           _gOrder[totalPoints]?.pointIndex = p;
@@ -963,7 +962,6 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
           TypedConstraint? constraint = constraints![constraintsOffset+j];
           constraint?.solveConstraint(info.timeStep);
         }
-
         for (int j = 0; j < totalPoints; j++) {
           PersistentManifold? manifold = manifoldPtr![manifoldOffset+_gOrder[j]!.manifoldIndex];
           solve(
@@ -975,7 +973,7 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
             debugDrawer
           );
         }
-
+        //print(totalPoints);
         for (int j = 0; j < totalPoints; j++) {
           PersistentManifold? manifold = manifoldPtr![manifoldOffset+_gOrder[j]!.manifoldIndex];
           solveFriction(
@@ -1204,7 +1202,6 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
 	
 	double solve(RigidBody? body0, RigidBody? body1, ManifoldPoint? cp, ContactSolverInfo info, int iter, IDebugDraw? debugDrawer) {
 		double maxImpulse = 0;
-  
     if ((cp?.getDistance() ?? 0) <= 0) {{
         ConstraintPersistentData? cpd = cp?.userPersistentData as ConstraintPersistentData?;
         if(cpd != null){

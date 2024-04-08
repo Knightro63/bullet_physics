@@ -144,11 +144,11 @@ class Generic6DofSpringConstraint extends Generic6DofConstraint {
 
     rbA.getCenterOfMassTransform(temp);
     temp.inverse();
-    frameInA.mul(temp, frameInW);
+    frameInA.mul2(temp, frameInW);
 
     rbB.getCenterOfMassTransform(temp);
     temp.inverse();
-    frameInB.mul(temp, frameInW);
+    frameInB.mul2(temp, frameInW);
 
     //        // now get constraint frame in local coordinate systems
     //        frameInA = rbA.getCenterOfMassTransform().inverse() * frameInW;

@@ -117,7 +117,6 @@ class ManifoldResult extends Result{
 		else {
 			insertIndex = _manifoldPtr!.addManifoldPoint(newPt);
 		}
-
 		// User can override friction and/or restitution
 		if (BulletGlobals.getContactAddedCallback() != null &&
 				// and if either of the two bodies requires custom material

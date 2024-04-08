@@ -101,7 +101,7 @@ class HingeConstraint extends TypedConstraint {
 		_rbAFrame.basis.setRowByValues(1, rbAxisA1.y, rbAxisA2.y, axisInA.y);
 		_rbAFrame.basis.setRowByValues(2, rbAxisA1.z, rbAxisA2.z, axisInA.z);
 
-		Quaternion rotationArc = QuaternionUtil.intestArcQuat(axisInA, axisInB, Quaternion(0,0,0,0));
+		Quaternion rotationArc = QuaternionUtil.intestArcQuat(axisInA, axisInB, Quaternion(0,0,0,1));
 		Vector3 rbAxisB1 = QuaternionUtil.quatRotate(rotationArc, rbAxisA1, Vector3.zero());
 		Vector3 rbAxisB2 = Vector3.zero();
 		rbAxisB2.cross2(axisInB, rbAxisB1);
@@ -140,7 +140,7 @@ class HingeConstraint extends TypedConstraint {
 		axisInB.negateFrom(axisInA);
 		centerOfMassA.basis.transform(axisInB);
 
-		Quaternion rotationArc = QuaternionUtil.intestArcQuat(axisInA, axisInB, Quaternion(0,0,0,0));
+		Quaternion rotationArc = QuaternionUtil.intestArcQuat(axisInA, axisInB, Quaternion(0,0,0,1));
 		Vector3 rbAxisB1 = QuaternionUtil.quatRotate(rotationArc, rbAxisA1, Vector3.zero());
 		Vector3 rbAxisB2 = Vector3.zero();
 		rbAxisB2.cross2(axisInB, rbAxisB1);

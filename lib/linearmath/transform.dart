@@ -83,16 +83,20 @@ class Transform {
 		basis.transform(origin);
 	}
 
-	void mul(Transform? tr, [Transform? tr2]) {
-    if(tr == null) return;
-    Vector3 vec = tr2 == null?Vector3.copy(tr.origin):Vector3.copy(tr2.origin);
-    tr.transform(vec);
-    if(tr2?.basis != null){
-      basis.multiply(tr.basis*tr2?.basis);
-    }
-    origin.setFrom(vec);
+	void mul(Transform tr) {
+		Vector3 vec = Vector3.copy(tr.origin);
+		transform(vec);
+
+		basis.mul(tr.basis);
+		origin.setFrom(vec);
 	}
-	
+	void mul2(Transform tr1, Transform tr2) {
+		Vector3 vec = Vector3.copy(tr2.origin);
+		tr1.transform(vec);
+
+		basis.mul2(tr1.basis, tr2.basis);
+		origin.setFrom(vec);
+	}
 	void invXform(Vector3 inVec, Vector3 out) {
 		out.sub2(inVec,origin);
 

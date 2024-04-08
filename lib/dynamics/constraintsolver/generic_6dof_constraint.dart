@@ -110,7 +110,7 @@ class Generic6DofConstraint extends TypedConstraint {
 
     if(rbA == null && frameInA == null){
       rbB?.getCenterOfMassTransform(this.frameInA);
-      this.frameInA.mul(frameInB);
+      this.frameInA.mul(frameInB!);
     }
 	}
 

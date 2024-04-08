@@ -265,24 +265,24 @@ class MiscUtil {
 	/**
 	 * Sorts list using quick sort.<p>
 	 */
-	static void quickSortObjectArray<T>(ObjectArrayList<T?> list, Comparator<T?> comparator) {
+	static void quickSortObjectArray<T>(ObjectArrayList<T?> list, Comparator<T> comparator) {
 		// don't sort 0 or 1 elements
 		if (list.size > 1) {
 			_quickSortInternalObjectArray(list, comparator, 0, list.size - 1);
 		}
 	}
-	static void _quickSortInternalObjectArray<T>(ObjectArrayList<T?> list, Comparator<T?> comparator, int lo, int hi) {
+	static void _quickSortInternalObjectArray<T>(ObjectArrayList<T?> list, Comparator<T> comparator, int lo, int hi) {
 		// lo is the lower index, hi is the upper index
 		// of the region of array a that is to be sorted
 		int i = lo, j = hi;
-		T? x = list.getQuick(((lo + hi) / 2).floor());
+		T x = list.getQuick(((lo + hi) / 2).floor())!;
 
 		// partition
 		do {
-			while (comparator(list.getQuick(i), x) < 0) {
+			while (comparator(list.getQuick(i)!, x) < 0) {
         i++;
       }
-			while (comparator(x, list.getQuick(j)) < 0){
+			while (comparator(x, list.getQuick(j)!) < 0){
         j--;
       }
 			

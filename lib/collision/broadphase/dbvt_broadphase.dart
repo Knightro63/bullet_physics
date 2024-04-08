@@ -222,7 +222,7 @@ class DbvtBroadphase extends BroadphaseInterface {
 			bounds.set(sets[1].root!.volume);
 		}
 		else {
-			DbvtAabbMm.fromCR(Vector3(0, 0, 0), 0, bounds);
+			DbvtAabbMm.fromCR(Vector3.zero(), 0, bounds);
 		}
 		aabbMin.setFrom(bounds.mins());
 		aabbMax.setFrom(bounds.maxs());

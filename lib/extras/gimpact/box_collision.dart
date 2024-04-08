@@ -104,7 +104,7 @@ class BoxBoxTransformCache {
   void calcFromHomogenic(Transform? trans0, Transform? trans1) {
     Transform tempTrans = Transform();
     tempTrans.inverse(trans0);
-    tempTrans.mul(trans1);
+    tempTrans.mul(trans1!);
 
     t1to0.setFrom(tempTrans.origin);
     r1to0.setFrom(tempTrans.basis);

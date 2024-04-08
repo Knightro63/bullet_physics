@@ -271,7 +271,7 @@ class GjkPairDetector extends DiscreteCollisionDetectorInterface {
             tmpPointOnA, 
             tmpPointOnB,
             debugDraw
-          ) ?? false;
+          ) ?? true;
 
 					if (isValid2) {
 						tmpNormalInB.sub2(tmpPointOnB, tmpPointOnA);
@@ -306,7 +306,6 @@ class GjkPairDetector extends DiscreteCollisionDetectorInterface {
 				}
 			}
 		}
-
 		if (isValid) {
 			tmp.add2(pointOnB, positionOffset);
 			output?.addContactPoint(

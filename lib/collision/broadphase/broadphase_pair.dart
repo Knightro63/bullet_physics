@@ -47,12 +47,8 @@ class BroadphasePair {
     return 31 * (pProxy0?.hashCode ?? 0) + (pProxy1?.hashCode ?? 0);
   }
 
-	static Comparator<BroadphasePair?> broadphasePairSortPredicate = (BroadphasePair? a, BroadphasePair? b) {
-    if(a?.pProxy0 == null || b?.pProxy0 == null){
-      return -1;
-    }
-
-    bool result = a!.pProxy0!.getUid() > b!.pProxy0!.getUid() ||
+	static Comparator<BroadphasePair> broadphasePairSortPredicate = (BroadphasePair a, BroadphasePair b) {
+    bool result = a.pProxy0!.getUid() > b.pProxy0!.getUid() ||
         (a.pProxy0!.getUid() == b.pProxy0!.getUid() && a.pProxy1!.getUid() > b.pProxy1!.getUid()) ||
         (a.pProxy0!.getUid() == b.pProxy0!.getUid() && a.pProxy1!.getUid() == b.pProxy1!.getUid());
     return result? -1 : 1;

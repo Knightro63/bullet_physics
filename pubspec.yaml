@@ -1,7 +1,7 @@
 name: bullet_physics
-description: "A Flutter package project."
+description: A 3D physics engine for dart (based on bullet3 physics) that allows users to add physics support to their 3D projects.
 version: 0.0.1
-homepage: 
+homepage: https://github.com/Knightro63/bullet_physics
 
 environment:
   sdk: '>=3.3.1 <4.0.0'

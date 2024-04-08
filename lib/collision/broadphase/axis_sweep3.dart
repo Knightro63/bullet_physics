@@ -131,7 +131,7 @@ class _HandleImpl extends Handle {
       case 0: return _maxEdges0 & 0xFFFF;
       case 1: return _maxEdges1 & 0xFFFF;
       case 2: return _maxEdges2 & 0xFFFF;
-      default: return _maxEdges0 & 0xFFFF0;
+      default: return _maxEdges0 & 0xFFFF;
     }
   }
   

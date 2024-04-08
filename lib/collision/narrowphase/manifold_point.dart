@@ -24,12 +24,12 @@
 import 'package:vector_math/vector_math.dart';
 
 class ManifoldPoint {
-	final Vector3 localPointA = Vector3(0,0,0);
-	final Vector3 localPointB = Vector3(0,0,0);
-	final Vector3 positionWorldOnB = Vector3(0,0,0);
+	final Vector3 localPointA = Vector3.zero();
+	final Vector3 localPointB = Vector3.zero();
+	final Vector3 positionWorldOnB = Vector3.zero();
 	///m_positionWorldOnA is redundant information, see getPositionWorldOnA(), but for clarity
-	final Vector3 positionWorldOnA = Vector3(0,0,0);
-	final Vector3 normalWorldOnB = Vector3(0,0,0);
+	final Vector3 positionWorldOnA = Vector3.zero();
+	final Vector3 normalWorldOnB = Vector3.zero();
 	
 	late double distance1;
 	double combinedFriction = 0;
@@ -49,8 +49,8 @@ class ManifoldPoint {
 	double appliedImpulseLateral2 = 0;
 	int lifeTime = 0; //lifetime of the contactpoint in frames
 
-	final Vector3 lateralFrictionDir1 = Vector3(0,0,0);
-	final Vector3 lateralFrictionDir2 = Vector3(0,0,0);
+	final Vector3 lateralFrictionDir1 = Vector3.zero();
+	final Vector3 lateralFrictionDir2 = Vector3.zero();
 	
 	ManifoldPoint([Vector3? pointA, Vector3? pointB, Vector3? normal, double? distance]) {
 		init(pointA, pointB, normal, distance);

@@ -216,7 +216,7 @@ class ConeTwistConstraint extends TypedConstraint {
 			_rbBFrame.basis.getColumnWith(1, b2Axis2);
 			getRigidBodyB().getCenterOfMassTransform(tmpTrans).basis.transform(b2Axis2);
 
-			Quaternion rotationArc = QuaternionUtil.intestArcQuat(b2Axis1, b1Axis1, Quaternion(0,0,0,0)); 
+			Quaternion rotationArc = QuaternionUtil.intestArcQuat(b2Axis1, b1Axis1, Quaternion(0,0,0,1)); 
 			Vector3 twistRef = QuaternionUtil.quatRotate(rotationArc, b2Axis2, Vector3.zero());
 			double twist = ScalarUtil.atan2Fast(twistRef.dot(b1Axis3), twistRef.dot(b1Axis2));
 

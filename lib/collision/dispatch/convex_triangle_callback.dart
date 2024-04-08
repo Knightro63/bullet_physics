@@ -77,7 +77,7 @@ class ConvexTriangleCallback extends TriangleCallback {
 
 		_triBody?.getWorldTransform(convexInTriangleSpace);
 		convexInTriangleSpace.inverse();
-		convexInTriangleSpace.mul(_convexBody?.getWorldTransform(Transform()));
+		convexInTriangleSpace.mul(_convexBody!.getWorldTransform(Transform()));
 
 		CollisionShape? convexShape = _convexBody?.getCollisionShape();
 		convexShape?.getAabb(convexInTriangleSpace, _aabbMin, _aabbMax);

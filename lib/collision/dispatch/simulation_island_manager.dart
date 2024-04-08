@@ -73,7 +73,7 @@ class SimulationIslandManager {
 	void storeIslandActivationState(CollisionWorld colWorld) {
     for (int i = 0; i < colWorld.getCollisionObjectArray().size; i++) {
       CollisionObject? collisionObject = colWorld.getCollisionObjectArray().getQuick(i);
-      if (!(collisionObject!.isStaticOrKinematicObject())) {
+      if (!collisionObject!.isStaticOrKinematicObject()) {
         collisionObject.setIslandTag(_unionFind.find(i));
         collisionObject.setCompanionId(-1);
       }
@@ -258,8 +258,7 @@ class SimulationIslandManager {
 		}
 	}
 
-  static Comparator<PersistentManifold?> _persistentManifoldComparator = (PersistentManifold? lhs, PersistentManifold? rhs){
-    if(lhs == null || rhs == null) return -1;
+  static Comparator<PersistentManifold> _persistentManifoldComparator = (PersistentManifold lhs, PersistentManifold rhs){
     return _getIslandId(lhs) < _getIslandId(rhs)? -1 : 1;
   };
 }

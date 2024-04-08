@@ -87,17 +87,17 @@ class ConvexPlaneCollisionAlgorithm extends CollisionAlgorithm {
 		Transform planeInConvex = Transform();
 		convexObj?.getWorldTransform(planeInConvex);
 		planeInConvex.inverse();
-		planeInConvex.mul(planeObj?.getWorldTransform(tmpTrans));
+		planeInConvex.mul(planeObj!.getWorldTransform(tmpTrans));
 
 		Transform convexInPlaneTrans = Transform();
-		convexInPlaneTrans.inverse(planeObj?.getWorldTransform(tmpTrans));
-		convexInPlaneTrans.mul(convexObj?.getWorldTransform(tmpTrans));
+		convexInPlaneTrans.inverse(planeObj.getWorldTransform(tmpTrans));
+		convexInPlaneTrans.mul(convexObj!.getWorldTransform(tmpTrans));
 
 		Vector3 tmp = Vector3.zero();
 		tmp.negateFrom(planeNormal);
 		planeInConvex.basis.transform(tmp);
 
-		Vector3 vtx = convexShape?.localGetSupportingVertex(tmp, Vector3.zero()) ?? Vector3.zero();
+		Vector3 vtx = convexShape!.localGetSupportingVertex(tmp, Vector3.zero());
 		Vector3 vtxInPlane = Vector3.copy(vtx);
 		convexInPlaneTrans.transform(vtxInPlane);
 
@@ -108,14 +108,15 @@ class ConvexPlaneCollisionAlgorithm extends CollisionAlgorithm {
 		vtxInPlaneProjected.sub2(vtxInPlane, tmp);
 
 		Vector3 vtxInPlaneWorld = Vector3.copy(vtxInPlaneProjected);
-		planeObj?.getWorldTransform(tmpTrans).transform(vtxInPlaneWorld);
+		planeObj.getWorldTransform(tmpTrans).transform(vtxInPlaneWorld);
 
-		hasCollision = distance < (_manifoldPtr?.getContactBreakingThreshold() ?? 0);
+		hasCollision = distance < (_manifoldPtr?.getContactBreakingThreshold() ?? 1);
 		resultOut?.setPersistentManifold(_manifoldPtr);
 		if (hasCollision) {
+      print(distance);
 			// report a contact. internally this will be kept persistent, and contact reduction is done
 			Vector3 normalOnSurfaceB = Vector3.copy(planeNormal);
-			planeObj?.getWorldTransform(tmpTrans).basis.transform(normalOnSurfaceB);
+			planeObj.getWorldTransform(tmpTrans).basis.transform(normalOnSurfaceB);
 
 			Vector3 pOnB = Vector3.copy(vtxInPlaneWorld);
 			resultOut?.addContactPoint(normalOnSurfaceB, pOnB, distance);

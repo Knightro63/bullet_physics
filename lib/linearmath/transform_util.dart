@@ -76,12 +76,12 @@ class TransformUtil {
 			// sync(fAngle) = sin(c*fAngle)/t
 			axis.scaleFrom(sin(0.5 * fAngle * timeStep) / fAngle, angvel);
 		}
-		Quaternion dorn = Quaternion(0,0,0,0);
+		Quaternion dorn = Quaternion(0,0,0,1);
 		dorn.setValues(axis.x, axis.y, axis.z, cos(fAngle * timeStep * 0.5));
-		Quaternion? orn0 = curTrans?.getRotation(Quaternion(0,0,0,0));
+		Quaternion? orn0 = curTrans?.getRotation(Quaternion(0,0,0,1));
 
-		Quaternion predictedOrn = Quaternion(0,0,0,0);
-		predictedOrn.multiply2(dorn, orn0 ?? Quaternion(0,0,0,0));
+		Quaternion predictedOrn = Quaternion(0,0,0,1);
+		predictedOrn.multiply2(dorn, orn0 ?? Quaternion(0,0,0,1));
 		predictedOrn.normalize();
 //  #endif
 		predictedTransform.setRotation(predictedOrn);
@@ -105,7 +105,7 @@ class TransformUtil {
 		Matrix3 dmat = Matrix3.zero();
 		dmat.multiply(transform1.basis*tmp);
 
-		Quaternion dorn = Quaternion(0,0,0,0);
+		Quaternion dorn = Quaternion(0,0,0,1);
 		MatrixUtil.getRotation(dmat, dorn);
 
 		dorn.normalize();

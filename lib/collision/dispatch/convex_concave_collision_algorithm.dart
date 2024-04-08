@@ -107,10 +107,10 @@ class ConvexConcaveCollisionAlgorithm extends CollisionAlgorithm {
 		triInv?.inverse();
 
 		Transform convexFromLocal = Transform();
-		convexFromLocal.mul(triInv, convexbody?.getWorldTransform(tmpTrans));
+		convexFromLocal.mul2(triInv!, convexbody!.getWorldTransform(tmpTrans));
 
 		Transform convexToLocal = Transform();
-		convexToLocal.mul(triInv, convexbody?.getInterpolationWorldTransform(tmpTrans));
+		convexToLocal.mul2(triInv, convexbody.getInterpolationWorldTransform(tmpTrans));
 
 		if (triBody?.getCollisionShape()?.isConcave() ?? false) {
 			Vector3 rayAabbMin = Vector3.copy(convexFromLocal.origin);
@@ -119,16 +119,16 @@ class ConvexConcaveCollisionAlgorithm extends CollisionAlgorithm {
 			Vector3 rayAabbMax = Vector3.copy(convexFromLocal.origin);
 			VectorUtil.setMax(rayAabbMax, convexToLocal.origin);
 
-			double ccdRadius0 = (convexbody?.getCcdSweptSphereRadius() ?? 0);
+			double ccdRadius0 = convexbody.getCcdSweptSphereRadius();
 
 			tmp.setValues(ccdRadius0, ccdRadius0, ccdRadius0);
 			rayAabbMin.sub(tmp);
 			rayAabbMax.add(tmp);
 
 			double curHitFraction = 1; // is this available?
-			_LocalTriangleSphereCastCallback raycastCallback = _LocalTriangleSphereCastCallback(convexFromLocal, convexToLocal, (convexbody?.getCcdSweptSphereRadius() ?? 0), curHitFraction);
+			_LocalTriangleSphereCastCallback raycastCallback = _LocalTriangleSphereCastCallback(convexFromLocal, convexToLocal, convexbody.getCcdSweptSphereRadius(), curHitFraction);
 
-			raycastCallback.hitFraction = convexbody?.getHitFraction() ?? 0;
+			raycastCallback.hitFraction = convexbody.getHitFraction();
 
 			CollisionObject? concavebody = triBody;
 
@@ -138,8 +138,8 @@ class ConvexConcaveCollisionAlgorithm extends CollisionAlgorithm {
 				triangleMesh.processAllTriangles(raycastCallback, rayAabbMin, rayAabbMax);
 			}
 
-			if (raycastCallback.hitFraction < (convexbody?.getHitFraction() ?? 0)) {
-				convexbody?.setHitFraction(raycastCallback.hitFraction);
+			if (raycastCallback.hitFraction < convexbody.getHitFraction()) {
+				convexbody.setHitFraction(raycastCallback.hitFraction);
 				return raycastCallback.hitFraction;
 			}
 		}

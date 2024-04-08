@@ -184,12 +184,12 @@ class GImpactCollisionAlgorithm extends CollisionAlgorithm {
 			CollisionShape? colshape1 = retriever1.getChildShape(triface1);
 
 			if (childHasTransform0) {
-				tmpTrans.mul(orgtrans0, shape0?.getChildTransform(triface0));
+				tmpTrans.mul2(orgtrans0!, shape0!.getChildTransform(triface0)!);
 				body0?.setWorldTransform(tmpTrans);
 			}
 
 			if (childHasTransform1) {
-				tmpTrans.mul(orgtrans1, shape1?.getChildTransform(triface1));
+				tmpTrans.mul2(orgtrans1!, shape1!.getChildTransform(triface1)!);
 				body1?.setWorldTransform(tmpTrans);
 			}
 
@@ -280,7 +280,7 @@ class GImpactCollisionAlgorithm extends CollisionAlgorithm {
 			CollisionShape? colshape0 = retriever0.getChildShape(childIndex);
 
 			if (childHasTransform0) {
-				tmpTrans.mul(orgtrans0, shape0?.getChildTransform(childIndex));
+				tmpTrans.mul2(orgtrans0!, shape0!.getChildTransform(childIndex)!);
 				body0?.setWorldTransform(tmpTrans);
 			}
 
@@ -310,7 +310,7 @@ class GImpactCollisionAlgorithm extends CollisionAlgorithm {
 		int i = shape1.getNumChildShapes();
 		while ((i--) != 0) {
 			CollisionShape? colshape1 = shape1.getChildShape(i);
-			childtrans1.mul(orgtrans1, shape1.getChildTransform(i, tmpTrans));
+			childtrans1.mul2(orgtrans1!, shape1.getChildTransform(i, tmpTrans));
 
 			body1?.setWorldTransform(childtrans1);
 
@@ -338,7 +338,7 @@ class GImpactCollisionAlgorithm extends CollisionAlgorithm {
 
 		body1?.getWorldTransform(gimpactInConcaveSpace);
 		gimpactInConcaveSpace.inverse();
-		gimpactInConcaveSpace.mul(body0?.getWorldTransform(Transform()));
+		gimpactInConcaveSpace.mul(body0!.getWorldTransform(Transform()));
 
 		Vector3 minAABB = Vector3.zero(), maxAABB = Vector3.zero();
 		shape0?.getAabb(gimpactInConcaveSpace, minAABB, maxAABB);
@@ -543,7 +543,7 @@ class GImpactCollisionAlgorithm extends CollisionAlgorithm {
 		if (shape0?.hasBoxSet()??false) {
 			Transform trans1to0 = Transform();
 			trans1to0.inverse(trans0);
-			trans1to0.mul(trans1);
+			trans1to0.mul(trans1!);
 
 			shape1?.getAabb(trans1to0, boxshape.min, boxshape.max);
 

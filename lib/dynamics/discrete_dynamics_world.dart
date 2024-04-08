@@ -394,6 +394,7 @@ class DiscreteDynamicsWorld extends DynamicsWorld {
       bool isDynamic = !(body.isStaticObject() || body.isKinematicObject());
 			int collisionFilterGroup = group ?? (isDynamic ? CollisionFilterGroups.defaultFilter : CollisionFilterGroups.staticFilter);
 			int collisionFilterMask = mask ?? (isDynamic ? CollisionFilterGroups.allFilter : (CollisionFilterGroups.allFilter ^ CollisionFilterGroups.staticFilter));
+      print(collisionFilterGroup);
       addCollisionObject(body, collisionFilterGroup, collisionFilterMask);
     }
 
@@ -542,15 +543,14 @@ class DiscreteDynamicsWorld extends DynamicsWorld {
 	void calculateSimulationIslands() {
 		BulletStats.pushProfile("calculateSimulationIslands");
 		try {
-		getSimulationIslandManager().updateActivationState(getCollisionWorld(), getCollisionWorld().getDispatcher());
-
+		  getSimulationIslandManager().updateActivationState(getCollisionWorld(), getCollisionWorld().getDispatcher());
       for (int i = 0; i < constraints.size; i++) {
         TypedConstraint? constraint = constraints.getQuick(i);
 
         RigidBody? colObj0 = constraint?.getRigidBodyA();
         RigidBody? colObj1 = constraint?.getRigidBodyB();
 
-        if (((colObj0 != null) && (!colObj0.isStaticOrKinematicObject())) && ((colObj1 != null) && (!colObj1.isStaticOrKinematicObject()))){
+        if ((colObj0 != null && !colObj0.isStaticOrKinematicObject()) && (colObj1 != null && !colObj1.isStaticOrKinematicObject())){
           if (colObj0.isActive() || colObj1.isActive()) {
             getSimulationIslandManager().getUnionFind().unite((colObj0).getIslandTag(), (colObj1).getIslandTag());
           }
@@ -800,8 +800,7 @@ class DiscreteDynamicsWorld extends DynamicsWorld {
     preTickCallback = callback;
   }
 
-	static final Comparator<TypedConstraint?> _sortConstraintOnIslandPredicate = (TypedConstraint? lhs, TypedConstraint? rhs) {
-    if(lhs == null || rhs == null) return -1;
+	static final Comparator<TypedConstraint> _sortConstraintOnIslandPredicate = (TypedConstraint lhs, TypedConstraint rhs) {
 			int rIslandId0, lIslandId0;
 			rIslandId0 = _getConstraintIslandId(rhs);
 			lIslandId0 = _getConstraintIslandId(lhs);

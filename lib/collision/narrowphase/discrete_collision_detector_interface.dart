@@ -37,7 +37,7 @@ abstract class Result {
 class ClosestPointInput {
   final Transform transformA = Transform();
   final Transform transformB = Transform();
-  double maximumDistanceSquared = double.infinity;
+  double maximumDistanceSquared = double.maxFinite;
 
   ClosestPointInput();
 }

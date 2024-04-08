@@ -59,8 +59,7 @@ class GjkConvexCast extends ConvexCast {
 
 		double radius = 0.001;
 		double lambda = 0;
-		Vector3 v = Vector3.zero();
-		v.setValues(1, 0, 0);
+		//Vector3 v = Vector3(1,0,0);
 
 		int maxIter = _maxIterations;
 
@@ -114,7 +113,7 @@ class GjkConvexCast extends ConvexCast {
 
 					double projectedLinearVelocity = r.dot(n);
 
-					dLambda = dist / (projectedLinearVelocity);
+					dLambda = dist / projectedLinearVelocity;
 
 					lambda = lambda - dLambda;
 
@@ -127,8 +126,8 @@ class GjkConvexCast extends ConvexCast {
 					
 					if (lambda <= lastLambda) {
 						return false;
-					//n.setValue(0,0,0);
-					//break;
+            //n.setValue(0,0,0);
+            //break;
 					}
 					lastLambda = lambda;
 

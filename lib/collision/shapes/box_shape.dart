@@ -99,12 +99,12 @@ class BoxShape extends PolyhedralConvexShape {
 		Vector3 oldMargin = Vector3.zero();
 		oldMargin.setValues(getMargin(), getMargin(), getMargin());
 		Vector3 implicitShapeDimensionsWithMargin = Vector3.zero();
-		implicitShapeDimensionsWithMargin.add(implicitShapeDimensions-oldMargin);
+		implicitShapeDimensionsWithMargin.add2(implicitShapeDimensions,oldMargin);
 
 		super.setMargin(margin);
 		Vector3 newMargin = Vector3.zero();
 		newMargin.setValues(getMargin(), getMargin(), getMargin());
-		implicitShapeDimensions.sub(implicitShapeDimensionsWithMargin-newMargin);
+		implicitShapeDimensions.sub2(implicitShapeDimensionsWithMargin,newMargin);
 	}
 
 	@override
@@ -112,7 +112,7 @@ class BoxShape extends PolyhedralConvexShape {
 		Vector3 oldMargin = Vector3.zero();
 		oldMargin.setValues(getMargin(), getMargin(), getMargin());
 		Vector3 implicitShapeDimensionsWithMargin = Vector3.zero();
-		implicitShapeDimensionsWithMargin.add(implicitShapeDimensions-oldMargin);
+		implicitShapeDimensionsWithMargin.add2(implicitShapeDimensions,oldMargin);
 		Vector3 unScaledImplicitShapeDimensionsWithMargin = Vector3.zero();
 		VectorUtil.div(unScaledImplicitShapeDimensionsWithMargin, implicitShapeDimensionsWithMargin, localScaling);
 

@@ -37,7 +37,7 @@ class SimpleBroadphase extends BroadphaseInterface {
 	bool ownsPairCache = false;
 	
 	SimpleBroadphase([int maxProxies = 16384, OverlappingPairCache? overlappingPairCache]) {
-		_pairCache = overlappingPairCache ?? HashedOverlappingPairCache();;
+		_pairCache = overlappingPairCache ?? HashedOverlappingPairCache();
 
 		if (overlappingPairCache == null) {
 			ownsPairCache = true;

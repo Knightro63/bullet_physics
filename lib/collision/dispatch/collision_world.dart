@@ -244,7 +244,7 @@ class CollisionWorld {
 		pointShape.setMargin(0);
 		ConvexShape castShape = pointShape;
 
-		if (collisionShape?.isConvex() ?? false) {
+		if (collisionShape!.isConvex()) {
 			CastResult castResult = CastResult();
 			castResult.fraction = resultCallback.closestHitFraction;
 
@@ -272,10 +272,10 @@ class CollisionWorld {
 			}
 		}
 		else {
-			if (collisionShape?.isConcave() ?? false) {
-				if (collisionShape?.getShapeType() == BroadphaseNativeType.triangleMeshShapeProxytype) {
+			if (collisionShape.isConcave()) {
+				if (collisionShape.getShapeType() == BroadphaseNativeType.triangleMeshShapeProxytype) {
 					// optimized version for BvhTriangleMeshShape
-					BvhTriangleMeshShape triangleMesh =collisionShape as BvhTriangleMeshShape;
+					BvhTriangleMeshShape triangleMesh = collisionShape as BvhTriangleMeshShape;
 					Transform worldTocollisionObject = Transform();
 					worldTocollisionObject.inverse(colObjWorldTransform);
 					Vector3 rayFromLocal = Vector3.copy(rayFromTrans.origin);
@@ -311,7 +311,7 @@ class CollisionWorld {
 			}
 			else {
 				// todo: use AABB tree or other BVH acceleration structure!
-				if (collisionShape?.isCompound() ?? false) {
+				if (collisionShape.isCompound()) {
 					CompoundShape compoundShape = collisionShape as CompoundShape;
 					Transform childTrans = Transform();
 					for (int i = 0; i < compoundShape.getNumChildShapes(); i++) {
@@ -451,7 +451,7 @@ class CollisionWorld {
 						Transform childTrans = compoundShape.getChildTransform(i, Transform());
 						CollisionShape? childCollisionShape = compoundShape.getChildShape(i);
 						Transform childWorldTrans = Transform();
-						childWorldTrans.mul(colObjWorldTransform, childTrans);
+						childWorldTrans.mul2(colObjWorldTransform!, childTrans);
 						// replace collision shape so that callback can determine the triangle
 						CollisionShape? saveCollisionShape = collisionObject?.getCollisionShape();
 						collisionObject?.internalSetTemporaryCollisionShape(childCollisionShape);
@@ -539,7 +539,7 @@ class CollisionWorld {
     TransformUtil.calculateVelocity(convexFromTrans, convexToTrans, 1, linVel, angVel);
     Transform R = Transform();
     R.setIdentity();
-    R.setRotation(convexFromTrans.getRotation(Quaternion(0,0,0,0)));
+    R.setRotation(convexFromTrans.getRotation(Quaternion(0,0,0,1)));
     castShape.calculateTemporalAabb(R, linVel, angVel, 1, castShapeAabbMin, castShapeAabbMax);
 		
 		Transform tmpTrans = Transform();

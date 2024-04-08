@@ -106,7 +106,7 @@ class QuaternionUtil {
 		final Quaternion q = Quaternion.copy(rotation);
 	  QuaternionUtil.mul(q, v);
 
-		final Quaternion tmp = Quaternion(0,0,0,0);
+		final Quaternion tmp = Quaternion(0,0,0,1);
 		inverse(tmp, rotation);
 		q.multiply(tmp);
 		

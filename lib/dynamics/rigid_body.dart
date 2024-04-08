@@ -83,7 +83,7 @@ class RigidBody extends CollisionObject {
 	}
 	
 	RigidBody([double mass = 0, MotionState? motionState, CollisionShape? collisionShape, Vector3? localInertia]) {
-    localInertia ??= Vector3(0, 0, 0);
+    localInertia ??= Vector3.zero();
 		RigidBodyConstructionInfo cinfo = RigidBodyConstructionInfo(mass, motionState, collisionShape, localInertia);
 		_setupRigidBody(cinfo);
 	}
@@ -491,7 +491,7 @@ class RigidBody extends CollisionObject {
 
 		if ((getLinearVelocity(Vector3.zero()).length2 < _linearSleepingThreshold * _linearSleepingThreshold) &&
 				(getAngularVelocity(Vector3.zero()).length2 < _angularSleepingThreshold * _angularSleepingThreshold)) {
-			deactivationTime = (deactivationTime ?? 0) + timeStep;
+			deactivationTime = deactivationTime + timeStep;
 		}
 		else {
 			deactivationTime = 0;
@@ -513,7 +513,7 @@ class RigidBody extends CollisionObject {
 			return true;
 		}
 
-		if ((deactivationTime ?? 0) > BulletGlobals.getDeactivationTime()) {
+		if (deactivationTime > BulletGlobals.getDeactivationTime()) {
 			return true;
 		}
 		return false;

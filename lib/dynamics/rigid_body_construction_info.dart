@@ -61,7 +61,7 @@ class RigidBodyConstructionInfo {
 	double additionalAngularDampingFactor = 0.01;
 	
 	RigidBodyConstructionInfo(this.mass,this.motionState,this.collisionShape, [Vector3? localInertia]) {
-    localInertia ??= Vector3(0, 0, 0);
+    localInertia ??= Vector3.zero();
 		this.localInertia.setFrom(localInertia);
 		startWorldTransform.setIdentity();
 	}

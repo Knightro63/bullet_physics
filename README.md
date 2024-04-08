@@ -4,17 +4,17 @@
 [![analysis](https://github.com/Knightro63/bullet_physics/actions/workflows/flutter.yml/badge.svg)](https://github.com/Knightro63/bullet_physics/actions/)
 [![License: BSD](https://img.shields.io/badge/license-BSD-purple.svg)](https://opensource.org/licenses/BSD)
 
-A 3D physics engine for dart (based on [bullet3](https://github.com/bulletphysics/bullet3) physics ) that allows users to add physics support to their 3d projects.
+A 3D physics engine for dart (based on [bullet3](https://github.com/bulletphysics/bullet3) physics ) that allows users to add physics support to their 3D projects.
 
 This is a dart conversion of [jbullet](https://github.com/bubblecloud/jbullet) which is a conversion of [bullet3](https://github.com/bulletphysics/bullet3), originally created by erwincoumans [@erwincoumans](https://github.com/erwincoumans).
 
 ## Usage
 
-This project is a basic physics engine for 3d modeling. This package includes RigidBodies, and Joints.
+This project is a basic physics engine for 3D modeling. This package includes RigidBodies, and Joints.
 
 ### Getting started
 
-To get started add bullet_physics, three_dart, and three_dart_jsm to your pubspec.yaml file.
+To get started add bullet_physics, and your favorite 3D rendering engine to your pubspec.yaml file.
 
 The bullet World is the main scene that has all of the objects that will be manipulated to the scene. To get started add the bullet world then all of the objects in it.
 
