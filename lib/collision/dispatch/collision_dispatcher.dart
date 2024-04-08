@@ -98,7 +98,7 @@ class CollisionDispatcher extends Dispatcher {
 		ci.dispatcher1 = this;
 		ci.manifold = sharedManifold;
 		CollisionAlgorithmCreateFunc? createFunc = body0 == null || body1 == null?null:_doubleDispatch[body0.getCollisionShape()?.getShapeType().index ?? 0][body1.getCollisionShape()?.getShapeType().index ?? 0];
-		CollisionAlgorithm? algo = createFunc?.createCollisionAlgorithm(ci, body0, body1);
+    CollisionAlgorithm? algo = createFunc?.createCollisionAlgorithm(ci, body0, body1);
 		algo?.internalSetCreateFunc(createFunc);
 
 		return algo;

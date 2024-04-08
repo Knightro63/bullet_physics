@@ -85,7 +85,6 @@ class GjkConvexCast extends ConvexCast {
 
 		_gjk.init(_convexA, _convexB, _simplexSolver, null); // penetrationDepthSolver);		
 		ClosestPointInput input = ClosestPointInput();
-		input.init();
 		try {
 			// we don't use margins during CCD
 			//	gjk.setIgnoreMargin(true);

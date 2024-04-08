@@ -40,7 +40,7 @@ class GjkPairDetector extends DiscreteCollisionDetectorInterface {
 	// must be above the machine epsilon
 	static const double _relError2 = 1.0e-6;
 	
-	final Vector3 _cachedSeparatingAxis = Vector3.zero();
+	final Vector3 _cachedSeparatingAxis = Vector3(0,0,1);
 	ConvexPenetrationDepthSolver? _penetrationDepthSolver;
 	SimplexSolverInterface? _simplexSolver;
 	ConvexShape? _minkowskiA;
@@ -53,9 +53,7 @@ class GjkPairDetector extends DiscreteCollisionDetectorInterface {
 	int degenerateSimplex = 0;
 	int catchDegeneracies = 1;
 	
-	void init(ConvexShape? objectA, ConvexShape? objectB, SimplexSolverInterface simplexSolver, ConvexPenetrationDepthSolver? penetrationDepthSolver) {
-		_cachedSeparatingAxis.setValues(0, 0, 1);
-		
+	void init(ConvexShape? objectA, ConvexShape? objectB, SimplexSolverInterface simplexSolver, ConvexPenetrationDepthSolver? penetrationDepthSolver) {		
 		_penetrationDepthSolver = penetrationDepthSolver;
 		_simplexSolver = simplexSolver;
 		_minkowskiA = objectA;
@@ -68,8 +66,8 @@ class GjkPairDetector extends DiscreteCollisionDetectorInterface {
 
 		double distance = 0;
 		Vector3 normalInB = Vector3.zero();
-		normalInB.setValues(0, 0, 0);
-		Vector3 pointOnA = Vector3.zero(), pointOnB = Vector3.zero();
+		Vector3 pointOnA = Vector3.zero();
+    Vector3 pointOnB = Vector3.zero();
 		Transform localTransA = Transform.formTransfrom(input.transformA);
 		Transform localTransB = Transform.formTransfrom(input.transformB);
 		Vector3 positionOffset = Vector3.zero();
@@ -80,7 +78,6 @@ class GjkPairDetector extends DiscreteCollisionDetectorInterface {
 
 		double marginA = _minkowskiA?.getMargin() ?? 0;
 		double marginB = _minkowskiB?.getMargin() ?? 0;
-
 		BulletStats.gNumGjkChecks++;
 
 		// for CCD we don't use margins
@@ -118,7 +115,8 @@ class GjkPairDetector extends DiscreteCollisionDetectorInterface {
 			Vector3 qWorld = Vector3.zero();
 			Vector3 w = Vector3.zero();
 			
-			Vector3 tmpPointOnA = Vector3.zero(), tmpPointOnB = Vector3.zero();
+			Vector3 tmpPointOnA = Vector3.zero();
+      Vector3 tmpPointOnB = Vector3.zero();
 			Vector3 tmpNormalInB = Vector3.zero();
 			
 			for (;;){
@@ -148,7 +146,7 @@ class GjkPairDetector extends DiscreteCollisionDetectorInterface {
 				}
 
 				// exit 0: the point is already in the simplex, or we didn't come any closer
-				if (_simplexSolver?.inSimplex(w) ?? false) {
+				if (_simplexSolver!.inSimplex(w)) {
 					degenerateSimplex = 1;
 					checkSimplex = true;
 					break;
@@ -168,7 +166,7 @@ class GjkPairDetector extends DiscreteCollisionDetectorInterface {
 				_simplexSolver?.addVertex(w, pWorld, qWorld);
 
 				// calculate the closest point to the origin (update vector v)
-				if (!(_simplexSolver?.closest(_cachedSeparatingAxis) ?? true)) {
+				if (!_simplexSolver!.closest(_cachedSeparatingAxis)) {
 					degenerateSimplex = 3;
 					checkSimplex = true;
 					break;
@@ -210,7 +208,7 @@ class GjkPairDetector extends DiscreteCollisionDetectorInterface {
 
 				}
 
-				bool check = !(_simplexSolver?.fullSimplex() ?? true);
+				bool check = !_simplexSolver!.fullSimplex();
 				//bool check = (!m_simplexSolver->fullSimplex() && squaredDistance > SIMD_EPSILON * m_simplexSolver->maxVertex());
 
 				if (!check) {

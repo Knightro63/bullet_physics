@@ -39,10 +39,5 @@ class ClosestPointInput {
   final Transform transformB = Transform();
   double maximumDistanceSquared = double.infinity;
 
-  ClosestPointInput() {
-    init();
-  }
-  void init() {
-    maximumDistanceSquared = double.infinity;
-  }
+  ClosestPointInput();
 }

@@ -91,11 +91,10 @@ class ConvexConvexAlgorithm extends CollisionAlgorithm {
 		ConvexShape? min0 = body0?.getCollisionShape() as ConvexShape?;
 		ConvexShape? min1 = body1?.getCollisionShape() as ConvexShape?;
 		ClosestPointInput input = ClosestPointInput();
-		input.init();
 		_gjkPairDetector.setMinkowskiA(min0);
 		_gjkPairDetector.setMinkowskiB(min1);
 		input.maximumDistanceSquared = (min0?.getMargin() ?? 0) + (min1?.getMargin() ?? 0) + manifoldPtr!.getContactBreakingThreshold();
-		input.maximumDistanceSquared *= input.maximumDistanceSquared;
+    input.maximumDistanceSquared *= input.maximumDistanceSquared;
 		body0?.getWorldTransform(input.transformA);
 		body1?.getWorldTransform(input.transformB);
 		_gjkPairDetector.getClosestPoints(input, resultOut, dispatchInfo?.debugDraw);

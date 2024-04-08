@@ -79,8 +79,8 @@ class DbvtBroadphase extends BroadphaseInterface {
 				stageRoots[stageCount] = _listappend(current, stageRoots[stageCount]);
 				DbvtAabbMm curAabb = DbvtAabbMm();
         DbvtAabbMm.fromMM(current.aabb.mins(), current.aabb.maxs(),curAabb);//DbvtVolume.collideTV(current.aabbMin, current.aabbMax);
-        //Dbvt.collideTT(sets[1].root, current.leaf, collider);
-				//sets[0].remove(current.leaf);
+        Dbvt.collideTT(sets[1].root, current.leaf, collider);
+				sets[0].remove(current.leaf);
 				current.leaf = sets[1].insert(curAabb, current);
 				current.stage = stageCount;
 				current = next;
