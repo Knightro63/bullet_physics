@@ -116,7 +116,7 @@ class CollisionDispatcher extends Dispatcher {
 	PersistentManifold getNewManifold(Object? b0, Object? b1) {
 		CollisionObject body0 = b0 as CollisionObject;
 		CollisionObject body1 = b1 as CollisionObject;
-		PersistentManifold manifold = new PersistentManifold();
+		PersistentManifold manifold = PersistentManifold();
 		manifold.init(body0,body1,0);
 		manifold.index1a = _manifoldsPtr.size;
 		_manifoldsPtr.add(manifold);

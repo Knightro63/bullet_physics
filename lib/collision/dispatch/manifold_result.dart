@@ -93,7 +93,7 @@ class ManifoldResult extends Result{
 			_rootTransB.invXform(pointInWorld, localB);
 		}
 
-		ManifoldPoint newPt =ManifoldPoint();
+		ManifoldPoint newPt = ManifoldPoint();
 		newPt.init(localA, localB, normalOnBInWorld, depth);
 
 		newPt.positionWorldOnA.setFrom(pointA);

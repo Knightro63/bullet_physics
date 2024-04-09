@@ -78,7 +78,6 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
 
   List<Mesh> meshs = [];
   List<Mesh> grounds = [];
-  List<bullet.RigidBody> groundBodys = [];
   
   Map<String,BufferGeometry> geos = {};
   Map<String,three.Material> mats = {};
@@ -91,7 +90,7 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
   List<int> fps = [0,0,0,0];
   double toRad = 0.0174532925199432957;
   int type = 1;
-  int max = 1;
+  int max = 2;
 
   @override
   void initState() {
@@ -240,7 +239,7 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
     // reset old
     clearMesh();
     bodys=[];
-    final b1 = bullet.RigidBody.constructor(
+    world.addRigidBody(bullet.RigidBody.constructor(
       bullet.RigidBodyConstructionInfo(
         0,
         bullet.DefaultMotionState(
@@ -249,12 +248,8 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
         ),
         bullet.BoxShape(math.Vector3(40.0/2, 40.0/2, 390.0/2)),
       )
-    );
-    groundBodys.add(b1);
-    world.addRigidBody(b1);
-    addStaticBox([40, 40, 390], [-180,20,0], [0,0,0]);
-
-    final b2 = bullet.RigidBody.constructor(
+    ));
+    world.addRigidBody(bullet.RigidBody.constructor(
       bullet.RigidBodyConstructionInfo(
         0,
         bullet.DefaultMotionState(
@@ -263,23 +258,21 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
         ),
         bullet.BoxShape(math.Vector3(40.0/2, 40.0/2, 390.0/2)),
       )
-    );
-    groundBodys.add(b2);
-    world.addRigidBody(b2);
-    addStaticBox([40, 40, 390], [180,20,0], [0,0,0]);
-
-    final b3 = bullet.RigidBody.constructor(
+    ));
+    world.addRigidBody(bullet.RigidBody.constructor(
       bullet.RigidBodyConstructionInfo(
         0,
         bullet.DefaultMotionState(
           bullet.Transform()
           ..origin.setValues(0.0,-40.0,0.0)
         ),
-        bullet.StaticPlaneShape(math.Vector3(1,0,0),-20),//bullet.BoxShape(math.Vector3(400.0/2, 80.0/2, 400.0/2)),
+        //bullet.SphereShape(100),
+        //bullet.StaticPlaneShape(math.Vector3(1,0,0),1),
+        bullet.BoxShape(math.Vector3(400.0/2, 80.0/2, 400.0/2)),
       )
-    );
-    groundBodys.add(b3);
-    world.addRigidBody(b3);
+    ));
+    addStaticBox([40, 40, 390], [-180,20,0], [0,0,0]);
+    addStaticBox([40, 40, 390], [180,20,0], [0,0,0]);
     addStaticBox([400, 80, 400], [0,-40,0], [0,0,0]);
 
     //add object
@@ -366,10 +359,7 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
   void updateBulletPhysics() {
     int ms = DateTime.now().microsecondsSinceEpoch;
     world.stepSimulation(ms / 1000000);
-    for(int i = 0; i < grounds.length;i++){
-        grounds[i].position.copy(groundBodys[i].worldTransform.origin.toVector3());
-        grounds[i].quaternion.copy(math.Quaternion.fromRotation(groundBodys[i].worldTransform.basis).toQuaternion() );
-    }
+
     double x, y, z;
     Mesh mesh; 
     bullet.RigidBody body;
@@ -393,6 +383,8 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
           x = -100 + Math.random()*200;
           z = -100 + Math.random()*200;
           y = 100 + Math.random()*1000;
+          body.setLinearVelocity(math.Vector3(0,0,0));
+          body.setAngularVelocity(math.Vector3(0,0,0));
           body.worldTransform.origin.setFrom(math.Vector3(x,y,z));
         }
       } 

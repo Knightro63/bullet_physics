@@ -126,12 +126,12 @@ class RaycastVehicle extends TypedConstraint {
 		// rotate around steering over de wheelAxleWS
 		double steering = wheel.steering;
 
-		Quaternion steeringOrn = Quaternion(0,0,0,1);
+		Quaternion steeringOrn = Quaternion(0,0,0,0);
 		QuaternionUtil.setRotation(steeringOrn, up, steering); //wheel.m_steering);
 		Matrix3 steeringMat = Matrix3.zero();
 		MatrixUtil.setRotation(steeringMat, steeringOrn);
 
-		Quaternion rotatingOrn = Quaternion(0,0,0,1);
+		Quaternion rotatingOrn = Quaternion(0,0,0,0);
 		QuaternionUtil.setRotation(rotatingOrn, right, -wheel.rotation);
 		Matrix3 rotatingMat = Matrix3.zero();
 		MatrixUtil.setRotation(rotatingMat, rotatingOrn);

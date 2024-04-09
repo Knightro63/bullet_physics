@@ -68,7 +68,7 @@ class ConvexPlaneCollisionAlgorithm extends CollisionAlgorithm {
 	
 	@override
 	void processCollision(CollisionObject? body0, CollisionObject? body1, DispatcherInfo? dispatchInfo, ManifoldResult? resultOut) {
-		if (_manifoldPtr == null) {
+    if (_manifoldPtr == null) {
 			return;
 		}
 		
@@ -81,8 +81,8 @@ class ConvexPlaneCollisionAlgorithm extends CollisionAlgorithm {
 		StaticPlaneShape? planeShape = planeObj?.getCollisionShape() as StaticPlaneShape?;
 
 		bool hasCollision = false;
-		Vector3 planeNormal = planeShape?.getPlaneNormal(Vector3.zero()) ?? Vector3.zero();
-		double planeConstant = planeShape?.getPlaneConstant() ?? 0;
+		Vector3 planeNormal = planeShape!.getPlaneNormal(Vector3.zero());
+		double planeConstant = planeShape.getPlaneConstant();
 
 		Transform planeInConvex = Transform();
 		convexObj?.getWorldTransform(planeInConvex);
@@ -100,7 +100,6 @@ class ConvexPlaneCollisionAlgorithm extends CollisionAlgorithm {
 		Vector3 vtx = convexShape!.localGetSupportingVertex(tmp, Vector3.zero());
 		Vector3 vtxInPlane = Vector3.copy(vtx);
 		convexInPlaneTrans.transform(vtxInPlane);
-
 		double distance = (planeNormal.dot(vtxInPlane) - planeConstant);
 
 		Vector3 vtxInPlaneProjected = Vector3.zero();
@@ -113,7 +112,6 @@ class ConvexPlaneCollisionAlgorithm extends CollisionAlgorithm {
 		hasCollision = distance < (_manifoldPtr?.getContactBreakingThreshold() ?? 1);
 		resultOut?.setPersistentManifold(_manifoldPtr);
 		if (hasCollision) {
-      print(distance);
 			// report a contact. internally this will be kept persistent, and contact reduction is done
 			Vector3 normalOnSurfaceB = Vector3.copy(planeNormal);
 			planeObj.getWorldTransform(tmpTrans).basis.transform(normalOnSurfaceB);

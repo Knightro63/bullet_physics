@@ -1202,8 +1202,8 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
 	
 	double solve(RigidBody? body0, RigidBody? body1, ManifoldPoint? cp, ContactSolverInfo info, int iter, IDebugDraw? debugDrawer) {
 		double maxImpulse = 0;
-    if ((cp?.getDistance() ?? 0) <= 0) {{
-        ConstraintPersistentData? cpd = cp?.userPersistentData as ConstraintPersistentData?;
+    if(cp!.getDistance() <= 0) {{
+        ConstraintPersistentData? cpd = cp.userPersistentData as ConstraintPersistentData?;
         if(cpd != null){
           double impulse = cpd.contactSolverFunc!(body0, body1, cp, info);
           if (maxImpulse < impulse) {
@@ -1217,8 +1217,8 @@ class SequentialImpulseConstraintSolver extends ConstraintSolver {
 	}
 
 	double solveFriction(RigidBody? body0, RigidBody? body1, ManifoldPoint? cp, ContactSolverInfo? info, int iter, IDebugDraw? debugDrawer) {
-    if ((cp?.getDistance() ?? 0) <= 0) {
-      ConstraintPersistentData? cpd = cp?.userPersistentData as ConstraintPersistentData?;
+    if(cp!.getDistance() <= 0) {
+      ConstraintPersistentData? cpd = cp.userPersistentData as ConstraintPersistentData?;
       if(cpd != null){
         cpd.frictionSolverFunc!(body0, body1, cp, info);
       }

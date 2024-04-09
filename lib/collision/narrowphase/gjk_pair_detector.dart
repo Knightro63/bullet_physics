@@ -181,8 +181,6 @@ class GjkPairDetector extends DiscreteCollisionDetectorInterface {
 				double previousSquaredDistance = squaredDistance;
 				squaredDistance = _cachedSeparatingAxis.length2;
 
-				// redundant m_simplexSolver->compute_points(pointOnA, pointOnB);
-
 				// are we getting any closer ?
 				if (previousSquaredDistance - squaredDistance <= BulletGlobals.fltEpsilon * previousSquaredDistance) {
 					_simplexSolver?.backupClosest(_cachedSeparatingAxis);
@@ -192,7 +190,6 @@ class GjkPairDetector extends DiscreteCollisionDetectorInterface {
 
 				// degeneracy, this is typically due to invalid/uninitialized worldtransforms for a CollisionObject   
 				if (curIter++ > gGjkMaxIter) {
-					//#if defined(DEBUG) || defined (_DEBUG)   
 					if (BulletGlobals.debug) {
 						print("btGjkPairDetector maxIter exceeded:%i\n $curIter");
 						print("sepAxis=(%f,%f,%f), squaredDistance = %f, shapeTypeA=%i,shapeTypeB=%i\n"+
@@ -203,7 +200,6 @@ class GjkPairDetector extends DiscreteCollisionDetectorInterface {
 								_minkowskiA?.getShapeType(),
 								_minkowskiB?.getShapeType()].toString());
 					}
-					//#endif   
 					break;
 
 				}
@@ -271,7 +267,7 @@ class GjkPairDetector extends DiscreteCollisionDetectorInterface {
             tmpPointOnA, 
             tmpPointOnB,
             debugDraw
-          ) ?? true;
+          ) ?? false;
 
 					if (isValid2) {
 						tmpNormalInB.sub2(tmpPointOnB, tmpPointOnA);

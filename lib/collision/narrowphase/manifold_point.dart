@@ -57,6 +57,7 @@ class ManifoldPoint {
 	}
 
 	void init([Vector3? pointA, Vector3? pointB, Vector3? normal, double? distance]) {
+        
     if(pointA != null){
 		  localPointA.setFrom(pointA);
     }

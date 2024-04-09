@@ -248,7 +248,7 @@ class GJK {
       simplex[0].set(simplex[1]);
       ray.setFrom(ao);
     }
-    return (false);
+    return false;
   }
 
   bool solveSimplex3(Vector3 ao, Vector3 ab, Vector3 ac){
@@ -422,7 +422,7 @@ class GJK {
 
         List<double> m = [ b[0].length2, b[1].length2, b[2].length2];
 
-        Quaternion tmpQuat = Quaternion(0,0,0,1);
+        Quaternion tmpQuat = Quaternion(0,0,0,0);
         tmp.normalizeFrom(ab);
         QuaternionUtil.setRotation(tmpQuat, tmp, _gjkValues.cst2Pi / 3);
 

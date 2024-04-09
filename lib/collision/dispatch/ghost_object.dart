@@ -86,7 +86,7 @@ class GhostObject extends CollisionObject {
 			TransformUtil.calculateVelocity(convexFromTrans, convexToTrans, 1, linVel, angVel);
 			Transform R = Transform();
 			R.setIdentity();
-			R.setRotation(convexFromTrans.getRotation(Quaternion(0,0,0,1)));
+			R.setRotation(convexFromTrans.getRotation(Quaternion(0,0,0,0)));
 			castShape.calculateTemporalAabb(R, linVel, angVel, 1, castShapeAabbMin, castShapeAabbMax);
 		}
 

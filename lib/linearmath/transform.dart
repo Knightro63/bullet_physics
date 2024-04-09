@@ -35,12 +35,12 @@ class Transform {
 
   Transform();
 
-	Transform.formMatrix3(Matrix3 mat) {
+	Transform.fromMatrix3(Matrix3 mat) {
 		basis.setFrom(mat);
 	}
 
-	Transform.formMatrix4(Matrix4 mat) {
-		formMatrix4(mat);
+	Transform.fromMatrix4(Matrix4 mat) {
+		fromMatrix4(mat);
 	}
 
 	Transform.formTransfrom(Transform? tr) {
@@ -59,7 +59,7 @@ class Transform {
 		origin.setValues(0, 0, 0);
 	}
 
-	void formMatrix4(Matrix4 mat) {
+	void fromMatrix4(Matrix4 mat) {
 		basis.setFrom(mat.getUpper3x3());
 		origin.setValues(mat.storage[3], mat.storage[7], mat.storage[11]);
 	}
@@ -82,14 +82,11 @@ class Transform {
 		origin.scale(-1);
 		basis.transform(origin);
 	}
-
 	void mul(Transform tr) {
-		Vector3 vec = Vector3.copy(tr.origin);
-		transform(vec);
-
-		basis.mul(tr.basis);
-		origin.setFrom(vec);
-	}
+    Vector3 vec = Vector3.copy(tr.origin);
+    tr.transform(vec);
+    origin.setFrom(vec);
+  }
 	void mul2(Transform tr1, Transform tr2) {
 		Vector3 vec = Vector3.copy(tr2.origin);
 		tr1.transform(vec);
