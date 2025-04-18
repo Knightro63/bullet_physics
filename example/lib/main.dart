@@ -1,15 +1,8 @@
 import 'dart:async';
-import 'dart:io';
-
+import 'dart:math' as m;
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
-
-import 'package:flutter_gl/flutter_gl.dart';
 import 'package:bullet_physics/bullet_physics.dart' as bullet;
-import 'package:three_dart/three_dart.dart' as three;
-import 'package:three_dart/three_dart.dart' hide Texture, Color;
-import 'package:three_dart_jsm/three_dart_jsm.dart';
-
+import 'package:three_js/three_js.dart' as three;
 import 'package:vector_math/vector_math.dart' as math;
 
 void main() {
@@ -34,13 +27,13 @@ class MyApp extends StatelessWidget {
 }
 
 extension on math.Quaternion{
-  Quaternion toQuaternion(){
-    return Quaternion(x,y,z,w);
+  three.Quaternion toQuaternion(){
+    return three.Quaternion(x,y,z,w);
   }
 }
 extension on math.Vector3{
-  Vector3 toVector3(){
-    return Vector3(x,y,z);
+  three.Vector3 toVector3(){
+    return three.Vector3(x,y,z);
   }
 }
 class BasicPhysics extends StatefulWidget {
@@ -56,108 +49,71 @@ class BasicPhysics extends StatefulWidget {
 }
 
 class _BasicPhysicsPageState extends State<BasicPhysics> {
-  FocusNode node = FocusNode();
-  // gl values
-  //late Object3D object;
-  bool animationReady = false;
-  late FlutterGlPlugin three3dRender;
-  WebGLRenderTarget? renderTarget;
-  WebGLRenderer? renderer;
-  late OrbitControls controls;
-  int? fboId;
-  late double width;
-  late double height;
-  Size? screenSize;
-  late Scene scene;
-  late Camera camera;
-  double dpr = 1.0;
-  bool verbose = false;
-  bool disposed = false;
-  final GlobalKey<DomLikeListenableState> _globalKey = GlobalKey<DomLikeListenableState>();
-  dynamic sourceTexture;
+  late three.ThreeJS threeJs;
+  late three.OrbitControls controls;
 
-  List<Mesh> meshs = [];
-  List<Mesh> grounds = [];
+  List<three.Mesh> meshs = [];
+  List<three.Mesh> grounds = [];
   
-  Map<String,BufferGeometry> geos = {};
+  Map<String,three.BufferGeometry> geos = {};
   Map<String,three.Material> mats = {};
 
   //oimo var
   late bullet.DynamicsWorld world;
-  late double lastCallTime;
   List<bullet.RigidBody> bodys = [];
 
-  List<int> fps = [0,0,0,0];
   double toRad = 0.0174532925199432957;
   int type = 1;
   int max = 2;
 
   @override
   void initState() {
+    threeJs = three.ThreeJS(
+      onSetupComplete: (){setState(() {});},
+      setup: setup,
+      settings: three.Settings(
+        useOpenGL: true
+      )
+    );
     super.initState();
   }
   @override
   void dispose() {
-    disposed = true;
-    three3dRender.dispose();
+    threeJs.dispose();
+    controls.dispose();
     super.dispose();
   }
   
-  void initSize(BuildContext context) {
-    if (screenSize != null) {
-      return;
-    }
+  Future<void> setup() async {
+    threeJs.scene = three.Scene();
 
-    final mqd = MediaQuery.of(context);
+    threeJs.camera = three.PerspectiveCamera(60, threeJs.width / threeJs.height, 1, 10000);
+    threeJs.camera.position.setValues(0,160,400);
 
-    screenSize = mqd.size;
-    dpr = mqd.devicePixelRatio;
-
-    initPlatformState();
-  }
-  void animate() {
-    if (!mounted || disposed) {
-      return;
-    }
-
-    render();
-
-    Future.delayed(const Duration(milliseconds: 1000~/60), () {
-      updateBulletPhysics();
-      animate();
-    });
-  }
-  Future<void> initPage() async {
-    
-    scene = Scene();
-
-    camera = PerspectiveCamera(60, width / height, 1, 10000);
-    camera.position.set(0,160,400);
-
-    controls = OrbitControls(camera, _globalKey);
+    controls = three.OrbitControls(threeJs.camera, threeJs.globalKey);
     //controls.target.set(0,20,0);
     //controls.update();
     
-    scene.add(AmbientLight( 0x3D4143 ) );
-    DirectionalLight light = DirectionalLight( 0xffffff , 1.4);
-    light.position.set( 300, 1000, 500 );
-    light.target!.position.set( 0, 0, 0 );
+    threeJs.scene.add(three.AmbientLight( 0x3D4143, 1.0) );
+    three.DirectionalLight light = three.DirectionalLight( 0xffffff , 1.4);
+    light.position.setValues( 300, 1000, 500 );
+    light.target!.position.setValues( 0, 0, 0 );
     light.castShadow = true;
 
-    int d = 300;
-    light.shadow!.camera = OrthographicCamera( -d, d, d, -d,  500, 1600 );
+    const double d = 300;
+    light.shadow!.camera = three.OrthographicCamera( -d, d, d, -d,  500, 1600 );
     light.shadow!.bias = 0.0001;
     light.shadow!.mapSize.width = light.shadow!.mapSize.height = 1024;
 
-    scene.add( light );
+    threeJs.scene.add( light );
 
     // background
-    BufferGeometry buffgeoBack = three.IcosahedronGeometry(3000,2);
-    Mesh back = three.Mesh( 
+    three.BufferGeometry buffgeoBack = three.IcosahedronGeometry(3000,2);
+    three.Mesh back = three.Mesh( 
       buffgeoBack, 
       three.MeshLambertMaterial()
     );
-    scene.add( back );
+    threeJs.scene.add( back );
 
     // geometrys
     geos['sphere'] = three.SphereGeometry(1,16,10);
@@ -165,24 +121,29 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
     geos['cylinder'] = three.CylinderGeometry(1,1,1);
     
     // materials
-    mats['sph']    = MeshPhongMaterial({'shininess': 10, 'name':'sph'});
+    mats['sph']    = three.MeshPhongMaterial.fromMap({'shininess': 10, 'name':'sph'});
     
-    mats['box']    = MeshPhongMaterial({'shininess': 10, 'name':'box'});
-    mats['cyl']    = MeshPhongMaterial({'shininess': 10, 'name':'cyl'});
-    mats['ssph']   = MeshPhongMaterial({'shininess': 10, 'name':'ssph'});
-    mats['sbox']   = MeshPhongMaterial({'shininess': 10, 'name':'sbox'});
-    mats['scyl']   = MeshPhongMaterial({'shininess': 10, 'name':'scyl'});
-    mats['ground'] = MeshPhongMaterial({'shininess': 10, 'color':0x3D4143, 'transparent':true, 'opacity':0.5});
+    mats['box']    = three.MeshPhongMaterial.fromMap({'shininess': 10, 'name':'box'});
+    mats['cyl']    = three.MeshPhongMaterial.fromMap({'shininess': 10, 'name':'cyl'});
+    mats['ssph']   = three.MeshPhongMaterial.fromMap({'shininess': 10, 'name':'ssph'});
+    mats['sbox']   = three.MeshPhongMaterial.fromMap({'shininess': 10, 'name':'sbox'});
+    mats['scyl']   = three.MeshPhongMaterial.fromMap({'shininess': 10, 'name':'scyl'});
+    mats['ground'] = three.MeshPhongMaterial.fromMap({'shininess': 10, 'color':0x3D4143, 'transparent':true, 'opacity':0.5});
+  
+    initBulletPhysics();
 
-    animationReady = true;
+    threeJs.addAnimationEvent((dt){
+      updateBulletPhysics();
+      controls.update();
+    });
   }
 
   void addStaticBox(List<double> size,List<double> position,List<double> rotation) {
-    Mesh mesh = three.Mesh( geos['box'], mats['ground'] );
-    mesh.scale.set( size[0], size[1], size[2] );
-    mesh.position.set( position[0], position[1], position[2] );
+    three.Mesh mesh = three.Mesh( geos['box'], mats['ground'] );
+    mesh.scale.setValues( size[0], size[1], size[2] );
+    mesh.position.setValues( position[0], position[1], position[2] );
     mesh.rotation.set( rotation[0]*toRad, rotation[1]*toRad, rotation[2]*toRad );
-    scene.add( mesh );
+    threeJs.scene.add( mesh );
     grounds.add(mesh);
     mesh.castShadow = true;
     mesh.receiveShadow = true;
@@ -190,11 +151,11 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
 
   void clearMesh(){
     for(int i = 0; i < meshs.length;i++){ 
-      scene.remove(meshs[i]);
+      threeJs.scene.remove(meshs[i]);
     }
 
     for(int i = 0; i < grounds.length;i++){ 
-      scene.remove(grounds[ i ]);
+      threeJs.scene.remove(grounds[ i ]);
     }
     grounds = [];
     meshs = [];
@@ -244,7 +205,7 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
         0,
         bullet.DefaultMotionState(
           bullet.Transform()
-          ..origin.setValues(-180.0,20.0,0.0)
+          ..origin.setValues(0,0,0)
         ),
         bullet.BoxShape(math.Vector3(40.0/2, 40.0/2, 390.0/2)),
       )
@@ -280,18 +241,18 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
     int t;
     for(int i = 0; i < max;i++){
       if(type==4) {
-        t = Math.floor(Math.random()*3)+1;
+        t = (m.Random().nextDouble() *3).floor()+1;
       }
       else {
         t = type;
       }
-      x = -100 + Math.random()*200;
-      z = -100 + Math.random()*200;
-      y = 100 + Math.random()*1000;
-      w = 10 + Math.random()*10;
-      h = 10 + Math.random()*10;
-      d = 10 + Math.random()*10;
-      three.Color randColor = three.Color().setHex((Math.random() * 0xFFFFFF).toInt());
+      x = -100 + m.Random().nextDouble() *200;
+      z = -100 + m.Random().nextDouble() *200;
+      y = 100 + m.Random().nextDouble() *1000;
+      w = 10 + m.Random().nextDouble() *10;
+      h = 10 + m.Random().nextDouble() *10;
+      d = 10 + m.Random().nextDouble() *10;
+      three.Color randColor = three.Color.fromHex32((m.Random().nextDouble()  * 0xFFFFFF).toInt());
 
       if(t==1){
         three.Material mat = mats['sph']!;
@@ -310,7 +271,7 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
         bodys.add(sbody);
         world.addRigidBody(sbody);
         meshs.add(three.Mesh( geos['sphere'], mat));
-        meshs[i].scale.set( w*0.5, w*0.5, w*0.5 );
+        meshs[i].scale.setValues( w*0.5, w*0.5, w*0.5 );
       } 
       else if(t==2){
         three.Material mat = mats['box']!;
@@ -328,7 +289,7 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
         bodys.add(sbody);
         world.addRigidBody(sbody);
         meshs.add(three.Mesh( geos['box'], mat ));
-        meshs[i].scale.set( w, h, d );
+        meshs[i].scale.setValues( w, h, d );
       } 
       else if(t==3){
         three.Material mat = mats['cyl']!;
@@ -346,13 +307,13 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
         bodys.add(sbody);
         world.addRigidBody(sbody);
         meshs.add(three.Mesh( geos['cylinder'], mat));
-        meshs[i].scale.set( w*0.5, h, w*0.5 );
+        meshs[i].scale.setValues( w*0.5, h, w*0.5 );
       }
 
       meshs[i].castShadow = true;
       meshs[i].receiveShadow = true;
 
-      scene.add( meshs[i] );
+      threeJs.scene.add( meshs[i] );
     }
   }
 
@@ -361,7 +322,7 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
     world.stepSimulation(ms / 1000000);
 
     double x, y, z;
-    Mesh mesh; 
+    three.Mesh mesh; 
     bullet.RigidBody body;
     //print(bodys[0].getPosition());
     for(int i = 0; i < bodys.length;i++){
@@ -370,146 +331,39 @@ class _BasicPhysicsPageState extends State<BasicPhysics> {
 
       if(body.isActive()){
         
-        mesh.position.copy(body.worldTransform.origin.toVector3());
-        mesh.quaternion.copy(math.Quaternion.fromRotation(body.worldTransform.basis).toQuaternion() );
+        mesh.position.setFrom(body.worldTransform.origin.toVector3());
+        mesh.quaternion.setFrom(math.Quaternion.fromRotation(body.worldTransform.basis).toQuaternion() );
 
         // change material
-        if(mesh.material.name == 'sbox') mesh.material = mats['box'];
-        if(mesh.material.name == 'ssph') mesh.material = mats['sph'];
-        if(mesh.material.name == 'scyl') mesh.material = mats['cyl']; 
+        if(mesh.material?.name == 'sbox') mesh.material = mats['box'];
+        if(mesh.material?.name == 'ssph') mesh.material = mats['sph'];
+        if(mesh.material?.name == 'scyl') mesh.material = mats['cyl']; 
 
         // reset position
         if(mesh.position.y<-100){
-          x = -100 + Math.random()*200;
-          z = -100 + Math.random()*200;
-          y = 100 + Math.random()*1000;
+          x = -100 + m.Random().nextDouble() *200;
+          z = -100 + m.Random().nextDouble() *200;
+          y = 100 + m.Random().nextDouble() *1000;
           body.setLinearVelocity(math.Vector3(0,0,0));
           body.setAngularVelocity(math.Vector3(0,0,0));
           body.worldTransform.origin.setFrom(math.Vector3(x,y,z));
         }
       } 
       else {
-        if(mesh.material.name == 'box') mesh.material = mats['sbox'];
-        if(mesh.material.name == 'sph') mesh.material = mats['ssph'];
-        if(mesh.material.name == 'cyl') mesh.material = mats['scyl'];
+        if(mesh.material?.name == 'box') mesh.material = mats['sbox'];
+        if(mesh.material?.name == 'sph') mesh.material = mats['ssph'];
+        if(mesh.material?.name == 'cyl') mesh.material = mats['scyl'];
       }
     }
   }
 
-  void render() {
-    final _gl = three3dRender.gl;
-    renderer!.render(scene, camera);
-    _gl.flush();
-    controls.update();
-    if(!kIsWeb) {
-      three3dRender.updateTexture(sourceTexture);
-    }
-  }
-  void initRenderer() {
-    Map<String, dynamic> _options = {
-      "width": width,
-      "height": height,
-      "gl": three3dRender.gl,
-      "antialias": true,
-      "canvas": three3dRender.element,
-    };
-
-    if(!kIsWeb && Platform.isAndroid){
-      _options['logarithmicDepthBuffer'] = true;
-    }
-
-    renderer = WebGLRenderer(_options);
-    renderer!.setPixelRatio(dpr);
-    renderer!.setSize(width, height, false);
-    renderer!.shadowMap.enabled = true;
-    renderer!.shadowMap.type = three.PCFShadowMap;
-    //renderer!.outputEncoding = three.sRGBEncoding;
-
-    if(!kIsWeb){
-      WebGLRenderTargetOptions pars = WebGLRenderTargetOptions({"format": RGBAFormat,"samples": 8});
-      renderTarget = WebGLRenderTarget((width * dpr).toInt(), (height * dpr).toInt(), pars);
-      renderer!.setRenderTarget(renderTarget);
-      sourceTexture = renderer!.getRenderTargetGLTexture(renderTarget!);
-    }
-    else{
-      renderTarget = null;
-    }
-  }
-  void initScene() async{
-    await initPage();
-    initRenderer();
-    initBulletPhysics();
-    animate();
-  }
-  Future<void> initPlatformState() async {
-    width = screenSize!.width;
-    height = screenSize!.height;
-
-    three3dRender = FlutterGlPlugin();
-
-    Map<String, dynamic> _options = {
-      "antialias": true,
-      "alpha": true,
-      "width": width.toInt(),
-      "height": height.toInt(),
-      "dpr": dpr,
-      'precision': 'highp'
-    };
-    await three3dRender.initialize(options: _options);
-
-    setState(() {});
-
-    // TODO web wait dom ok!!!
-    Future.delayed(const Duration(milliseconds: 100), () async {
-      await three3dRender.prepareContext();
-      initScene();
-    });
-  }
-
-  Widget threeDart() {
-    return Builder(builder: (BuildContext context) {
-      initSize(context);
-      return Container(
-        width: screenSize!.width,
-        height: screenSize!.height,
-        color: Theme.of(context).canvasColor,
-        child: DomLikeListenable(
-          key: _globalKey,
-          builder: (BuildContext context) {
-            FocusScope.of(context).requestFocus(node);
-            return Container(
-              width: width,
-              height: height,
-              color: Theme.of(context).canvasColor,
-              child: Builder(builder: (BuildContext context) {
-                if (kIsWeb) {
-                  return three3dRender.isInitialized
-                      ? HtmlElementView(
-                          viewType:
-                              three3dRender.textureId!.toString())
-                      : Container();
-                } else {
-                  return three3dRender.isInitialized
-                      ? Texture(textureId: three3dRender.textureId!)
-                      : Container();
-                }
-              })
-            );
-          }
-        ),
-      );
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: double.infinity,
-      width: double.infinity,
-      child: Stack(
+    return Scaffold(
+      body: Stack(
         children: [
-          threeDart(),
-        ],
+          threeJs.build(),
+        ]
       )
     );
   }

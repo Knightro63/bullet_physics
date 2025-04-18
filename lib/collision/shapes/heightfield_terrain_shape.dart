@@ -149,9 +149,6 @@ class HeightfieldTerrainShape extends ConcaveShape{
         val = hfValue * mheightScale;
         break;
       }
-      default:{
-        throw"Bad mHeightDataType";
-      }
 		}
 
 		return val;

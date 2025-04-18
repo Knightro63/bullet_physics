@@ -20,13 +20,7 @@ dependencies:
 
   bullet_physics:
     path: ../
-  flutter_gl: ^0.0.21
-  three_dart:
-    git:
-      url: https://github.com/Knightro63/three_dart.git
-  three_dart_jsm:
-    git:
-      url: https://github.com/Knightro63/three_dart_jsm.git
+  three_js: ^0.1.0
   
   cupertino_icons: ^1.0.2
   vector_math: ^2.1.4
@@ -34,7 +28,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^5.0.0
   
 # The following section is specific to Flutter packages.
 flutter:
